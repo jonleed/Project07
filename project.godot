@@ -12,3 +12,13 @@ config_version=5
 
 config/name="Project07"
 config/features=PackedStringArray("4.4", "Forward Plus")
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "orange",
+"res://globals/": "gray",
+"res://resources/": "green",
+"res://scenes/": "yellow",
+"res://shaders/": "pink"
+}
