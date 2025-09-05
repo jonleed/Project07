@@ -1,0 +1,15 @@
+Variables - lowercase, snake_case
+Functions - PascalCase, Uppercase
+Classes - PascalCase, Uppercase
+Files - snake_case
+Folders - lowercase
+Constants - SCREAMINGCASE
+Assets - snake_case
+Scenes - Train-Case
+Scripts - kebab-case
+
+integer incrementors will have the added word count in either lowercase or snake_case
+examples:
+	death_count : int = 0, deathcount : int = 0
+
+Resources and other types - have fun
