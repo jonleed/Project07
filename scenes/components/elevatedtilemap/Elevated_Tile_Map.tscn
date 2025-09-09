@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://di3fby1kw5ffj"]
+
+[ext_resource type="Script" uid="uid://bvrmtmqvqk88r" path="res://scenes/components/elevatedtilemap/elevated-tile-map.gd" id="1_r4cwg"]
+[ext_resource type="TileSet" uid="uid://de6377aeuiqu0" path="res://resources/tilesets/trial_tile_set.tres" id="2_r4cwg"]
+
+[node name="ElevatedTileMap" type="Node2D"]
+script = ExtResource("1_r4cwg")
+tile_set = ExtResource("2_r4cwg")
+metadata/_custom_type_script = "uid://bvrmtmqvqk88r"
