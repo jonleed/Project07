@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v4btdjelgemp"
-path="res://.godot/imported/trial_tile_set.png-86d1be8fedb64c13a15478f49bdf03c6.ctex"
+uid="uid://cwpvqyk1mon0u"
+path="res://.godot/imported/isometric_medieval_fantasy_tiles.png-15683dac1bdb12649c739ec0bf040d4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/trial_tile_set.png"
-dest_files=["res://.godot/imported/trial_tile_set.png-86d1be8fedb64c13a15478f49bdf03c6.ctex"]
+source_file="res://assets/sprites/isometric_medieval_fantasy_tiles.png"
+dest_files=["res://.godot/imported/isometric_medieval_fantasy_tiles.png-15683dac1bdb12649c739ec0bf040d4e.ctex"]
 
 [params]
 
