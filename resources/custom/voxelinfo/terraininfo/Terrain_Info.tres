@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainInfo" load_steps=2 format=3 uid="uid://dqe14myiyhdw4"]
+
+[ext_resource type="Script" uid="uid://df4k7b0g5ty6o" path="res://resources/custom/voxelinfo/terraininfo/terrain-info.gd" id="1_8vnld"]
+
+[resource]
+script = ExtResource("1_8vnld")
+terrain_set = 0
+terrain = 0
+ignore_empty_terrains = true
+terrain_type = 0
+metadata/_custom_type_script = "uid://df4k7b0g5ty6o"

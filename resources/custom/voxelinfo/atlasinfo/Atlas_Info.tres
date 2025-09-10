@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AtlasInfo" load_steps=2 format=3 uid="uid://cvygycv0x0ocy"]
+
+[ext_resource type="Script" uid="uid://dyk2dwhkaaibw" path="res://resources/custom/voxelinfo/atlasinfo/atlas-info.gd" id="1_ogk0b"]
+
+[resource]
+script = ExtResource("1_ogk0b")
+source_id = -1
+atlas_coords = Vector2i(-1, -1)
+alternative_tile = 0
+metadata/_custom_type_script = "uid://dyk2dwhkaaibw"
