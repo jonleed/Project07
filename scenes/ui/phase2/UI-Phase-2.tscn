@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=75 format=3 uid="uid://b18istpat370g"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r78rm"]
 
@@ -25,6 +25,27 @@ noise = SubResource("FastNoiseLite_a2hlb")
 [sub_resource type="LabelSettings" id="LabelSettings_73c2s"]
 font_color = Color(1.34766e-06, 0.695709, 0.887761, 1)
 
+[sub_resource type="Gradient" id="Gradient_r78rm"]
+colors = PackedColorArray(0.176471, 0.513726, 0.819608, 1, 1, 0.839216, 0.835294, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nb6pv"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_73c2s"]
+color_ramp = SubResource("Gradient_r78rm")
+noise = SubResource("FastNoiseLite_nb6pv")
+
+[sub_resource type="Gradient" id="Gradient_0ti8f"]
+colors = PackedColorArray(0, 0.576471, 0.192157, 1, 0.0196078, 0.8, 0.376471, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kiwar"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jrsd6"]
+color_ramp = SubResource("Gradient_0ti8f")
+noise = SubResource("FastNoiseLite_kiwar")
+
+[sub_resource type="LabelSettings" id="LabelSettings_lhy63"]
+font_color = Color(1, 1, 0.254902, 1)
+
 [sub_resource type="Gradient" id="Gradient_k8s3k"]
 colors = PackedColorArray(0, 0, 0.576471, 1, 1, 1, 1, 1)
 
@@ -33,6 +54,8 @@ colors = PackedColorArray(0, 0, 0.576471, 1, 1, 1, 1, 1)
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0ti8f"]
 color_ramp = SubResource("Gradient_k8s3k")
 noise = SubResource("FastNoiseLite_3b1oa")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rhpt8"]
 
 [sub_resource type="Gradient" id="Gradient_35tma"]
 
@@ -133,6 +156,22 @@ colors = PackedColorArray(0, 0, 0, 1, 0.619608, 0.388235, 1, 1)
 color_ramp = SubResource("Gradient_jawe8")
 noise = SubResource("FastNoiseLite_4j4mf")
 
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_deffv"]
+width = 32
+height = 32
+
+[sub_resource type="Gradient" id="Gradient_7xb3k"]
+offsets = PackedFloat32Array(0, 0.985915)
+colors = PackedColorArray(0, 0, 0, 1, 0.619608, 0.392157, 0.929412, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qk402"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0372p"]
+width = 32
+height = 32
+color_ramp = SubResource("Gradient_7xb3k")
+noise = SubResource("FastNoiseLite_qk402")
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3ly6n"]
 
 [sub_resource type="Gradient" id="Gradient_hksx5"]
@@ -155,32 +194,33 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0.266667, 0.0705882, 1)
 color_ramp = SubResource("Gradient_be4eq")
 noise = SubResource("FastNoiseLite_cqmlf")
 
-[sub_resource type="Gradient" id="Gradient_f6dnq"]
-colors = PackedColorArray(0, 0, 0, 1, 0.529412, 0.592157, 0.376471, 1)
+[sub_resource type="Gradient" id="Gradient_nb6pv"]
+colors = PackedColorArray(0, 0, 0, 1, 0.121569, 0.270588, 0.121569, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_826t7"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_y41b5"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cusol"]
-color_ramp = SubResource("Gradient_f6dnq")
-noise = SubResource("FastNoiseLite_826t7")
+color_ramp = SubResource("Gradient_nb6pv")
+noise = SubResource("FastNoiseLite_y41b5")
 
-[sub_resource type="Gradient" id="Gradient_8pnao"]
-colors = PackedColorArray(0, 0, 0, 1, 0.0980392, 0.443137, 0.780392, 1)
+[sub_resource type="Gradient" id="Gradient_kwxeg"]
+offsets = PackedFloat32Array(0, 0.992958)
+colors = PackedColorArray(0, 0, 0, 1, 0.231373, 0.419608, 0.760784, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_xkbyd"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8lkya"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kwxeg"]
-color_ramp = SubResource("Gradient_8pnao")
-noise = SubResource("FastNoiseLite_xkbyd")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lhy63"]
+color_ramp = SubResource("Gradient_kwxeg")
+noise = SubResource("FastNoiseLite_8lkya")
 
-[sub_resource type="Gradient" id="Gradient_lg1k1"]
-colors = PackedColorArray(0, 0, 0, 1, 1, 0.568627, 0.219608, 1)
+[sub_resource type="Gradient" id="Gradient_rhpt8"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.596078, 0.364706, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_8p1q4"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_deffv"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8lkya"]
-color_ramp = SubResource("Gradient_lg1k1")
-noise = SubResource("FastNoiseLite_8p1q4")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7xb3k"]
+color_ramp = SubResource("Gradient_rhpt8")
+noise = SubResource("FastNoiseLite_deffv")
 
 [node name="Ui-phase-2" type="Node2D"]
 
@@ -214,29 +254,20 @@ offset_bottom = 218.0
 texture = SubResource("NoiseTexture2D_nb6pv")
 expand_mode = 1
 
-[node name="ActionPanelInteriorBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
-layout_mode = 0
-offset_left = 180.0
-offset_top = 37.0
-offset_right = 186.0
-offset_bottom = 221.0
-texture = SubResource("NoiseTexture2D_r78rm")
-expand_mode = 1
-
-[node name="ClassControl" type="Control" parent="Graphical User Interface/ActionGUI"]
+[node name="ActionPanelHeader" type="Control" parent="Graphical User Interface/ActionGUI"]
 clip_contents = true
 anchors_preset = 0
-offset_right = 186.0
+offset_right = 244.0
 offset_bottom = 40.0
 
-[node name="ClassPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl"]
+[node name="ActionPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 layout_mode = 2
-offset_right = 186.0
+offset_right = 244.0
 offset_bottom = 40.0
 texture = SubResource("NoiseTexture2D_y41b5")
 expand_mode = 1
 
-[node name="ClassPanelCenterer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ClassControl"]
+[node name="ClassPanelCenterer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 clip_contents = true
 layout_mode = 0
 offset_left = 3.0
@@ -244,18 +275,51 @@ offset_top = 3.0
 offset_right = 184.0
 offset_bottom = 37.0
 
-[node name="ClassPanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl/ClassPanelCenterer"]
+[node name="ClassPanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ClassPanelCenterer"]
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_t4ljw")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="ClassLabel" type="Label" parent="Graphical User Interface/ActionGUI/ClassControl/ClassPanelCenterer"]
+[node name="ClassLabel" type="Label" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ClassPanelCenterer"]
 layout_mode = 2
 text = "Jester"
 label_settings = SubResource("LabelSettings_73c2s")
 
-[node name="Class Icon" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl"]
+[node name="MovementPanelContainer" type="Control" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
+anchors_preset = 0
+offset_left = 186.0
+offset_right = 243.0
+offset_bottom = 41.0
+
+[node name="TextureRect" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/MovementPanelContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+offset_top = 3.0
+offset_right = 55.0
+offset_bottom = 37.0
+texture = SubResource("NoiseTexture2D_73c2s")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/MovementPanelContainer"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 11.0
+offset_right = 48.0
+offset_bottom = 29.0
+texture = SubResource("NoiseTexture2D_jrsd6")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/MovementPanelContainer"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 7.0
+offset_right = 46.0
+offset_bottom = 30.0
+text = "13"
+label_settings = SubResource("LabelSettings_lhy63")
+
+[node name="Class Icon" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 layout_mode = 2
 offset_left = 4.0
 offset_top = 4.0
@@ -264,12 +328,25 @@ offset_bottom = 36.0
 texture = SubResource("NoiseTexture2D_0ti8f")
 expand_mode = 1
 
+[node name="ActionPanelInteriorBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
+layout_mode = 0
+offset_left = 180.0
+offset_right = 186.0
+offset_bottom = 221.0
+texture = SubResource("NoiseTexture2D_r78rm")
+expand_mode = 1
+
+[node name="ActionPanelDecorator-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/ActionGUI"]
+visible = false
+texture = SubResource("NoiseTexture2D_rhpt8")
+polygon = PackedVector2Array(244, 0, 586, 37, 244, 37)
+
 [node name="SplitContainer" type="SplitContainer" parent="Graphical User Interface/ActionGUI"]
 custom_minimum_size = Vector2(580, 170)
 layout_mode = 2
 offset_left = 3.0
 offset_top = 41.0
-offset_right = 583.0
+offset_right = 586.0
 offset_bottom = 218.0
 theme_override_constants/separation = 3
 drag_area_highlight_in_editor = true
@@ -536,33 +613,54 @@ texture_normal = SubResource("NoiseTexture2D_yhe56")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
-custom_minimum_size = Vector2(70, 66)
+[node name="UnitSelInfoCenterContainer" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+custom_minimum_size = Vector2(70, 28)
+anchors_preset = 0
 offset_left = 65.0
-offset_right = 136.0
+offset_top = 21.0
+offset_right = 135.0
 offset_bottom = 66.0
 
 [node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(70, 66)
+custom_minimum_size = Vector2(70, 45)
 layout_mode = 2
+offset_right = 70.0
+offset_bottom = 44.0
 texture = SubResource("NoiseTexture2D_dwrl1")
 expand_mode = 1
 
 [node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(68, 64)
+custom_minimum_size = Vector2(68, 42)
 layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 44.0
 texture_normal = SubResource("NoiseTexture2D_0kqh0")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="UnitSelPanelTopBG-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+visible = false
+position = Vector2(65, -1)
+texture = SubResource("NoiseTexture2D_deffv")
+polygon = PackedVector2Array(1, 1, 1, 1, 0, 2, 66, 22, 70, 23, 67.8945, 21.3287)
+
+[node name="UnitSelPanelTopBorder-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+visible = false
+position = Vector2(65, 0)
+texture = SubResource("NoiseTexture2D_0372p")
+polygon = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+uv = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
 
 [node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
 custom_minimum_size = Vector2(44, 8)
 layout_mode = 2
 anchors_preset = 0
 offset_left = 66.0
-offset_top = 1.0
+offset_top = 23.0
 offset_right = 130.0
-offset_bottom = 11.0
+offset_bottom = 33.0
 
 [node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar"]
 anchors_preset = 0
@@ -634,19 +732,19 @@ offset_left = 69.0
 offset_top = 36.0
 offset_right = 131.0
 offset_bottom = 62.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer"]
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -655,13 +753,28 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer3" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -690,33 +803,54 @@ texture_normal = SubResource("NoiseTexture2D_cusol")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
-custom_minimum_size = Vector2(70, 66)
+[node name="UnitSelInfoCenterContainer" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+custom_minimum_size = Vector2(70, 28)
+anchors_preset = 0
 offset_left = 65.0
-offset_right = 136.0
+offset_top = 21.0
+offset_right = 135.0
 offset_bottom = 66.0
 
 [node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(70, 66)
+custom_minimum_size = Vector2(70, 44)
 layout_mode = 2
+offset_right = 70.0
+offset_bottom = 46.0
 texture = SubResource("NoiseTexture2D_dwrl1")
 expand_mode = 1
 
 [node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(68, 64)
+custom_minimum_size = Vector2(68, 42)
 layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 44.0
 texture_normal = SubResource("NoiseTexture2D_0kqh0")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="UnitSelPanelTopBG-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+visible = false
+position = Vector2(65, -1)
+texture = SubResource("NoiseTexture2D_deffv")
+polygon = PackedVector2Array(1, 1, 1, 1, 0, 2, 66, 22, 70, 23, 67.8945, 21.3287)
+
+[node name="UnitSelPanelTopBorder-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+visible = false
+position = Vector2(65, 0)
+texture = SubResource("NoiseTexture2D_0372p")
+polygon = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+uv = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
 
 [node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
 custom_minimum_size = Vector2(44, 8)
 layout_mode = 2
 anchors_preset = 0
 offset_left = 66.0
-offset_top = 1.0
+offset_top = 23.0
 offset_right = 130.0
-offset_bottom = 11.0
+offset_bottom = 33.0
 
 [node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar"]
 anchors_preset = 0
@@ -788,19 +922,19 @@ offset_left = 69.0
 offset_top = 36.0
 offset_right = 131.0
 offset_bottom = 62.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer"]
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -809,13 +943,28 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer3" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -840,37 +989,59 @@ expand_mode = 1
 [node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture_normal = SubResource("NoiseTexture2D_kwxeg")
+texture_normal = SubResource("NoiseTexture2D_lhy63")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
-custom_minimum_size = Vector2(70, 66)
+[node name="UnitSelInfoCenterContainer" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 3
+anchors_preset = 0
 offset_left = 65.0
-offset_right = 136.0
+offset_top = 21.0
+offset_right = 135.0
 offset_bottom = 66.0
 
 [node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(70, 66)
+custom_minimum_size = Vector2(70, 44)
 layout_mode = 2
+offset_right = 70.0
+offset_bottom = 46.0
 texture = SubResource("NoiseTexture2D_dwrl1")
 expand_mode = 1
 
 [node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(68, 64)
+custom_minimum_size = Vector2(68, 42)
 layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 44.0
 texture_normal = SubResource("NoiseTexture2D_0kqh0")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="UnitSelPanelTopBG-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+visible = false
+position = Vector2(65, -1)
+texture = SubResource("NoiseTexture2D_deffv")
+polygon = PackedVector2Array(1, 1, 1, 1, 0, 2, 66, 22, 70, 23, 67.8945, 21.3287)
+
+[node name="UnitSelPanelTopBorder-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+visible = false
+position = Vector2(65, 0)
+texture = SubResource("NoiseTexture2D_0372p")
+polygon = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+uv = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+
 [node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
 custom_minimum_size = Vector2(44, 8)
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_left = 66.0
-offset_top = 1.0
+offset_top = 23.0
 offset_right = 130.0
-offset_bottom = 11.0
+offset_bottom = 33.0
 
 [node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar"]
 anchors_preset = 0
@@ -937,24 +1108,23 @@ texture = SubResource("NoiseTexture2D_kdo0k")
 expand_mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
-layout_mode = 2
 offset_left = 69.0
 offset_top = 36.0
 offset_right = 131.0
 offset_bottom = 62.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer"]
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -963,13 +1133,28 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer3" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -994,37 +1179,59 @@ expand_mode = 1
 [node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture_normal = SubResource("NoiseTexture2D_8lkya")
+texture_normal = SubResource("NoiseTexture2D_7xb3k")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
-custom_minimum_size = Vector2(70, 66)
+[node name="UnitSelInfoCenterContainer" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 3
+anchors_preset = 0
 offset_left = 65.0
-offset_right = 136.0
+offset_top = 21.0
+offset_right = 135.0
 offset_bottom = 66.0
 
 [node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(70, 66)
+custom_minimum_size = Vector2(70, 44)
 layout_mode = 2
+offset_right = 70.0
+offset_bottom = 46.0
 texture = SubResource("NoiseTexture2D_dwrl1")
 expand_mode = 1
 
 [node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelInfoCenterContainer"]
-custom_minimum_size = Vector2(68, 64)
+custom_minimum_size = Vector2(68, 42)
 layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 44.0
 texture_normal = SubResource("NoiseTexture2D_0kqh0")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="UnitSelPanelTopBG-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+visible = false
+position = Vector2(65, -1)
+texture = SubResource("NoiseTexture2D_deffv")
+polygon = PackedVector2Array(1, 1, 1, 1, 0, 2, 66, 22, 70, 23, 67.8945, 21.3287)
+
+[node name="UnitSelPanelTopBorder-TRIANGLE" type="Polygon2D" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+visible = false
+position = Vector2(65, 0)
+texture = SubResource("NoiseTexture2D_0372p")
+polygon = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+uv = PackedVector2Array(1, 1, 33, 11, 70, 22, 1, 22)
+
 [node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
 custom_minimum_size = Vector2(44, 8)
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_left = 66.0
-offset_top = 1.0
+offset_top = 23.0
 offset_right = 130.0
-offset_bottom = 11.0
+offset_bottom = 33.0
 
 [node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar"]
 anchors_preset = 0
@@ -1091,24 +1298,23 @@ texture = SubResource("NoiseTexture2D_kdo0k")
 expand_mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
-layout_mode = 2
 offset_left = 69.0
 offset_top = 36.0
 offset_right = 131.0
 offset_bottom = 62.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer"]
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
@@ -1117,13 +1323,28 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_cwrv6")
 expand_mode = 1
 
 [node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer2"]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer3" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer3"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_8yc1p")
 expand_mode = 1
