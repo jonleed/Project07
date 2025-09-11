@@ -240,7 +240,7 @@ offset_bottom = 647.0
 [node name="ActionPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
 layout_mode = 0
 offset_top = 37.0
-offset_right = 586.0
+offset_right = 442.0
 offset_bottom = 221.0
 texture = SubResource("NoiseTexture2D_r78rm")
 expand_mode = 1
@@ -249,7 +249,7 @@ expand_mode = 1
 layout_mode = 0
 offset_left = 3.0
 offset_top = 41.0
-offset_right = 583.0
+offset_right = 438.0
 offset_bottom = 218.0
 texture = SubResource("NoiseTexture2D_nb6pv")
 expand_mode = 1
@@ -342,13 +342,13 @@ texture = SubResource("NoiseTexture2D_rhpt8")
 polygon = PackedVector2Array(244, 0, 586, 37, 244, 37)
 
 [node name="SplitContainer" type="SplitContainer" parent="Graphical User Interface/ActionGUI"]
-custom_minimum_size = Vector2(580, 170)
+custom_minimum_size = Vector2(400, 170)
 layout_mode = 2
 offset_left = 3.0
 offset_top = 41.0
-offset_right = 586.0
+offset_right = 439.0
 offset_bottom = 218.0
-theme_override_constants/separation = 3
+theme_override_constants/separation = 8
 drag_area_highlight_in_editor = true
 
 [node name="ClassIconTexture" type="TextureRect" parent="Graphical User Interface/ActionGUI/SplitContainer"]
@@ -421,24 +421,24 @@ stretch_mode = 5
 layout_mode = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer"]
-custom_minimum_size = Vector2(398, 48)
+custom_minimum_size = Vector2(251, 48)
 layout_mode = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(360, 40)
+custom_minimum_size = Vector2(217, 40)
 layout_mode = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 10
 split_offset = 300
 dragging_enabled = false
 drag_area_highlight_in_editor = true
 
 [node name="Button" type="Button" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer/HSplitContainer"]
-custom_minimum_size = Vector2(175, 40)
+custom_minimum_size = Vector2(115, 40)
 layout_mode = 2
 text = "Undo Move"
 
 [node name="Button2" type="Button" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer/HSplitContainer"]
-custom_minimum_size = Vector2(150, 40)
+custom_minimum_size = Vector2(90, 40)
 layout_mode = 2
 text = "Reset Turn"
 
