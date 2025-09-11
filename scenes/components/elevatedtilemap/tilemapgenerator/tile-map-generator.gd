@@ -20,23 +20,19 @@ extends Node2D;
 var max_seed_value: int = 999999999; # There seems to be a max seed for FastNoiseLite
 
 @export_subgroup("Tile Info")
-var top_atlas_coords: Vector2i = Vector2i(1,0)
-@export var top_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, top_atlas_coords));
-var under_atlas_coords: Vector2i = Vector2i(0,0)
-@export var under_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, under_atlas_coords));
-var stone_atlas_coords: Vector2i = Vector2i(2,0)
-@export var stone_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, stone_atlas_coords))
+@export var top_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,0)));
+@export var under_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(0,0)));
+@export var stone_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(2,0)))
 
 @export_group("Water Generation")
 @export var enable_water: bool = true;
-var water_atlas_coords: Vector2i = Vector2i(7,0)
-@export var water_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, water_atlas_coords))
+#@export var water_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(7,0)))
+@export var water_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0,0, true, Enums.TerrainType.CONNECT, -1, 1, -1, -1))
 @export var water_level: int = 13
 
 @export_group("Fog Generation")
 @export var enable_fog: bool = false;
-var fog_atlas_coords: Vector2i = Vector2i(1,9)
-@export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, fog_atlas_coords))
+@export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,9)))
 @export var is_fog_on_water = false;
 
 func GenerateTerrain() -> void:
@@ -120,8 +116,9 @@ func GenerateVoxels() -> GenerateVoxelsOutput:
 				terrain_under_coords.append(Vector3i(x,y,height));
 			if enable_fog and (is_fog_on_water or height >= water_level):
 				fog_coords.append(Vector3i(x,y,max(height, water_level)+1));
-			if water_level > height and enable_water:
-				water_coords.append(Vector3i(x,y,water_level))
+			for _z in range(water_level-height):
+				var z = _z+height+1;
+				water_coords.append(Vector3i(x,y,z))
 	
 	match stone_tile_info.type:
 		Enums.TileType.FROM_ATLAS:
