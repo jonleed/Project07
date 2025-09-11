@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgh2egquwfsgw"]
+
+[ext_resource type="Script" uid="uid://doxsim1tjhx6t" path="res://scenes/components/elevatedtilemap/customtilemaplayer/custom-tile-map-layer.gd" id="1_30d1q"]
+
+[node name="CustomTileMapLayer" type="TileMapLayer"]
+script = ExtResource("1_30d1q")
+metadata/_custom_type_script = "uid://doxsim1tjhx6t"

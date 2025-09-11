@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TerrainOrAtlasInfo" load_steps=2 format=3 uid="uid://dx0eedjmsb2iw"]
+
+[ext_resource type="Script" uid="uid://c1fyk82ea011y" path="res://resources/custom/voxelinfo/terrainoratlasinfo/terrain-or-atlas-info.gd" id="1_wv5lw"]
+
+[resource]
+script = ExtResource("1_wv5lw")
+type = 0
+metadata/_custom_type_script = "uid://c1fyk82ea011y"
