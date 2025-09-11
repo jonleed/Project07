@@ -56,55 +56,48 @@ func DrawVoxels(voxels: Array[VoxelInfo]) -> void:
 				var alternative_tile = voxel_info.atlas_info.alternative_tile;
 				tile_map_layer.set_cell(coords, source_id, atlas_coords, alternative_tile);
 			Enums.TileType.FROM_TERRAIN:
-				var layer_paths: Dictionary[int, Array] = {}
+				var top_layer_paths: Dictionary[int, Array] = {}
 				var middle_layer_paths: Dictionary[int, Array] = {}
 				var bottom_layer_paths: Dictionary[int, Array] = {}
 				for cell: Vector3i in voxel_info.path:
+					var appropriate_layer_paths;
+					
 					if !voxel_info.path.has(cell+Vector3i(0,0,1)):
-						if !layer_paths.has(cell.z):
-							layer_paths[cell.z] = [];
-						layer_paths[cell.z].push_back(Vector2i(cell.x, cell.y));
+						appropriate_layer_paths = top_layer_paths;
 					elif !voxel_info.path.has(cell-Vector3i(0,0,1)):
-						if !bottom_layer_paths.has(cell.z):
-							bottom_layer_paths[cell.z] = [];
-						bottom_layer_paths[cell.z].push_back(Vector2i(cell.x, cell.y));
+						appropriate_layer_paths = bottom_layer_paths;
 					else:
-						if !middle_layer_paths.has(cell.z):
-							middle_layer_paths[cell.z] = [];
-						middle_layer_paths[cell.z].push_back(Vector2i(cell.x, cell.y));
-				for z: int in layer_paths:
-					var path = layer_paths[z];
-					var tile_map_layer = GetOrCreateTileMapLayer(z);
-					var terrain_set = voxel_info.terrain_info.terrain_set;
-					var terrain = voxel_info.terrain_info.terrain;
-					var ignore_empty_terrains = voxel_info.terrain_info.ignore_empty_terrains;
-					match voxel_info.terrain_info.terrain_type:
-						Enums.TerrainType.CONNECT:
-							tile_map_layer.set_cells_terrain_connect(path, terrain_set, terrain, ignore_empty_terrains);
-						Enums.TerrainType.PATH:
-							tile_map_layer.set_cells_terrain_path(path, terrain_set, terrain, ignore_empty_terrains);
-				for z: int in middle_layer_paths:
-					var path = middle_layer_paths[z];
-					var tile_map_layer = GetOrCreateTileMapLayer(z);
-					var terrain_set = TerrainInfo.GetMiddleTerrainSet(voxel_info.terrain_info);
-					var terrain = TerrainInfo.GetMiddleTerrain(voxel_info.terrain_info);
-					var ignore_empty_terrains = voxel_info.terrain_info.ignore_empty_terrains;
-					match voxel_info.terrain_info.terrain_type:
-						Enums.TerrainType.CONNECT:
-							tile_map_layer.set_cells_terrain_connect(path, terrain_set, terrain, ignore_empty_terrains);
-						Enums.TerrainType.PATH:
-							tile_map_layer.set_cells_terrain_path(path, terrain_set, terrain, ignore_empty_terrains);
-				for z: int in bottom_layer_paths:
-					var path = bottom_layer_paths[z];
-					var tile_map_layer = GetOrCreateTileMapLayer(z);
-					var terrain_set = TerrainInfo.GetBottomTerrainSet(voxel_info.terrain_info);
-					var terrain = TerrainInfo.GetBottomTerrain(voxel_info.terrain_info);
-					var ignore_empty_terrains = voxel_info.terrain_info.ignore_empty_terrains;
-					match voxel_info.terrain_info.terrain_type:
-						Enums.TerrainType.CONNECT:
-							tile_map_layer.set_cells_terrain_connect(path, terrain_set, terrain, ignore_empty_terrains);
-						Enums.TerrainType.PATH:
-							tile_map_layer.set_cells_terrain_path(path, terrain_set, terrain, ignore_empty_terrains);
+						appropriate_layer_paths = middle_layer_paths;
+						
+					if !appropriate_layer_paths.has(cell.z):
+						appropriate_layer_paths[cell.z] = [];
+					appropriate_layer_paths[cell.z].push_back(Vector2i(cell.x, cell.y));
+				for i in range(3):
+					var appropriate_layer_paths: Dictionary[int, Array];
+					var terrain_set: int;
+					var terrain: int;
+					var ignore_empty_terrains: bool = voxel_info.terrain_info.ignore_empty_terrains;
+					match i:
+						0:
+							appropriate_layer_paths = top_layer_paths;
+							terrain_set = voxel_info.terrain_info.terrain_set;
+							terrain = voxel_info.terrain_info.terrain;
+						1:
+							appropriate_layer_paths = middle_layer_paths;
+							terrain_set = TerrainInfo.GetMiddleTerrainSet(voxel_info.terrain_info);
+							terrain = TerrainInfo.GetMiddleTerrain(voxel_info.terrain_info);
+						2:
+							appropriate_layer_paths = bottom_layer_paths
+							terrain_set = TerrainInfo.GetBottomTerrainSet(voxel_info.terrain_info);
+							terrain = TerrainInfo.GetBottomTerrain(voxel_info.terrain_info);
+					for z: int in appropriate_layer_paths:
+						var path = appropriate_layer_paths[z];
+						var tile_map_layer = GetOrCreateTileMapLayer(z);
+						match voxel_info.terrain_info.terrain_type:
+							Enums.TerrainType.CONNECT:
+								tile_map_layer.set_cells_terrain_connect(path, terrain_set, terrain, ignore_empty_terrains);
+							Enums.TerrainType.PATH:
+								tile_map_layer.set_cells_terrain_path(path, terrain_set, terrain, ignore_empty_terrains);
 
 # Add a tool button to clear all layers
 

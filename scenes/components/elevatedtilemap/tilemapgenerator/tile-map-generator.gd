@@ -35,46 +35,49 @@ var max_seed_value: int = 999999999; # There seems to be a max seed for FastNois
 @export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,9)))
 @export var is_fog_on_water = false;
 
+func CreateElevatedTileMap(_name: String) -> ElevatedTileMap:
+	var elevated_tile_map = ElevatedTileMap.new();
+	elevated_tile_map.tile_set = tile_set;
+	elevated_tile_map.tile_z = tile_z;
+	elevated_tile_map.name = _name;
+	add_child(elevated_tile_map)
+	elevated_tile_map.owner = get_tree().edited_scene_root;
+	return elevated_tile_map;
+
 func GenerateTerrain() -> void:
 	ClearTerrain();
 	
 	var voxels: GenerateVoxelsOutput = GenerateVoxels();
 	
-	var terrain_tile_map = ElevatedTileMap.new();
-	terrain_tile_map.tile_set = tile_set;
-	terrain_tile_map.tile_z = tile_z;
-	terrain_tile_map.name = "TerrainTileMap";
-	add_child(terrain_tile_map);
-	terrain_tile_map.owner = get_tree().edited_scene_root
+	var terrain_tile_map = CreateElevatedTileMap("TerrainTileMap");
 	
 	terrain_tile_map.DrawVoxels(voxels.terrain_voxels)
 	terrain_tile_map.DrawVoxels(voxels.water_voxels)
 	
 	if enable_fog:
-		var fog_tile_map = ElevatedTileMap.new();
-		fog_tile_map.tile_set = tile_set;
-		fog_tile_map.tile_z = tile_z;
-		fog_tile_map.name = "FogTileMap";
-		add_child(fog_tile_map);
-		fog_tile_map.owner = get_tree().edited_scene_root
+		var fog_tile_map = CreateElevatedTileMap("FogTileMap");
 		
 		fog_tile_map.DrawVoxels(voxels.fog_voxels);
 
 func ClearTerrain() -> void:
-	var terrain_tile_map = GetTerrain();
-	if terrain_tile_map != null:
-		remove_child(terrain_tile_map);
-		terrain_tile_map.queue_free();
-	var fog_tile_map = GetFog();
-	if fog_tile_map != null:
-		remove_child(fog_tile_map);
-		fog_tile_map.queue_free();
+	for elevated_tile_map: ElevatedTileMap in [GetTerrain(), GetFog()]:
+		if elevated_tile_map != null:
+			remove_child(elevated_tile_map);
+			elevated_tile_map.queue_free();
 
 func GetTerrain() -> ElevatedTileMap:
 	return find_child("TerrainTileMap");
 
 func GetFog() -> ElevatedTileMap:
 	return find_child("FogTileMap");
+
+# Helper function to process tile info and append appropriate voxels to the target array
+func _process_tile_info(target_voxels: Array[VoxelInfo], coords: Array[Vector3i], tile_info: TerrainOrAtlasInfo) -> void:
+	match tile_info.type:
+		Enums.TileType.FROM_ATLAS:
+			target_voxels.append_array(coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, tile_info.atlas_info)));
+		Enums.TileType.FROM_TERRAIN:
+			target_voxels.append(VoxelInfo.from_defined_terrain(coords, tile_info.terrain_info));
 
 class GenerateVoxelsOutput:
 	var terrain_voxels: Array[VoxelInfo] = [];
@@ -120,33 +123,16 @@ func GenerateVoxels() -> GenerateVoxelsOutput:
 				var z = _z+height+1;
 				water_coords.append(Vector3i(x,y,z))
 	
-	match stone_tile_info.type:
-		Enums.TileType.FROM_ATLAS:
-			terrain_voxels.append_array( terrain_stone_coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, stone_tile_info.atlas_info)) );
-		Enums.TileType.FROM_TERRAIN:
-			terrain_voxels.append(VoxelInfo.from_defined_terrain(terrain_stone_coords, stone_tile_info.terrain_info));
-	match under_tile_info.type:
-		Enums.TileType.FROM_ATLAS:
-			terrain_voxels.append_array( terrain_under_coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, under_tile_info.atlas_info)) );
-		Enums.TileType.FROM_TERRAIN:
-			terrain_voxels.append(VoxelInfo.from_defined_terrain(terrain_under_coords, under_tile_info.terrain_info));
-	match top_tile_info.type:
-		Enums.TileType.FROM_ATLAS:
-			terrain_voxels.append_array( terrain_top_coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, top_tile_info.atlas_info)) );
-		Enums.TileType.FROM_TERRAIN:
-			terrain_voxels.append(VoxelInfo.from_defined_terrain(terrain_top_coords, top_tile_info.terrain_info));
+	# Process terrain tile info
+	_process_tile_info(terrain_voxels, terrain_stone_coords, stone_tile_info);
+	_process_tile_info(terrain_voxels, terrain_under_coords, under_tile_info);
+	_process_tile_info(terrain_voxels, terrain_top_coords, top_tile_info);
 	
-	match water_tile_info.type:
-		Enums.TileType.FROM_ATLAS:
-			water_voxels.append_array( water_coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, water_tile_info.atlas_info)) );
-		Enums.TileType.FROM_TERRAIN:
-			water_voxels.append(VoxelInfo.from_defined_terrain(water_coords, water_tile_info.terrain_info));
+	# Process water tile info
+	_process_tile_info(water_voxels, water_coords, water_tile_info);
 	
-	match fog_tile_info.type:
-		Enums.TileType.FROM_ATLAS:
-			fog_voxels.append_array( fog_coords.map(func(coord): return VoxelInfo.from_defined_atlas(coord, fog_tile_info.atlas_info)) );
-		Enums.TileType.FROM_TERRAIN:
-			fog_voxels.append(VoxelInfo.from_defined_terrain(fog_coords, fog_tile_info.terrain_info));
+	# Process fog tile info
+	_process_tile_info(fog_voxels, fog_coords, fog_tile_info);
 	
 	res.terrain_voxels = terrain_voxels;
 	res.water_voxels = water_voxels;
