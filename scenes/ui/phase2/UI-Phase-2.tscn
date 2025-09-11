@@ -1,3 +1,1129 @@
-[gd_scene format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=63 format=3 uid="uid://b18istpat370g"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r78rm"]
+
+[sub_resource type="Gradient" id="Gradient_jnaxr"]
+colors = PackedColorArray(0.352941, 0, 0, 1, 1, 1, 0.286275, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_alvlg"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nb6pv"]
+color_ramp = SubResource("Gradient_jnaxr")
+noise = SubResource("FastNoiseLite_alvlg")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_y41b5"]
+
+[sub_resource type="Gradient" id="Gradient_ip1ew"]
+colors = PackedColorArray(0, 0, 0, 1, 0.662745, 0.866667, 0.160784, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a2hlb"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t4ljw"]
+color_ramp = SubResource("Gradient_ip1ew")
+noise = SubResource("FastNoiseLite_a2hlb")
+
+[sub_resource type="LabelSettings" id="LabelSettings_73c2s"]
+font_color = Color(1.34766e-06, 0.695709, 0.887761, 1)
+
+[sub_resource type="Gradient" id="Gradient_k8s3k"]
+colors = PackedColorArray(0, 0, 0.576471, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3b1oa"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0ti8f"]
+color_ramp = SubResource("Gradient_k8s3k")
+noise = SubResource("FastNoiseLite_3b1oa")
+
+[sub_resource type="Gradient" id="Gradient_35tma"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2177s"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kiwar"]
+width = 64
+height = 64
+color_ramp = SubResource("Gradient_35tma")
+noise = SubResource("FastNoiseLite_2177s")
+
+[sub_resource type="Gradient" id="Gradient_3b1oa"]
+colors = PackedColorArray(0, 0, 0, 1, 0.00392157, 0.67451, 0.380392, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nqkop"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_335d7"]
+color_ramp = SubResource("Gradient_3b1oa")
+noise = SubResource("FastNoiseLite_nqkop")
+
+[sub_resource type="Gradient" id="Gradient_kltk7"]
+colors = PackedColorArray(0, 0, 0, 1, 0.0235294, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jnaxr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qsu7h"]
+color_ramp = SubResource("Gradient_kltk7")
+noise = SubResource("FastNoiseLite_jnaxr")
+
+[sub_resource type="Gradient" id="Gradient_alvlg"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.364706, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1armd"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mfuxc"]
+color_ramp = SubResource("Gradient_alvlg")
+noise = SubResource("FastNoiseLite_1armd")
+
+[sub_resource type="Gradient" id="Gradient_wg25l"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.164706, 0.0705882, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k8s3k"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4ycoo"]
+color_ramp = SubResource("Gradient_wg25l")
+noise = SubResource("FastNoiseLite_k8s3k")
+
+[sub_resource type="Gradient" id="Gradient_61q1k"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 0.188235, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_avc5r"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5kixl"]
+color_ramp = SubResource("Gradient_61q1k")
+noise = SubResource("FastNoiseLite_avc5r")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_628vg"]
+
+[sub_resource type="Gradient" id="Gradient_nqkop"]
+colors = PackedColorArray(0, 0, 0, 1, 0.611765, 0.513726, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kltk7"]
+seed = 1
+frequency = 0.0145
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1iy8h"]
+color_ramp = SubResource("Gradient_nqkop")
+noise = SubResource("FastNoiseLite_kltk7")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2n8q5"]
+
+[sub_resource type="Gradient" id="Gradient_1armd"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.752941, 0.254902, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_61q1k"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sawr6"]
+color_ramp = SubResource("Gradient_1armd")
+noise = SubResource("FastNoiseLite_61q1k")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dwrl1"]
+
+[sub_resource type="Gradient" id="Gradient_avc5r"]
+colors = PackedColorArray(0, 0, 0.447059, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_agbyj"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yhe56"]
+color_ramp = SubResource("Gradient_avc5r")
+noise = SubResource("FastNoiseLite_agbyj")
+
+[sub_resource type="Gradient" id="Gradient_jawe8"]
+colors = PackedColorArray(0, 0, 0, 1, 0.619608, 0.388235, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4j4mf"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0kqh0"]
+color_ramp = SubResource("Gradient_jawe8")
+noise = SubResource("FastNoiseLite_4j4mf")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3ly6n"]
+
+[sub_resource type="Gradient" id="Gradient_hksx5"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.501961, 0.529412, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ucm7g"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kdo0k"]
+color_ramp = SubResource("Gradient_hksx5")
+noise = SubResource("FastNoiseLite_ucm7g")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cwrv6"]
+
+[sub_resource type="Gradient" id="Gradient_be4eq"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.266667, 0.0705882, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cqmlf"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8yc1p"]
+color_ramp = SubResource("Gradient_be4eq")
+noise = SubResource("FastNoiseLite_cqmlf")
+
+[sub_resource type="Gradient" id="Gradient_f6dnq"]
+colors = PackedColorArray(0, 0, 0, 1, 0.529412, 0.592157, 0.376471, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_826t7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cusol"]
+color_ramp = SubResource("Gradient_f6dnq")
+noise = SubResource("FastNoiseLite_826t7")
+
+[sub_resource type="Gradient" id="Gradient_8pnao"]
+colors = PackedColorArray(0, 0, 0, 1, 0.0980392, 0.443137, 0.780392, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xkbyd"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kwxeg"]
+color_ramp = SubResource("Gradient_8pnao")
+noise = SubResource("FastNoiseLite_xkbyd")
+
+[sub_resource type="Gradient" id="Gradient_lg1k1"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.568627, 0.219608, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8p1q4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8lkya"]
+color_ramp = SubResource("Gradient_lg1k1")
+noise = SubResource("FastNoiseLite_8p1q4")
 
 [node name="Ui-phase-2" type="Node2D"]
+
+[node name="Graphical User Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="ActionGUI" type="Control" parent="Graphical User Interface"]
+custom_minimum_size = Vector2(580, 180)
+anchors_preset = 0
+offset_top = 427.0
+offset_right = 583.0
+offset_bottom = 647.0
+
+[node name="ActionPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
+layout_mode = 0
+offset_top = 37.0
+offset_right = 586.0
+offset_bottom = 221.0
+texture = SubResource("NoiseTexture2D_r78rm")
+expand_mode = 1
+
+[node name="ActionPanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 41.0
+offset_right = 583.0
+offset_bottom = 218.0
+texture = SubResource("NoiseTexture2D_nb6pv")
+expand_mode = 1
+
+[node name="ActionPanelInteriorBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI"]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 37.0
+offset_right = 186.0
+offset_bottom = 221.0
+texture = SubResource("NoiseTexture2D_r78rm")
+expand_mode = 1
+
+[node name="ClassControl" type="Control" parent="Graphical User Interface/ActionGUI"]
+clip_contents = true
+anchors_preset = 0
+offset_right = 186.0
+offset_bottom = 40.0
+
+[node name="ClassPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl"]
+layout_mode = 2
+offset_right = 186.0
+offset_bottom = 40.0
+texture = SubResource("NoiseTexture2D_y41b5")
+expand_mode = 1
+
+[node name="ClassPanelCenterer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ClassControl"]
+clip_contents = true
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 184.0
+offset_bottom = 37.0
+
+[node name="ClassPanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl/ClassPanelCenterer"]
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_t4ljw")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="ClassLabel" type="Label" parent="Graphical User Interface/ActionGUI/ClassControl/ClassPanelCenterer"]
+layout_mode = 2
+text = "Jester"
+label_settings = SubResource("LabelSettings_73c2s")
+
+[node name="Class Icon" type="TextureRect" parent="Graphical User Interface/ActionGUI/ClassControl"]
+layout_mode = 2
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture = SubResource("NoiseTexture2D_0ti8f")
+expand_mode = 1
+
+[node name="SplitContainer" type="SplitContainer" parent="Graphical User Interface/ActionGUI"]
+custom_minimum_size = Vector2(580, 170)
+layout_mode = 2
+offset_left = 3.0
+offset_top = 41.0
+offset_right = 583.0
+offset_bottom = 218.0
+theme_override_constants/separation = 3
+drag_area_highlight_in_editor = true
+
+[node name="ClassIconTexture" type="TextureRect" parent="Graphical User Interface/ActionGUI/SplitContainer"]
+custom_minimum_size = Vector2(177, 177)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kiwar")
+expand_mode = 1
+
+[node name="MovePanelSplit" type="VSplitContainer" parent="Graphical User Interface/ActionGUI/SplitContainer"]
+layout_mode = 2
+split_offset = 120
+drag_area_highlight_in_editor = true
+
+[node name="ActionPanel" type="HBoxContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit"]
+layout_mode = 2
+
+[node name="ActionOneContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ActionBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ActionOneContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_335d7")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ActionTwoContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="ActionBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ActionTwoContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_qsu7h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ItemContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="ItemVBoxContainer" type="VBoxContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ItemContainer"]
+layout_mode = 2
+
+[node name="ItemCycleUp" type="TextureButton" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ItemContainer/ItemVBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_mfuxc")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ItemBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ItemContainer/ItemVBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_4ycoo")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ItemCycleDown" type="TextureButton" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/ActionPanel/ItemContainer/ItemVBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_5kixl")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer"]
+custom_minimum_size = Vector2(398, 48)
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(360, 40)
+layout_mode = 2
+theme_override_constants/separation = 60
+split_offset = 300
+dragging_enabled = false
+drag_area_highlight_in_editor = true
+
+[node name="Button" type="Button" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer/HSplitContainer"]
+custom_minimum_size = Vector2(175, 40)
+layout_mode = 2
+text = "Undo Move"
+
+[node name="Button2" type="Button" parent="Graphical User Interface/ActionGUI/SplitContainer/MovePanelSplit/HBoxContainer/CenterContainer/HSplitContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+text = "Reset Turn"
+
+[node name="ObjectiveGUI" type="Control" parent="Graphical User Interface"]
+clip_contents = true
+custom_minimum_size = Vector2(300, 240)
+anchors_preset = 0
+offset_left = 912.0
+offset_top = 30.0
+offset_right = 1232.0
+offset_bottom = 280.0
+scale = Vector2(0.75, 0.75)
+
+[node name="ObjCenterer" type="CenterContainer" parent="Graphical User Interface/ObjectiveGUI"]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ObjBorder" type="TextureRect" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer"]
+custom_minimum_size = Vector2(300, 240)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_628vg")
+expand_mode = 1
+
+[node name="ObjPanelBackground" type="TextureRect" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer"]
+custom_minimum_size = Vector2(290, 230)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_1iy8h")
+expand_mode = 1
+
+[node name="ObjPanels" type="Control" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer"]
+clip_contents = true
+custom_minimum_size = Vector2(290, 230)
+layout_mode = 2
+
+[node name="ObjVSplitContainer" type="VSplitContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels"]
+clip_contents = true
+custom_minimum_size = Vector2(300, 260)
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 400.0
+split_offset = 50
+drag_area_highlight_in_editor = true
+
+[node name="PrimaryObjControl" type="Control" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="PrimaryObjPanelContainer" type="PanelContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/PrimaryObjControl"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 0
+offset_right = 290.0
+offset_bottom = 60.0
+
+[node name="PrimaryObjLabel" type="Label" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/PrimaryObjControl/PrimaryObjPanelContainer"]
+custom_minimum_size = Vector2(290, 60)
+layout_mode = 2
+text = "Objective: Infiltrate the Castle of Metal and Soul"
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="BonusObjHeader" type="Control" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="BonusObjHeaderPanel" type="PanelContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 0
+offset_right = 260.0
+offset_bottom = 40.0
+
+[node name="BonusObjHeaderLabel" type="Label" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjHeaderPanel"]
+layout_mode = 2
+text = "Bonus Objectives"
+horizontal_alignment = 1
+
+[node name="BonusObjVScrollBar" type="VScrollBar" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader"]
+layout_mode = 2
+offset_left = 260.0
+offset_right = 290.0
+offset_bottom = 200.0
+
+[node name="BonusObjVBoxContainer" type="VBoxContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+offset_left = -260.0
+offset_top = 40.0
+offset_bottom = 228.0
+
+[node name="BonusObjOnePanelContainer" type="PanelContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 2
+
+[node name="BonusObjOneLabel" type="Label" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer/BonusObjOnePanelContainer"]
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+text = "Objective: Do this and that and don't this or "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BonusObjTwoPanelContainer" type="PanelContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 2
+
+[node name="BonusObjTwoLabel" type="Label" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer/BonusObjTwoPanelContainer"]
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+text = "Objective: Do this and that and don't this or "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BonusObjThreePanelContainer" type="PanelContainer" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer"]
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 2
+
+[node name="BonusObjThreeLabel" type="Label" parent="Graphical User Interface/ObjectiveGUI/ObjCenterer/ObjPanels/ObjVSplitContainer/BonusObjHeader/BonusObjVScrollBar/BonusObjVBoxContainer/BonusObjThreePanelContainer"]
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+text = "Objective: Do this and that and don't this or "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="MapCenterer" type="CenterContainer" parent="Graphical User Interface"]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 70.0
+offset_bottom = 100.0
+scale = Vector2(0.75, 0.75)
+
+[node name="MapBTNBorder" type="TextureRect" parent="Graphical User Interface/MapCenterer"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_2n8q5")
+expand_mode = 1
+
+[node name="MapBTN" type="TextureButton" parent="Graphical User Interface/MapCenterer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_sawr6")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitIconVBoxContainer" type="VBoxContainer" parent="Graphical User Interface"]
+layout_mode = 0
+offset_top = 90.0
+offset_right = 135.0
+offset_bottom = 366.0
+theme_override_constants/separation = 0
+
+[node name="UnitBox1" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(135, 66)
+layout_mode = 2
+
+[node name="UnitSelClassCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+offset_right = 66.0
+offset_bottom = 66.0
+
+[node name="UnitSelClassIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_yhe56")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+custom_minimum_size = Vector2(70, 66)
+offset_left = 65.0
+offset_right = 136.0
+offset_bottom = 66.0
+
+[node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(70, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(68, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_0kqh0")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+custom_minimum_size = Vector2(44, 8)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 130.0
+offset_bottom = 11.0
+
+[node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar"]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+
+[node name="HealthBarBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 10.0
+texture = SubResource("NoiseTexture2D_3ly6n")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 63.0
+offset_bottom = 9.0
+theme_override_constants/separation = 1
+
+[node name="HeartOne" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartTwo" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartThree" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFour" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFive" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSix" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSeven" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1"]
+layout_mode = 2
+offset_left = 69.0
+offset_top = 36.0
+offset_right = 131.0
+offset_bottom = 62.0
+theme_override_constants/separation = 10
+
+[node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox1/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="UnitBox2" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(135, 66)
+layout_mode = 2
+
+[node name="UnitSelClassCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+offset_right = 66.0
+offset_bottom = 66.0
+
+[node name="UnitSelClassIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_cusol")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+custom_minimum_size = Vector2(70, 66)
+offset_left = 65.0
+offset_right = 136.0
+offset_bottom = 66.0
+
+[node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(70, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(68, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_0kqh0")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+custom_minimum_size = Vector2(44, 8)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 130.0
+offset_bottom = 11.0
+
+[node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar"]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+
+[node name="HealthBarBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 10.0
+texture = SubResource("NoiseTexture2D_3ly6n")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 63.0
+offset_bottom = 9.0
+theme_override_constants/separation = 1
+
+[node name="HeartOne" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartTwo" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartThree" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFour" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFive" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSix" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSeven" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2"]
+layout_mode = 2
+offset_left = 69.0
+offset_top = 36.0
+offset_right = 131.0
+offset_bottom = 62.0
+theme_override_constants/separation = 10
+
+[node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox2/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="UnitBox3" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(135, 66)
+layout_mode = 2
+
+[node name="UnitSelClassCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+offset_right = 66.0
+offset_bottom = 66.0
+
+[node name="UnitSelClassIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_kwxeg")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+custom_minimum_size = Vector2(70, 66)
+offset_left = 65.0
+offset_right = 136.0
+offset_bottom = 66.0
+
+[node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(70, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(68, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_0kqh0")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+custom_minimum_size = Vector2(44, 8)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 130.0
+offset_bottom = 11.0
+
+[node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar"]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+
+[node name="HealthBarBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 10.0
+texture = SubResource("NoiseTexture2D_3ly6n")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 63.0
+offset_bottom = 9.0
+theme_override_constants/separation = 1
+
+[node name="HeartOne" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartTwo" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartThree" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFour" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFive" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSix" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSeven" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3"]
+layout_mode = 2
+offset_left = 69.0
+offset_top = 36.0
+offset_right = 131.0
+offset_bottom = 62.0
+theme_override_constants/separation = 10
+
+[node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox3/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="UnitBox4" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(135, 66)
+layout_mode = 2
+
+[node name="UnitSelClassCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+offset_right = 66.0
+offset_bottom = 66.0
+
+[node name="UnitSelClassIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelClassCenterContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_8lkya")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelInfoCenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+custom_minimum_size = Vector2(70, 66)
+offset_left = 65.0
+offset_right = 136.0
+offset_bottom = 66.0
+
+[node name="UnitSelPanelIconBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(70, 66)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+expand_mode = 1
+
+[node name="UnitSelPanelBackground" type="TextureButton" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelInfoCenterContainer"]
+custom_minimum_size = Vector2(68, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_0kqh0")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+custom_minimum_size = Vector2(44, 8)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 130.0
+offset_bottom = 11.0
+
+[node name="HealthBarMover" type="Control" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar"]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+
+[node name="HealthBarBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 10.0
+texture = SubResource("NoiseTexture2D_3ly6n")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 63.0
+offset_bottom = 9.0
+theme_override_constants/separation = 1
+
+[node name="HeartOne" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartTwo" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartThree" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFour" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartFive" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSix" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HeartSeven" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/UnitSelHealthBar/HealthBarMover/HBoxContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kdo0k")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4"]
+layout_mode = 2
+offset_left = 69.0
+offset_top = 36.0
+offset_right = 131.0
+offset_bottom = 62.0
+theme_override_constants/separation = 10
+
+[node name="CenterContainer" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPtBorder" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_cwrv6")
+expand_mode = 1
+
+[node name="ActionPtTexture" type="TextureRect" parent="Graphical User Interface/UnitIconVBoxContainer/UnitBox4/HBoxContainer/CenterContainer2"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_8yc1p")
+expand_mode = 1
