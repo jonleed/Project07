@@ -11,9 +11,11 @@ class_name Action
 #Q:2 If not infinite range, how many tiles can it go from here
 #A:2 An enum value of type of range, pattern is specific pattern, flow is waterbucket
 @export_enum("Pattern","Flow") var range_type:int = 0
+@export var range_pattern : Pattern2D
 @export var range_dist : int = 1
 
 #Q:4 How many tiles can this at the same time?
 #A:4 same way for the range, there is a pattern and a flow
 @export_enum("Pattern","Flow") var multihit_type:int = 0
+@export var multihit_pattern : Pattern2D
 @export var multihit_dist :int = 1
