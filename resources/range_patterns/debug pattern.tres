@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Pattern2D" load_steps=2 format=3 uid="uid://bcxt60sbegx3h"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_t160k"]
+
+[resource]
+script = ExtResource("1_t160k")
+affected_tiles = PackedVector2Array(-1, -2, 1, -2, 2, -1, 2, 1, 1, 2, -1, 2, -2, 1, -2, -1)
+grid_size = Vector2i(5, 5)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"

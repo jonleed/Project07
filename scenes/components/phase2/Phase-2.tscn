@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://68py34jkkk7g"]
+[gd_scene load_steps=2 format=3 uid="uid://68py34jkkk7g"]
+
+[ext_resource type="Script" uid="uid://ccrn7bcquhn31" path="res://scenes/components/phase2/phase-2.gd" id="1_2177s"]
 
 [node name="Phase-2" type="Node2D"]
+script = ExtResource("1_2177s")

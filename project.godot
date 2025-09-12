@@ -13,9 +13,18 @@ config_version=5
 config/name="Project07"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
+[autoload]
+
+Globals="*res://globals/globals.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/pattern_2d_editor/plugin.cfg")
+
 [file_customization]
 
 folder_colors={
+"res://addons/": "gray",
 "res://assets/": "orange",
 "res://globals/": "gray",
 "res://resources/": "green",
