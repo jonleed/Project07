@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://02gj2olwuqyc"]
+
+[ext_resource type="Script" uid="uid://y5abjwgrgccr" path="res://resources/range_patterns/debug.gd" id="1_8ly63"]
+[ext_resource type="Resource" uid="uid://bcxt60sbegx3h" path="res://resources/range_patterns/debug pattern.tres" id="2_cce6p"]
+
+[node name="Basic" type="Node"]
+script = ExtResource("1_8ly63")
+pat = ExtResource("2_cce6p")
