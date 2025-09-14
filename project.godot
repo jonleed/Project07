@@ -16,10 +16,18 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 [dotnet]
 
 project/assembly_name="Project07"
+[autoload]
+
+Globals="*res://globals/globals.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/pattern_2d_editor/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
+"res://addons/": "gray",
 "res://assets/": "orange",
 "res://globals/": "gray",
 "res://resources/": "green",
