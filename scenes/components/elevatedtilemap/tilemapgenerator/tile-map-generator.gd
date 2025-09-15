@@ -61,7 +61,8 @@ func GenerateTerrain() -> void:
 	var terrain_tile_map: TerrainTileMap = CreateTerrainTileMap("TerrainTileMap");
 	
 	terrain_tile_map.DrawVoxels(voxels.terrain_voxels)
-	terrain_tile_map.DrawVoxels(voxels.water_voxels)
+	if enable_water:
+		terrain_tile_map.DrawVoxels(voxels.water_voxels)
 	
 	if enable_fog:
 		var fog_tile_map: ElevatedTileMap = CreateElevatedTileMap("FogTileMap");
@@ -74,7 +75,7 @@ func ClearTerrain() -> void:
 			remove_child(elevated_tile_map);
 			elevated_tile_map.queue_free();
 
-func GetTerrain() -> ElevatedTileMap:
+func GetTerrain() -> TerrainTileMap:
 	return find_child("TerrainTileMap");
 
 func GetFog() -> ElevatedTileMap:
