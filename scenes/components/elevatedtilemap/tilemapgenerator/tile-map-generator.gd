@@ -8,8 +8,8 @@ extends Node2D;
 ## Tile Set to use
 @export var tile_set: TileSet;
 
-@export_tool_button("Generate", "Callable") var generate_terrain_action = GenerateTerrain
-@export_tool_button("Clear", "Callable") var clear_terrain_action = ClearTerrain
+@export_tool_button("Generate", "Callable") var generate_terrain_action = generate_terrain
+@export_tool_button("Clear", "Callable") var clear_terrain_action = clear_terrain
 
 @export_group("Terrain Generation")
 @export var heightmap_size_x: int = 25;
@@ -35,7 +35,7 @@ var max_seed_value: int = 999999999; # There seems to be a max seed for FastNois
 @export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,9)))
 @export var is_fog_on_water = false;
 
-func CreateElevatedTileMap(_name: String) -> ElevatedTileMap:
+func create_elevated_tile_map(_name: String) -> ElevatedTileMap:
 	var elevated_tile_map: ElevatedTileMap = ElevatedTileMap.new();
 	elevated_tile_map.tile_set = tile_set;
 	elevated_tile_map.tile_z = tile_z;
@@ -44,7 +44,7 @@ func CreateElevatedTileMap(_name: String) -> ElevatedTileMap:
 	elevated_tile_map.owner = get_tree().edited_scene_root;
 	return elevated_tile_map;
 
-func CreateTerrainTileMap(_name: String) -> TerrainTileMap:
+func create_terrain_tile_map(_name: String) -> TerrainTileMap:
 	var terrain_tile_map: TerrainTileMap = TerrainTileMap.new();
 	terrain_tile_map.tile_set = tile_set;
 	terrain_tile_map.tile_z = tile_z;
@@ -53,32 +53,32 @@ func CreateTerrainTileMap(_name: String) -> TerrainTileMap:
 	terrain_tile_map.owner = get_tree().edited_scene_root;
 	return terrain_tile_map;
 
-func GenerateTerrain() -> void:
-	ClearTerrain();
+func generate_terrain() -> void:
+	clear_terrain();
 	
-	var voxels: GenerateVoxelsOutput = GenerateVoxels();
+	var voxels: GenerateVoxelsOutput = generate_voxels();
 	
-	var terrain_tile_map: TerrainTileMap = CreateTerrainTileMap("TerrainTileMap");
+	var terrain_tile_map: TerrainTileMap = create_terrain_tile_map("TerrainTileMap");
 	
-	terrain_tile_map.DrawVoxels(voxels.terrain_voxels)
+	terrain_tile_map.draw_voxels(voxels.terrain_voxels)
 	if enable_water:
-		terrain_tile_map.DrawVoxels(voxels.water_voxels)
+		terrain_tile_map.draw_voxels(voxels.water_voxels)
 	
 	if enable_fog:
-		var fog_tile_map: ElevatedTileMap = CreateElevatedTileMap("FogTileMap");
+		var fog_tile_map: ElevatedTileMap = create_elevated_tile_map("FogTileMap");
 		
-		fog_tile_map.DrawVoxels(voxels.fog_voxels);
+		fog_tile_map.draw_voxels(voxels.fog_voxels);
 
-func ClearTerrain() -> void:
-	for elevated_tile_map: ElevatedTileMap in [GetTerrain(), GetFog()]:
+func clear_terrain() -> void:
+	for elevated_tile_map: ElevatedTileMap in [get_terrain(), get_fog()]:
 		if elevated_tile_map != null:
 			remove_child(elevated_tile_map);
 			elevated_tile_map.queue_free();
 
-func GetTerrain() -> TerrainTileMap:
+func get_terrain() -> TerrainTileMap:
 	return find_child("TerrainTileMap");
 
-func GetFog() -> ElevatedTileMap:
+func get_fog() -> ElevatedTileMap:
 	return find_child("FogTileMap");
 
 # Helper function to process tile info and append appropriate voxels to the target array
@@ -94,7 +94,7 @@ class GenerateVoxelsOutput:
 	var water_voxels: Array[VoxelInfo] = [];
 	var fog_voxels: Array[VoxelInfo] = [];
 
-func GenerateVoxels() -> GenerateVoxelsOutput:
+func generate_voxels() -> GenerateVoxelsOutput:
 	var res: GenerateVoxelsOutput = GenerateVoxelsOutput.new();
 	var noise: FastNoiseLite = FastNoiseLite.new();
 	# Seed has a max value
