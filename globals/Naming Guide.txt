@@ -1,5 +1,5 @@
 Variables - lowercase, snake_case
-Functions - PascalCase, Uppercase
+Functions - PascalCase, Uppercase, snake_case
 Classes - PascalCase, Uppercase
 Files - snake_case
 Folders - lowercase

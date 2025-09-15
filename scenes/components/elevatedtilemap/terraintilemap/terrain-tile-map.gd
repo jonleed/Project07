@@ -9,9 +9,9 @@ const HEIGHT_MULTIPLIER = "height_multiplier";
 var surface_map: Dictionary[Vector2i, int] = {};
 
 func _ready() -> void:
-	GenerateSurface();
+	generate_surface();
 
-func GenerateSurface():
+func generate_surface():
 	for tile_map_layer: CustomTileMapLayer in get_children():
 		for cell_coords: Vector2i in tile_map_layer.get_used_cells():
 			var tile_data: TileData = tile_map_layer.get_cell_tile_data(cell_coords);
@@ -24,21 +24,21 @@ func GenerateSurface():
 				else:
 					surface_map[cell_coords] = tile_map_layer.layer;
 
-func SurfaceToLocal(surface_position: Vector2i):
+func surface_to_local(surface_position: Vector2i):
 	if !surface_map.has(surface_position):
 		return null;
 	var z: int = surface_map[surface_position];
 	var coords: Vector3i = Vector3i(surface_position.x, surface_position.y, z);
-	var center_location: Vector2 = MapToLocal(coords);
-	var tile_data: TileData = GetCellTileData(coords);
+	var center_location: Vector2 = map_to_local(coords);
+	var tile_data: TileData = get_cell_tile_data(coords);
 	var height_multiplier: float = 1;
 	if tile_data.has_custom_data(HEIGHT_MULTIPLIER):
 		height_multiplier = tile_data.get_custom_data(HEIGHT_MULTIPLIER);
 	var inverse_height_multiplier: float = 1-height_multiplier;
 	return center_location + Vector2(0, tile_z*inverse_height_multiplier);
 
-func SurfaceToGlobal(surface_position: Vector2i):
-	var terrain_to_local_res = SurfaceToLocal(surface_position);
+func surface_to_global(surface_position: Vector2i):
+	var terrain_to_local_res = surface_to_local(surface_position);
 	if terrain_to_local_res == null:
 		return null;
 	return to_global(terrain_to_local_res);
