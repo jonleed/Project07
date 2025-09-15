@@ -36,7 +36,7 @@ var max_seed_value: int = 999999999; # There seems to be a max seed for FastNois
 @export var is_fog_on_water = false;
 
 func CreateElevatedTileMap(_name: String) -> ElevatedTileMap:
-	var elevated_tile_map = ElevatedTileMap.new();
+	var elevated_tile_map: ElevatedTileMap = ElevatedTileMap.new();
 	elevated_tile_map.tile_set = tile_set;
 	elevated_tile_map.tile_z = tile_z;
 	elevated_tile_map.name = _name;
@@ -44,18 +44,27 @@ func CreateElevatedTileMap(_name: String) -> ElevatedTileMap:
 	elevated_tile_map.owner = get_tree().edited_scene_root;
 	return elevated_tile_map;
 
+func CreateTerrainTileMap(_name: String) -> TerrainTileMap:
+	var terrain_tile_map: TerrainTileMap = TerrainTileMap.new();
+	terrain_tile_map.tile_set = tile_set;
+	terrain_tile_map.tile_z = tile_z;
+	terrain_tile_map.name = _name;
+	add_child(terrain_tile_map)
+	terrain_tile_map.owner = get_tree().edited_scene_root;
+	return terrain_tile_map;
+
 func GenerateTerrain() -> void:
 	ClearTerrain();
 	
 	var voxels: GenerateVoxelsOutput = GenerateVoxels();
 	
-	var terrain_tile_map = CreateElevatedTileMap("TerrainTileMap");
+	var terrain_tile_map: TerrainTileMap = CreateTerrainTileMap("TerrainTileMap");
 	
 	terrain_tile_map.DrawVoxels(voxels.terrain_voxels)
 	terrain_tile_map.DrawVoxels(voxels.water_voxels)
 	
 	if enable_fog:
-		var fog_tile_map = CreateElevatedTileMap("FogTileMap");
+		var fog_tile_map: ElevatedTileMap = CreateElevatedTileMap("FogTileMap");
 		
 		fog_tile_map.DrawVoxels(voxels.fog_voxels);
 
@@ -85,8 +94,8 @@ class GenerateVoxelsOutput:
 	var fog_voxels: Array[VoxelInfo] = [];
 
 func GenerateVoxels() -> GenerateVoxelsOutput:
-	var res = GenerateVoxelsOutput.new();
-	var noise = FastNoiseLite.new();
+	var res: GenerateVoxelsOutput = GenerateVoxelsOutput.new();
+	var noise: FastNoiseLite = FastNoiseLite.new();
 	# Seed has a max value
 	noise.seed = randi() % max_seed_value;
 	
@@ -107,7 +116,7 @@ func GenerateVoxels() -> GenerateVoxelsOutput:
 			# noise.get_noise_2d returns values between -1 and 1
 			# Adding 1 gives 0-2, dividing by 2 gives 0-1
 			# Multiplying by (heightmap_size_z - 1) gives height values 0-(heightmap_size_z-1)
-			var height = floor((heightmap_size_z - 1)*(noise.get_noise_2d(noise_scale*x, noise_scale*y) + 1)/2);
+			var height: int = floor((heightmap_size_z - 1)*(noise.get_noise_2d(noise_scale*x, noise_scale*y) + 1)/2);
 			for z: int in range(height):
 				if z > height - 5:
 					terrain_under_coords.append(Vector3i(x,y,z));
@@ -119,8 +128,8 @@ func GenerateVoxels() -> GenerateVoxelsOutput:
 				terrain_under_coords.append(Vector3i(x,y,height));
 			if enable_fog and (is_fog_on_water or height >= water_level):
 				fog_coords.append(Vector3i(x,y,max(height, water_level)+1));
-			for _z in range(water_level-height):
-				var z = _z+height+1;
+			for _z: int in range(water_level-height):
+				var z: int = _z+height+1;
 				water_coords.append(Vector3i(x,y,z))
 	
 	# Process terrain tile info
