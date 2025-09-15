@@ -37,21 +37,21 @@ var max_seed_value: int = 999999999; # There seems to be a max seed for FastNois
 
 func create_elevated_tile_map(_name: String) -> ElevatedTileMap:
 	var elevated_tile_map: ElevatedTileMap = ElevatedTileMap.new();
-	elevated_tile_map.tile_set = tile_set;
-	elevated_tile_map.tile_z = tile_z;
-	elevated_tile_map.name = _name;
-	add_child(elevated_tile_map)
-	elevated_tile_map.owner = get_tree().edited_scene_root;
+	_initialize_tile_map(elevated_tile_map, _name);
 	return elevated_tile_map;
 
 func create_terrain_tile_map(_name: String) -> TerrainTileMap:
 	var terrain_tile_map: TerrainTileMap = TerrainTileMap.new();
-	terrain_tile_map.tile_set = tile_set;
-	terrain_tile_map.tile_z = tile_z;
-	terrain_tile_map.name = _name;
-	add_child(terrain_tile_map)
-	terrain_tile_map.owner = get_tree().edited_scene_root;
+	_initialize_tile_map(terrain_tile_map, _name);
 	return terrain_tile_map;
+
+# Helper function to initialize common tile map properties
+func _initialize_tile_map(tile_map: ElevatedTileMap, _name: String) -> void:
+	tile_map.tile_set = tile_set;
+	tile_map.tile_z = tile_z;
+	tile_map.name = _name;
+	add_child(tile_map)
+	tile_map.owner = get_tree().edited_scene_root;
 
 func generate_terrain() -> void:
 	clear_terrain();
@@ -118,20 +118,29 @@ func generate_voxels() -> GenerateVoxelsOutput:
 			# Adding 1 gives 0-2, dividing by 2 gives 0-1
 			# Multiplying by (heightmap_size_z - 1) gives height values 0-(heightmap_size_z-1)
 			var height: int = floor((heightmap_size_z - 1)*(noise.get_noise_2d(noise_scale*x, noise_scale*y) + 1)/2);
+			
+			# Generate terrain voxels
 			for z: int in range(height):
 				if z > height - 5:
 					terrain_under_coords.append(Vector3i(x,y,z));
 				else:
 					terrain_stone_coords.append(Vector3i(x,y,z));
+			
+			# Add top terrain voxel
 			if not (height < water_level and enable_water):
 				terrain_top_coords.append(Vector3i(x,y,height));
 			else:
 				terrain_under_coords.append(Vector3i(x,y,height));
+			
+			# Generate fog voxels
 			if enable_fog and (is_fog_on_water or height >= water_level):
 				fog_coords.append(Vector3i(x,y,max(height, water_level)+1));
-			for _z: int in range(water_level-height):
-				var z: int = _z+height+1;
-				water_coords.append(Vector3i(x,y,z))
+			
+			# Generate water voxels
+			if height < water_level and enable_water:
+				for _z: int in range(water_level-height):
+					var z: int = _z+height+1;
+					water_coords.append(Vector3i(x,y,z))
 	
 	# Process terrain tile info
 	_process_tile_info(terrain_voxels, terrain_stone_coords, stone_tile_info);

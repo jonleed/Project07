@@ -30,6 +30,15 @@ func map_to_local(map_position: Vector3i) -> Vector2:
 func map_to_global(map_position: Vector3i) -> Vector2:
 	return to_global(map_to_local(map_position));
 
+# Helper function to group cells by z-coordinate
+func _group_cells_by_z(cells: Array[Vector3i]) -> Dictionary:
+	var cells_by_z: Dictionary = {};
+	for cell: Vector3i in cells:
+		if !cells_by_z.has(cell.z):
+			cells_by_z[cell.z] = [];
+		cells_by_z[cell.z].append(Vector2i(cell.x, cell.y));
+	return cells_by_z;
+
 func draw_voxels(voxels: Array[VoxelInfo]) -> void:
 	# Validate tile_set before proceeding
 	if tile_set == null:
@@ -51,11 +60,17 @@ func draw_voxels(voxels: Array[VoxelInfo]) -> void:
 				for cell: Vector3i in voxel_info.path:
 					var layer_cells: Array[Vector3i];
 					
-					if !voxel_info.path.has(cell+Vector3i(0,0,1)):
+					var has_cell_above: bool = voxel_info.path.has(cell+Vector3i(0,0,1));
+					var has_cell_below: bool = voxel_info.path.has(cell-Vector3i(0,0,1));
+					
+					if !has_cell_above:
+						# Top cell (or standalone cell)
 						layer_cells = top_layer_cells;
-					elif !voxel_info.path.has(cell-Vector3i(0,0,1)):
+					elif !has_cell_below:
+						# Bottom cell
 						layer_cells = bottom_layer_cells;
 					else:
+						# Middle cell (has both above and below)
 						layer_cells = middle_layer_cells;
 					
 					layer_cells.push_back(cell);
@@ -83,61 +98,50 @@ func draw_voxels(voxels: Array[VoxelInfo]) -> void:
 						Enums.TerrainType.PATH:
 							set_cells_terrain_path(layer_cells, terrain_set, terrain, ignore_empty_terrains);
 
-func erase_cell(coords: Vector3i) -> void:
+# Helper function to execute a method on a tile map layer if it exists
+func _execute_on_layer(coords: Vector3i, method_name: String, default_value = null, args: Array = [], coords_index: int = 0):
 	var tile_map_layer: CustomTileMapLayer = get_tile_map_layer(coords.z);
 	if tile_map_layer == null:
-		return;
-	tile_map_layer.erase_cell(Vector2i(coords.x, coords.y));
+		return default_value;
+	# Convert 3D coords to 2D for the layer method
+	var coords_2d: Vector2i = Vector2i(coords.x, coords.y);
+	# Insert coords_2d at the specified index in args
+	var call_args: Array = args.duplicate();
+	call_args.insert(coords_index, coords_2d);
+	return tile_map_layer.callv(method_name, call_args);
+
+func erase_cell(coords: Vector3i) -> void:
+	_execute_on_layer(coords, "erase_cell");
 
 func get_cell_alternative_tile(coords: Vector3i) -> int:
-	var tile_map_layer: CustomTileMapLayer = get_tile_map_layer(coords.z);
-	if tile_map_layer == null:
-		return -1;
-	return tile_map_layer.get_cell_alternative_tile(Vector2i(coords.x, coords.y));
+	return _execute_on_layer(coords, "get_cell_alternative_tile", -1);
 
 func get_cell_atlas_coords(coords: Vector3i) -> Vector2i:
-	var tile_map_layer: CustomTileMapLayer = get_tile_map_layer(coords.z);
-	if tile_map_layer == null:
-		return Vector2i(-1,-1);
-	return tile_map_layer.get_cell_atlas_coords(Vector2i(coords.x, coords.y));
+	return _execute_on_layer(coords, "get_cell_atlas_coords", Vector2i(-1, -1));
 
 func get_cell_source_id(coords: Vector3i) -> int:
-	var tile_map_layer: CustomTileMapLayer = get_tile_map_layer(coords.z);
-	if tile_map_layer == null:
-		return -1;
-	return tile_map_layer.get_cell_source_id(Vector2i(coords.x, coords.y));
+	return _execute_on_layer(coords, "get_cell_source_id", -1);
 
 func get_cell_tile_data(coords: Vector3i) -> TileData:
-	var tile_map_layer: CustomTileMapLayer = get_tile_map_layer(coords.z);
-	if tile_map_layer == null:
-		return null;
-	return tile_map_layer.get_cell_tile_data(Vector2i(coords.x, coords.y));
+	return _execute_on_layer(coords, "get_cell_tile_data", null);
 
 func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1,-1), alternative_tile: int = 0):
 	var tile_map_layer: CustomTileMapLayer = get_or_create_tile_map_layer(coords.z);
 	tile_map_layer.set_cell(Vector2i(coords.x, coords.y), source_id, atlas_coords, alternative_tile);
 
-func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set:int, terrain: int, ignore_empty_terrains:bool = true):
-	var cells_by_z: Dictionary[int, Array] = {};
-	for cell: Vector3i in cells:
-		if !cells_by_z.has(cell.z):
-			cells_by_z[cell.z] = [];
-		cells_by_z[cell.z].append(Vector2i(cell.x, cell.y));
+# Helper function to set cells terrain for a specific method
+func _set_cells_terrain_helper(method_name: String, cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool):
+	var cells_by_z: Dictionary = _group_cells_by_z(cells);
 	for z: int in cells_by_z:
 		var tile_map_layer: CustomTileMapLayer = get_or_create_tile_map_layer(z);
 		var new_cells: Array = cells_by_z[z];
-		tile_map_layer.set_cells_terrain_connect(new_cells, terrain_set, terrain, ignore_empty_terrains);
+		tile_map_layer.callv(method_name, [new_cells, terrain_set, terrain, ignore_empty_terrains]);
+
+func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set:int, terrain: int, ignore_empty_terrains:bool = true):
+	_set_cells_terrain_helper("set_cells_terrain_connect", cells, terrain_set, terrain, ignore_empty_terrains);
 
 func set_cells_terrain_path(cells: Array[Vector3i], terrain_set:int, terrain: int, ignore_empty_terrains:bool = true):
-	var cells_by_z: Dictionary[int, Array] = {};
-	for cell: Vector3i in cells:
-		if !cells_by_z.has(cell.z):
-			cells_by_z[cell.z] = [];
-		cells_by_z[cell.z].append(Vector2i(cell.x, cell.y));
-	for z: int in cells_by_z:
-		var tile_map_layer: CustomTileMapLayer = get_or_create_tile_map_layer(z);
-		var new_cells: Array = cells_by_z[z];
-		tile_map_layer.set_cells_terrain_path(new_cells, terrain_set, terrain, ignore_empty_terrains);
+	_set_cells_terrain_helper("set_cells_terrain_path", cells, terrain_set, terrain, ignore_empty_terrains);
 
 func get_tile_map_layer(z: int) -> CustomTileMapLayer:
 	return find_child("TileMapLayer"+str(z));
