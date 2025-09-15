@@ -34,8 +34,8 @@ func surface_to_local(surface_position: Vector2i):
 	var height_multiplier: float = 1;
 	if tile_data.has_custom_data(HEIGHT_MULTIPLIER):
 		height_multiplier = tile_data.get_custom_data(HEIGHT_MULTIPLIER);
-	var inverse_height_multiplier: float = 1-height_multiplier;
-	return center_location + Vector2(0, tile_z*inverse_height_multiplier);
+	var height_adjustment: float = 1 - height_multiplier;
+	return center_location + Vector2(0, tile_z * height_adjustment);
 
 func surface_to_global(surface_position: Vector2i):
 	var terrain_to_local_res = surface_to_local(surface_position);
