@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://bjf8743urtr4q" path="res://scenes/components/elevatedtilemap/tilemapgenerator/Tile_Map_Generator.tscn" id="2_ogrbx"]
 [ext_resource type="TileSet" uid="uid://dje5gwv5k1cmf" path="res://resources/tilesets/isometric_medieval_fantasy_tiles.tres" id="2_tnnol"]
+[ext_resource type="Script" uid="uid://d1k6siucw80b3" path="res://scenes/components/elevatedtilemap/terraintilemap/terrain-tile-map.gd" id="2_yy3s1"]
 [ext_resource type="Script" uid="uid://gxynlcuviag" path="res://scenes/components/elevatedtilemap/elevatedtilemaptest/cursor.gd" id="3_juonu"]
 [ext_resource type="Script" uid="uid://doxsim1tjhx6t" path="res://scenes/components/elevatedtilemap/customtilemaplayer/custom-tile-map-layer.gd" id="3_p5sv8"]
-[ext_resource type="Script" uid="uid://bvrmtmqvqk88r" path="res://scenes/components/elevatedtilemap/elevated-tile-map.gd" id="3_yy3s1"]
 
 [node name="TileMapTest" type="Node2D"]
 
@@ -12,7 +12,7 @@
 position = Vector2(600, 300)
 
 [node name="TerrainTileMap" type="Node2D" parent="TileMapGenerator"]
-script = ExtResource("3_yy3s1")
+script = ExtResource("2_yy3s1")
 tile_set = ExtResource("2_tnnol")
 
 [node name="TileMapLayer0" type="TileMapLayer" parent="TileMapGenerator/TerrainTileMap"]
