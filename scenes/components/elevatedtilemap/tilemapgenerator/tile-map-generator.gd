@@ -32,7 +32,7 @@ var max_seed_value: int = 999999999; # There seems to be a max seed for FastNois
 
 @export_group("Fog Generation")
 @export var enable_fog: bool = false;
-@export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,9)))
+@export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0, 2, true, Enums.TerrainType.CONNECT))
 @export var is_fog_on_water = false;
 
 func create_elevated_tile_map(_name: String) -> ElevatedTileMap:

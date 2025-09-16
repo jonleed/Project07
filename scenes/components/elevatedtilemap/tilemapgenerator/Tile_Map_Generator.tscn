@@ -56,15 +56,20 @@ type = 1
 terrain_info = SubResource("Resource_q2ru5")
 
 [sub_resource type="Resource" id="Resource_8cd3k"]
-script = ExtResource("3_lrafu")
-source_id = 0
-atlas_coords = Vector2i(1, 9)
-alternative_tile = 0
+script = ExtResource("5_y2kob")
+terrain_set = 0
+terrain = 2
+ignore_empty_terrains = true
+terrain_type = 1
+raw_middle_terrain_set = -1
+raw_middle_terrain = -1
+raw_bottom_terrain_set = -1
+raw_bottom_terrain = -1
 
 [sub_resource type="Resource" id="Resource_begwf"]
 script = ExtResource("4_8oyxs")
-type = 0
-atlas_info = SubResource("Resource_8cd3k")
+type = 1
+terrain_info = SubResource("Resource_8cd3k")
 
 [node name="TileMapGenerator" type="Node2D"]
 script = ExtResource("1_pvkyy")
