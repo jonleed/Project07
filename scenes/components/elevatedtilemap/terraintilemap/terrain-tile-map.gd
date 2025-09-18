@@ -62,3 +62,6 @@ func surface_to_global(surface_position: Vector2i):
 	if terrain_to_local_res == null:
 		return null;
 	return to_global(terrain_to_local_res);
+	
+func _provide_surface_map() -> Dictionary[Vector2i, int]:
+	return surface_map
