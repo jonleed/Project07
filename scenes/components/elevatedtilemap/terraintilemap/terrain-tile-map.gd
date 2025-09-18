@@ -14,8 +14,8 @@ func _ready() -> void:
 func generate_surface():
 	for tile_map_layer: CustomTileMapLayer in get_children():
 		for cell_coords: Vector2i in tile_map_layer.get_used_cells():
-			var tile_data: TileData = tile_map_layer.get_cell_tile_data(cell_coords);
-			var is_terrain: bool = false;
+			var tile_data := tile_map_layer.get_cell_tile_data(cell_coords);
+			var is_terrain := false;
 			if tile_data.has_custom_data(IS_TERRAIN):
 				is_terrain = tile_data.get_custom_data(IS_TERRAIN);
 			if is_terrain:
@@ -27,14 +27,14 @@ func generate_surface():
 func surface_to_local(surface_position: Vector2i):
 	if !surface_map.has(surface_position):
 		return null;
-	var z: int = surface_map[surface_position];
-	var coords: Vector3i = Vector3i(surface_position.x, surface_position.y, z);
-	var center_location: Vector2 = map_to_local(coords);
-	var tile_data: TileData = get_cell_tile_data(coords);
-	var height_multiplier: float = 1;
+	var z := surface_map[surface_position];
+	var coords := Vector3i(surface_position.x, surface_position.y, z);
+	var center_location := map_to_local(coords);
+	var tile_data := get_cell_tile_data(coords);
+	var height_multiplier := 1.0;
 	if tile_data.has_custom_data(HEIGHT_MULTIPLIER):
 		height_multiplier = tile_data.get_custom_data(HEIGHT_MULTIPLIER);
-	var height_adjustment: float = 1 - height_multiplier;
+	var height_adjustment := 1 - height_multiplier;
 	return center_location + Vector2(0, tile_z * height_adjustment);
 
 func surface_to_global(surface_position: Vector2i):
