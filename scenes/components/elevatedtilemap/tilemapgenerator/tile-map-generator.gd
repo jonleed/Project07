@@ -3,45 +3,44 @@ class_name TileMapGenerator;
 extends Node2D;
 
 ## Height difference between layers in px, i.e. how much to shift an item from `(x, y, z)` to `(x, y, z+1)`
-@export var tile_z: int = 8;
+@export var tile_z := 8;
 
 ## Tile Set to use
 @export var tile_set: TileSet;
 
-@export_tool_button("Generate", "Callable") var generate_terrain_action = generate_terrain
-@export_tool_button("Clear", "Callable") var clear_terrain_action = clear_terrain
+@export_tool_button("Generate", "Callable") var generate_terrain_action := generate_terrain
+@export_tool_button("Clear", "Callable") var clear_terrain_action := clear_terrain
 
 @export_group("Terrain Generation")
-@export var heightmap_size_x: int = 25;
-@export var heightmap_size_y: int = 25;
-@export var heightmap_size_z: int = 25;  # Number of possible height values (0 to heightmap_size_z-1)
-@export var noise_scale: float = 4.0;
+@export var heightmap_size_x := 25;
+@export var heightmap_size_y := 25;
+@export var heightmap_size_z := 25; # Number of possible height values (0 to heightmap_size_z-1)
+@export var noise_scale := 4.0;
 
-var max_seed_value: int = 999999999; # There seems to be a max seed for FastNoiseLite
+var max_seed_value := 999999999; # There seems to be a max seed for FastNoiseLite
 
 @export_subgroup("Tile Info")
-@export var top_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1,0)));
-@export var under_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(0,0)));
-@export var stone_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(2,0)))
+@export var top_tile_info := TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1, 0)));
+@export var under_tile_info := TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(0, 0)));
+@export var stone_tile_info := TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(2, 0)))
 
 @export_group("Water Generation")
-@export var enable_water: bool = true;
-#@export var water_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(7,0)))
-@export var water_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0,0, true, Enums.TerrainType.CONNECT, -1, 1, -1, -1))
-@export var water_level: int = 13
+@export var enable_water := true;
+@export var water_tile_info := TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0, 0, true, Enums.TerrainType.CONNECT, -1, 1, -1, -1))
+@export var water_level := 13
 
 @export_group("Fog Generation")
-@export var enable_fog: bool = false;
-@export var fog_tile_info: TerrainOrAtlasInfo = TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0, 2, true, Enums.TerrainType.CONNECT))
-@export var is_fog_on_water = false;
+@export var enable_fog := false;
+@export var fog_tile_info := TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0, 2, true, Enums.TerrainType.CONNECT))
+@export var is_fog_on_water := false;
 
 func create_elevated_tile_map(_name: String) -> ElevatedTileMap:
-	var elevated_tile_map: ElevatedTileMap = ElevatedTileMap.new();
+	var elevated_tile_map := ElevatedTileMap.new();
 	_initialize_tile_map(elevated_tile_map, _name);
 	return elevated_tile_map;
 
 func create_terrain_tile_map(_name: String) -> TerrainTileMap:
-	var terrain_tile_map: TerrainTileMap = TerrainTileMap.new();
+	var terrain_tile_map := TerrainTileMap.new();
 	_initialize_tile_map(terrain_tile_map, _name);
 	return terrain_tile_map;
 
@@ -56,16 +55,16 @@ func _initialize_tile_map(tile_map: ElevatedTileMap, _name: String) -> void:
 func generate_terrain() -> void:
 	clear_terrain();
 	
-	var voxels: GenerateVoxelsOutput = generate_voxels();
+	var voxels := generate_voxels();
 	
-	var terrain_tile_map: TerrainTileMap = create_terrain_tile_map("TerrainTileMap");
+	var terrain_tile_map := create_terrain_tile_map("TerrainTileMap");
 	
 	terrain_tile_map.draw_voxels(voxels.terrain_voxels)
 	if enable_water:
 		terrain_tile_map.draw_voxels(voxels.water_voxels)
 	
 	if enable_fog:
-		var fog_tile_map: ElevatedTileMap = create_elevated_tile_map("FogTileMap");
+		var fog_tile_map := create_elevated_tile_map("FogTileMap");
 		
 		fog_tile_map.draw_voxels(voxels.fog_voxels);
 
@@ -95,8 +94,8 @@ class GenerateVoxelsOutput:
 	var fog_voxels: Array[VoxelInfo] = [];
 
 func generate_voxels() -> GenerateVoxelsOutput:
-	var res: GenerateVoxelsOutput = GenerateVoxelsOutput.new();
-	var noise: FastNoiseLite = FastNoiseLite.new();
+	var res := GenerateVoxelsOutput.new();
+	var noise := FastNoiseLite.new();
 	# Seed has a max value
 	noise.seed = randi() % max_seed_value;
 	
@@ -112,35 +111,35 @@ func generate_voxels() -> GenerateVoxelsOutput:
 	
 	var fog_coords: Array[Vector3i] = [];
 	
-	for x: int in range(heightmap_size_x):
-		for y: int in range(heightmap_size_y):
+	for x in range(heightmap_size_x):
+		for y in range(heightmap_size_y):
 			# noise.get_noise_2d returns values between -1 and 1
 			# Adding 1 gives 0-2, dividing by 2 gives 0-1
 			# Multiplying by (heightmap_size_z - 1) gives height values 0-(heightmap_size_z-1)
-			var height: int = floor((heightmap_size_z - 1)*(noise.get_noise_2d(noise_scale*x, noise_scale*y) + 1)/2);
+			var height: int = floor((heightmap_size_z - 1) * (noise.get_noise_2d(noise_scale * x, noise_scale * y) + 1) / 2);
 			
 			# Generate terrain voxels
-			for z: int in range(height):
+			for z in range(height):
 				if z > height - 5:
-					terrain_under_coords.append(Vector3i(x,y,z));
+					terrain_under_coords.append(Vector3i(x, y, z));
 				else:
-					terrain_stone_coords.append(Vector3i(x,y,z));
+					terrain_stone_coords.append(Vector3i(x, y, z));
 			
 			# Add top terrain voxel
 			if not (height < water_level and enable_water):
-				terrain_top_coords.append(Vector3i(x,y,height));
+				terrain_top_coords.append(Vector3i(x, y, height));
 			else:
-				terrain_under_coords.append(Vector3i(x,y,height));
+				terrain_under_coords.append(Vector3i(x, y, height));
 			
 			# Generate fog voxels
 			if enable_fog and (is_fog_on_water or height >= water_level):
-				fog_coords.append(Vector3i(x,y,max(height, water_level)+1));
+				fog_coords.append(Vector3i(x, y, max(height, water_level) + 1));
 			
 			# Generate water voxels
 			if height < water_level and enable_water:
-				for _z: int in range(water_level-height):
-					var z: int = _z+height+1;
-					water_coords.append(Vector3i(x,y,z))
+				for _z in range(water_level - height):
+					var z := _z + height + 1;
+					water_coords.append(Vector3i(x, y, z))
 	
 	# Process terrain tile info
 	_process_tile_info(terrain_voxels, terrain_stone_coords, stone_tile_info);
