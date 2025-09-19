@@ -65,3 +65,17 @@ func surface_to_global(surface_position: Vector2i):
 	
 func _provide_surface_map() -> Dictionary[Vector2i, int]:
 	return surface_map
+
+func global_to_surface(_global_position: Vector2):
+	var tile_map_layers := get_children();
+	tile_map_layers.sort_custom(sort_custom_tile_layers);
+	tile_map_layers.reverse();
+	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
+		const UP_CHECKS := 5;
+		for i in range(UP_CHECKS+1):
+			var local_pos := tile_map_layer.to_local(_global_position);
+			var adjusted_local_pos := local_pos + Vector2.UP*tile_z*(i / float(UP_CHECKS));
+			var local_to_map_res := tile_map_layer.local_to_map(adjusted_local_pos);
+			if surface_map.has(local_to_map_res) and surface_map[local_to_map_res] == tile_map_layer.layer:
+				return local_to_map_res;
+	return null;
