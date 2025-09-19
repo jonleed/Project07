@@ -62,3 +62,14 @@ func surface_to_global(surface_position: Vector2i):
 	if terrain_to_local_res == null:
 		return null;
 	return to_global(terrain_to_local_res);
+
+func global_to_surface(_global_position: Vector2):
+	var tile_map_layers := get_children();
+	tile_map_layers.sort_custom(sort_custom_tile_layers);
+	tile_map_layers.reverse();
+	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
+		var local_pos := tile_map_layer.to_local(_global_position);
+		var local_to_map_res := tile_map_layer.local_to_map(local_pos);
+		if surface_map.has(local_to_map_res) and surface_map[local_to_map_res] == tile_map_layer.layer:
+			return local_to_map_res;
+	return null;
