@@ -2,13 +2,13 @@ class_name Pathfinder
 extends AStar3D
 
 var tile_map_ref:TerrainTileMap
-var surface_map:Dictionary[Vector2i, int]
-@export var identifier_map:Dictionary[Vector3, int]
-
+var surface_map:Dictionary[Vector2i, int] = {}
+var identifier_map:Dictionary[Vector3, int] = {}
+var inverted_identifier_map:Dictionary[int, Vector3] = {}
 func _init(tile_map:TerrainTileMap):
 	tile_map_ref = tile_map
-	surface_map = tile_map_ref._provide_surface_map()
-
+	_rebuild_connections()
+	
 func _ready():
 	pass
 	
@@ -25,10 +25,12 @@ func _rebuild_connections():
 	clear()
 	surface_map = tile_map_ref._provide_surface_map()
 	identifier_map = {}
+	inverted_identifier_map = {}
 	var counter = 0
 	for coordinate in surface_map:
 		var conv_coord = Vector3(coordinate.x, coordinate.y, surface_map.get(coordinate))
 		identifier_map[conv_coord] = counter
+		inverted_identifier_map[counter] = conv_coord
 		add_point(counter, conv_coord, 1.0)
 		counter += 1
 	for coordinate in identifier_map:
@@ -52,3 +54,8 @@ func _return_path(provided_coordinate:Vector3i, provided_target:Vector3i):
 	if vec_3 not in identifier_map:
 		target_id = get_closest_point(vec_3)
 	return get_point_path(point_id, target_id)
+	
+func _provide_inverted_identifier_map()->Dictionary[int, Vector3]:
+	return inverted_identifier_map
+func _provide_identifier_map()->Dictionary[Vector3, int]:
+	return identifier_map
