@@ -129,19 +129,28 @@ func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Ve
 	var tile_map_layer := get_or_create_tile_map_layer(coords.z);
 	tile_map_layer.set_cell(Vector2i(coords.x, coords.y), source_id, atlas_coords, alternative_tile);
 
-# Helper function to set cells terrain for a specific method
-func _set_cells_terrain_helper(method_name: String, cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool):
+func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
 	var cells_by_z := _group_cells_by_z(cells);
 	for z in cells_by_z:
 		var tile_map_layer := get_or_create_tile_map_layer(z);
 		var new_cells := cells_by_z[z];
-		tile_map_layer.callv(method_name, [new_cells, terrain_set, terrain, ignore_empty_terrains]);
-
-func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
-	_set_cells_terrain_helper("set_cells_terrain_connect", cells, terrain_set, terrain, ignore_empty_terrains);
+		tile_map_layer.set_cells_terrain_connect(new_cells, terrain_set, terrain, ignore_empty_terrains);
 
 func set_cells_terrain_path(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
-	_set_cells_terrain_helper("set_cells_terrain_path", cells, terrain_set, terrain, ignore_empty_terrains);
+	var paths: Array[Dictionary] = [];
+	var prev_z = null;
+	var current_path: Array[Vector2i] = [];
+	for point in cells:
+		if prev_z != null and point.z != prev_z:
+			paths.append({"z": prev_z, "path": current_path});
+			current_path = [];
+		current_path.append(Vector2i(point.x, point.y));
+		prev_z = point.z;
+	if len(current_path) > 0:
+		paths.append({"z": prev_z, "path": current_path});
+	for path in paths:
+		var tile_map_layer := get_or_create_tile_map_layer(path["z"]);
+		tile_map_layer.set_cells_terrain_connect(path["path"], terrain_set, terrain, ignore_empty_terrains);
 
 func get_tile_map_layer(z: int) -> CustomTileMapLayer:
 	return find_child("TileMapLayer" + str(z));

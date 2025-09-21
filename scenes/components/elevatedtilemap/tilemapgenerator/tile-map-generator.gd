@@ -7,6 +7,7 @@ extends Node2D;
 
 ## Tile Set to use
 @export var tile_set: TileSet;
+@export var path_arrow_tile_set: TileSet;
 
 @export_tool_button("Generate", "Callable") var generate_terrain_action := generate_terrain
 @export_tool_button("Clear", "Callable") var clear_terrain_action := clear_terrain
@@ -44,6 +45,12 @@ func create_terrain_tile_map(_name: String) -> TerrainTileMap:
 	_initialize_tile_map(terrain_tile_map, _name);
 	return terrain_tile_map;
 
+func create_path_arrow_tile_map(_name: String) -> PathArrowTileMap:
+	var path_arrow_tile_map := PathArrowTileMap.new();
+	_initialize_tile_map(path_arrow_tile_map, _name);
+	path_arrow_tile_map.tile_set = path_arrow_tile_set;
+	return path_arrow_tile_map;
+
 # Helper function to initialize common tile map properties
 func _initialize_tile_map(tile_map: ElevatedTileMap, _name: String) -> void:
 	tile_map.tile_set = tile_set;
@@ -67,9 +74,11 @@ func generate_terrain() -> void:
 		var fog_tile_map := create_elevated_tile_map("FogTileMap");
 		
 		fog_tile_map.draw_voxels(voxels.fog_voxels);
+	
+	create_path_arrow_tile_map("PathArrowTileMap");
 
 func clear_terrain() -> void:
-	for elevated_tile_map: ElevatedTileMap in [get_terrain(), get_fog()]:
+	for elevated_tile_map: ElevatedTileMap in [get_terrain(), get_fog(), get_path_arrow()]:
 		if elevated_tile_map != null:
 			remove_child(elevated_tile_map);
 			elevated_tile_map.queue_free();
@@ -79,6 +88,9 @@ func get_terrain() -> TerrainTileMap:
 
 func get_fog() -> ElevatedTileMap:
 	return find_child("FogTileMap");
+
+func get_path_arrow() -> PathArrowTileMap:
+	return find_child("PathArrowTileMap");
 
 # Helper function to process tile info and append appropriate voxels to the target array
 func _process_tile_info(target_voxels: Array[VoxelInfo], coords: Array[Vector3i], tile_info: TerrainOrAtlasInfo) -> void:
