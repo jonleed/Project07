@@ -43,6 +43,12 @@ func _rebuild_connections():
 				connect_points(coord_id, identifier_map.get(vector), false)
 	
 func _return_path(provided_coordinate:Vector3i, provided_target:Vector3i):
-	var point_id = get_closest_point(Vector3(provided_coordinate.x, provided_coordinate.y, provided_coordinate.z))
-	var target_id = get_closest_point(Vector3(provided_target.x, provided_target.y, provided_target.z))
+	var vec_3 = Vector3(provided_coordinate.x, provided_coordinate.y, provided_coordinate.z)
+	var point_id = identifier_map.get(vec_3)
+	if vec_3 not in identifier_map:
+		point_id = get_closest_point(vec_3)
+	vec_3 = Vector3(provided_target.x, provided_target.y, provided_target.z)
+	var target_id = identifier_map.get(vec_3)
+	if vec_3 not in identifier_map:
+		target_id = get_closest_point(vec_3)
 	return get_point_path(point_id, target_id)
