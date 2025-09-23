@@ -11,3 +11,10 @@ class_name Unit
 #local variables
 var has_moved:bool = false
 var action_count : int
+#you can delete these i just thought it would be good to have
+var x_cord: int
+var y_cord: int
+#this should be probably managed by damage function but i wanted something for the trap
+func isHurt(amount: int):
+	health -= amount;
+	print("owie");
