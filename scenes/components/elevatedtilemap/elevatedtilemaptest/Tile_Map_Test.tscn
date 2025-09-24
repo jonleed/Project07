@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bjf8743urtr4q" path="res://scenes/components/elevatedtilemap/tilemapgenerator/Tile_Map_Generator.tscn" id="2_ogrbx"]
 [ext_resource type="TileSet" uid="uid://dje5gwv5k1cmf" path="res://resources/tilesets/isometric_medieval_fantasy_tiles.tres" id="2_tnnol"]
 [ext_resource type="Script" uid="uid://d1k6siucw80b3" path="res://scenes/components/elevatedtilemap/terraintilemap/terrain-tile-map.gd" id="2_yy3s1"]
-[ext_resource type="Script" uid="uid://gxynlcuviag" path="res://scenes/components/elevatedtilemap/elevatedtilemaptest/cursor.gd" id="3_juonu"]
 [ext_resource type="Script" uid="uid://doxsim1tjhx6t" path="res://scenes/components/elevatedtilemap/customtilemaplayer/custom-tile-map-layer.gd" id="3_p5sv8"]
+[ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/Cursor.tscn" id="5_tnnol"]
 
 [node name="TileMapTest" type="Node2D"]
 
@@ -192,7 +192,4 @@ y_sort_origin = -19
 script = ExtResource("3_p5sv8")
 layer = 19
 
-[node name="Cursor" type="Polygon2D" parent="."]
-color = Color(1, 0, 0, 1)
-polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
-script = ExtResource("3_juonu")
+[node name="Cursor" parent="." instance=ExtResource("5_tnnol")]
