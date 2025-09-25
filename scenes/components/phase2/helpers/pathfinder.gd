@@ -46,3 +46,6 @@ func _return_path(provided_coordinate:Vector3i, provided_target:Vector3i):
 	var point_id = get_closest_point(Vector3(provided_coordinate.x, provided_coordinate.y, provided_coordinate.z))
 	var target_id = get_closest_point(Vector3(provided_target.x, provided_target.y, provided_target.z))
 	return get_point_path(point_id, target_id)
+	
+func _provide_tile_map_ref()->TerrainTileMap:
+	return tile_map_ref

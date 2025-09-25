@@ -5,7 +5,7 @@ extends Node
 
 ##this will pass the possible tiles back
 ##now tile validation will have to come from whoever makes the tiles
-func get_bfs_range(start_pos: Vector2i, range: int, tilemap_layer: TileMapLayer) -> Array[Vector2i]:
+func get_bfs_range(start_pos: Vector2i, range: int) -> Array[Vector2i]:
 	var frontier: Array[Vector2i] = [start_pos]
 	var visited: Dictionary = {start_pos: 0} # Use a Dictionary to store distance
 	var valid_tiles: Array[Vector2i] = [start_pos]
