@@ -76,3 +76,8 @@ func _set_mana_max(provided_maximum:int) -> void:
 
 func destroy_unit() -> void:
 	pass
+	
+#this should be probably managed by damage function but i wanted something for the trap
+func isHurt(amount: int):
+	adjust_health(amount * -1);
+	print("owie");
