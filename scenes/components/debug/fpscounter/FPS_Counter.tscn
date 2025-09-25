@@ -8,3 +8,4 @@ script = ExtResource("1_4ccxx")
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
+mouse_filter = 1
