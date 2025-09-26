@@ -17,18 +17,20 @@ var action_count : int
 
 var allowed_actions:Array[Action]
 
-func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i) -> void:
+func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, provided_info:Dictionary) -> void:
 	pathfinder = pathfinder_ref
+	entity_name = provided_info.get("name")
+	entity_id = provided_info.get("id")
 	var tmp_ref = pathfinder._provide_tile_map_ref()
 	var tmp_surf_map = tmp_ref._provide_surface_map()
 	if spawn_pos in tmp_surf_map:
 		coordinate = Vector3i(spawn_pos.x, spawn_pos.y, tmp_surf_map.get(spawn_pos))
-		clean_coordinate = spawn_pos
 	else:
 		var tmp_arr = tmp_surf_map.keys()
 		coordinate = Vector3i(tmp_arr[0].x, tmp_arr[0].y, tmp_surf_map.get(tmp_arr[0]))
-		clean_coordinate = Vector2i(tmp_arr[0].x, tmp_arr[0].y)
+	clean_coordinate = Vector2i(coordinate.x, coordinate.y)
 	allowed_actions = []
+	set_xy()
 	
 func _ready() -> void:
 	pass
