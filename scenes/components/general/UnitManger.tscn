@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuhqlmiqhip6x"]
+
+[ext_resource type="Script" path="res://scenes/components/general/node.gd" id="1_4udsk"]
+[ext_resource type="Script" uid="uid://uguk7yw7a10j" path="res://scenes/components/phase2/unit/unit.gd" id="2_kgc8a"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_4udsk")
+
+[node name="Enemies" type="Node2D" parent="." groups=["Enemies"]]
+script = ExtResource("2_kgc8a")
+metadata/_custom_type_script = "uid://uguk7yw7a10j"
+
+[node name="PCunits" type="Node2D" parent="." groups=["PCunits"]]
+script = ExtResource("2_kgc8a")
+metadata/_custom_type_script = "uid://uguk7yw7a10j"
