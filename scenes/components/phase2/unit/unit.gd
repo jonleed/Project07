@@ -36,7 +36,7 @@ func _ready() -> void:
 	pass
 	
 func add_action(provided_action:Action):
-	allowed_actions.append(Action)
+	allowed_actions.append(provided_action)
 	
 func remove_action(action_name):
 	var tmp = allowed_actions.find(action_name)
