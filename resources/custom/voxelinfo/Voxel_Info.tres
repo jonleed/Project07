@@ -4,13 +4,4 @@
 
 [resource]
 script = ExtResource("1_yapaq")
-tile_type = 0
-coords = Vector3i(0, 0, 0)
-source_id = 0
-atlas_coords = Vector2i(0, 0)
-alternative_tile = 0
-path = Array[Vector3i]([])
-terrain_set = 0
-terrain = 0
-ignore_empty_terrains = true
 metadata/_custom_type_script = "uid://85wuux6d0ixa"

@@ -16,7 +16,7 @@ func get_bfs_range(start_pos: Vector2i, range: int) -> Array[Vector2i]:
 		head += 1
 
 		var current_dist = visited[current_pos]
-		if current_dist >= range:
+		if current_dist >= _range:
 			continue
 
 		# Check neighbors (up, down, left, right)
