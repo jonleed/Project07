@@ -36,6 +36,11 @@ folder_colors={
 "res://shaders/": "pink"
 }
 
+[global_group]
+
+Enemies=""
+PCunits="Player Controlled Units"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
