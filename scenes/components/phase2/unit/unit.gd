@@ -27,7 +27,7 @@ var has_moved:bool = false
 var action_count : int
 var allowed_actions:Array[Action]
 var unit_type:int = -1
-var unit_manager_ref:Unit_Manager
+var unit_manager_ref:UnitManager
 var visible_tiles:Array = [clean_coordinate]
 var information_heard:Dictionary[Vector3i, int] = {}
 
