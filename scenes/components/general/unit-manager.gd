@@ -28,9 +28,11 @@ func get_enemies() -> Array: #checks for new enemies
 func get_pc_units() -> Array: #checks for new pc-units
 	return get_tree().get_nodes_in_group("PCunits")
 
-func in_view(user: Node, target: Node) -> bool:
-	var distance = user.global_position.distance_to(target.global_position) #checks distance of target
-	return distance <= user.vision_dist
+func in_view(user: Unit, target: Entity) -> bool:
+	var distance = Globals.get_3d_euclidean_distance(user.provide_coordinate(), target.provide_coordinate()) #checks distance of target
+	if distance <= user.vision_dist and target.provide_coordinate() in user.provide_vision():
+		return true
+	return false
 
 func destroy_unit(provided_unit:Unit):
 	var provided_unit_type:int = provided_unit._get_unit_type()
