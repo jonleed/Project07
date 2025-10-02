@@ -5,7 +5,8 @@ extends Node
 
 ##this will pass the possible tiles back
 ##now tile validation will have to come from whoever makes the tiles
-func get_bfs_range(start_pos: Vector2i, _range: int, tilemap_layer: TileMapLayer) -> Array[Vector2i]:
+# func get_bfs_range(start_pos: Vector2i, _range: int, tilemap_layer: TileMapLayer) -> Array[Vector2i]:
+func get_bfs_range(start_pos: Vector2i, _range: int) -> Array[Vector2i]:
 	var frontier: Array[Vector2i] = [start_pos]
 	var visited: Dictionary = {start_pos: 0} # Use a Dictionary to store distance
 	var valid_tiles: Array[Vector2i] = [start_pos]
@@ -54,3 +55,39 @@ func get_scaled_pattern_tiles(origin: Vector2i, pattern: Pattern2D, distance: in
 			valid_tiles.append(target_pos)
 
 	return valid_tiles
+
+func get_3d_vectors() -> Array[Vector3i]:
+	return [
+		Vector3i.UP + Vector3i.LEFT,
+		Vector3i.UP + Vector3i.LEFT + Vector3i.FORWARD,
+		Vector3i.UP + Vector3i.LEFT + Vector3i.BACK,
+		Vector3i.UP,
+		Vector3i.UP + Vector3i.FORWARD,
+		Vector3i.UP + Vector3i.BACK,
+		Vector3i.UP + Vector3i.RIGHT,
+		Vector3i.UP + Vector3i.RIGHT + Vector3i.FORWARD,
+		Vector3i.UP + Vector3i.RIGHT + Vector3i.BACK,
+		Vector3i.LEFT,
+		Vector3i.LEFT + Vector3i.FORWARD,
+		Vector3i.LEFT + Vector3i.BACK,
+		Vector3i.FORWARD,
+		Vector3i.BACK,
+		Vector3i.RIGHT,
+		Vector3i.RIGHT + Vector3i.FORWARD,
+		Vector3i.RIGHT + Vector3i.BACK,
+		Vector3i.DOWN + Vector3i.LEFT,
+		Vector3i.DOWN + Vector3i.LEFT + Vector3i.FORWARD,
+		Vector3i.DOWN + Vector3i.LEFT + Vector3i.BACK,
+		Vector3i.DOWN,
+		Vector3i.DOWN + Vector3i.FORWARD,
+		Vector3i.DOWN + Vector3i.BACK,
+		Vector3i.DOWN + Vector3i.RIGHT,
+		Vector3i.DOWN + Vector3i.RIGHT + Vector3i.FORWARD,
+		Vector3i.DOWN + Vector3i.RIGHT + Vector3i.BACK	
+	]
+
+func get_2d_euclidean_distance(origin:Vector2i, target:Vector2i) -> float:
+	return sqrt(pow(origin.x-target.x, 2)+pow(origin.y-target.y, 2))
+	
+func get_3d_euclidean_distance(origin:Vector3i, target:Vector3i) -> float:
+	return sqrt(pow(origin.x-target.x, 2)+pow(origin.y-target.y, 2)+pow(origin.z-target.z, 2))
