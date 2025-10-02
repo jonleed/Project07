@@ -28,7 +28,6 @@ func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, provided_info:Dictiona
 func _ready() -> void:
 	pass
 
-
 func set_xy() -> void:
 	x_coord = clean_coordinate.x
 	y_coord = clean_coordinate.y
@@ -52,6 +51,9 @@ func assign_sprite(sprite:Sprite2D, selection:int, same_sprite:bool=false) -> vo
 		icon_sprite = sprite
 	if selection == 1 or same_sprite:
 		map_sprite = sprite
+
+func provide_coordinate()->Vector3i:
+	return coordinate
 
 func provide_x_coord()->int:
 	return x_coord
