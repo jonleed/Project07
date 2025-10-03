@@ -7,9 +7,6 @@ var pathfinder:Pathfinder
 var primer:Object
 var faction_dict:Dictionary[int, Faction] = {}
 var unit_manager_holder:Dictionary[int, Array]
-var unit_manager_prime:Dictionary[Vector3i, Unit]
-var faction_vision_manager:Dictionary[int, Array]
-var faction_visible_hostiles:Dictionary[int, Array]
 
 enum relation_types {
 	HOSTILE,
@@ -84,5 +81,10 @@ func is_tile_occupied_by_opposer(provided_faction:int, provided_coordinate:Vecto
 			return true
 	return false
 
-func get_unit_on_tile(provided_tile:Vector3i)->Unit:
-	return unit_manager_prime.get(provided_tile)
+func get_unit_on_tile(provided_coordinate:Vector3i)->Unit:
+	for faction_id in faction_dict:
+		var faction_obj:Faction = faction_dict.get(faction_id)
+		var faction_units:Dictionary[Vector3i, Unit] = faction_obj.provide_faction_units()
+		if provided_coordinate in faction_units:
+			return faction_units.get(provided_coordinate)
+	return null
