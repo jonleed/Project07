@@ -1,5 +1,5 @@
 extends Unit
-class_name Enemy_Unit
+class_name NPC_Unit
 
 enum alert_level {
 	BLUE, # Idling
@@ -18,16 +18,13 @@ enum enemy_action_choices {
 }
 
 var alertness = alert_level.GREEN
-var visible_hostiles:Array = []
+var visible_hostiles:Dictionary[Vector3i, Unit] = {}
 var time_since_last_enemy_seen = 0
 
-func set_unit_type()->void:
-	unit_type = unit_manager_ref.unit_types.ENEMY
-
-func unit_setup(provided_info:Dictionary)->void:
-	pass
+func set_entity_type()->void:
+	entity_type = Entity.entity_types.NPC_UNIT
 	
-func run_turn() -> void:
+func execute_turn()->void:
 	examine_information()
 	examine_surroundings()	
 	if alertness == alert_level.BLUE:
@@ -59,9 +56,9 @@ func examine_information() -> void:
 	
 func examine_surroundings() -> void:
 	# NOTE: This is an array with two dictionarys
-	visible_hostiles = unit_manager_ref.get_hostiles_visible_to_team(unit_type)
+	visible_hostiles = unit_manager_ref.provide_factions().get(faction_id).provide_hostile_units()
 	var active_watch = false
-	for hostile_unit_coord in visible_hostiles[1]:
+	for hostile_unit_coord in visible_hostiles:
 		if hostile_unit_coord in visible_tiles:
 			alertness = alert_level.RED
 			active_watch = true
@@ -76,3 +73,5 @@ func examine_surroundings() -> void:
 		elif time_since_last_enemy_seen > 3:
 			alertness = alert_level.YELLOW
 	
+func provide_entity_type()->int:
+	return entity_type

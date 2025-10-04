@@ -10,8 +10,18 @@ var x_coord:int
 var y_coord:int
 var entity_name:String
 var entity_id:int
+var entity_type:int
 
-func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, provided_info:Dictionary) -> void:
+enum entity_types {
+	PLAYER_UNIT,
+	NPC_UNIT,
+	TRAP,
+	INTERACTABLE,
+	DYNAMIC, # As in something moveable
+	STATIC # As in something unmoveable
+}
+
+func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, given_unit_manager:UnitManager, provided_info:Dictionary, provided_faction_id:int=999) -> void:
 	pathfinder = pathfinder_ref
 	entity_name = provided_info.get("name")
 	entity_id = provided_info.get("id")
@@ -24,6 +34,7 @@ func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, provided_info:Dictiona
 		coordinate = Vector3i(tmp_arr[0].x, tmp_arr[0].y, tmp_surf_map.get(tmp_arr[0]))
 	clean_coordinate = Vector2i(coordinate.x, coordinate.y)
 	set_xy()
+	run_set_up(provided_info, provided_faction_id, given_unit_manager)
 
 func _ready() -> void:
 	pass
@@ -31,6 +42,10 @@ func _ready() -> void:
 func set_xy() -> void:
 	x_coord = clean_coordinate.x
 	y_coord = clean_coordinate.y
+
+# Overridden by Unit and Trap
+func run_set_up(provided_info:Dictionary, provided_faction_id:int, given_unit_manager:UnitManager)->void:
+	entity_type = entity_types.STATIC
 	
 func convert_position(coord:Vector2i) -> int:
 	return pathfinder._get_point_id(Vector2i(coord.x, coord.y))
@@ -63,3 +78,12 @@ func provide_y_coord()->int:
 	
 func provide_entity_id()->int:
 	return entity_id
+	
+func provide_entity_type()->int:
+	return entity_type
+
+func is_trap()->bool:
+	return entity_type == Entity.entity_types.TRAP
+
+func is_unit()->bool:
+	return entity_type == Entity.entity_types.PLAYER_UNIT or entity_type == Entity.entity_types.NPC_UNIT 

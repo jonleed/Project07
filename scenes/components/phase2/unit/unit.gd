@@ -26,36 +26,30 @@ enum action_type {
 var has_moved:bool = false
 var action_count : int
 var allowed_actions:Array[Action]
-var unit_type:int = -1
 var unit_manager_ref:UnitManager
 var visible_tiles:Array = [clean_coordinate]
 var information_heard:Dictionary[Vector3i, int] = {}
+var faction_id:int
 
-func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, provided_info:Dictionary) -> void:
-	pathfinder = pathfinder_ref
-	entity_name = provided_info.get("name")
-	entity_id = provided_info.get("id")
-	var tmp_ref = pathfinder._provide_tile_map_ref()
-	var tmp_surf_map = tmp_ref._provide_surface_map()
-	if spawn_pos in tmp_surf_map:
-		coordinate = Vector3i(spawn_pos.x, spawn_pos.y, tmp_surf_map.get(spawn_pos))
-	else:
-		var tmp_arr = tmp_surf_map.keys()
-		coordinate = Vector3i(tmp_arr[0].x, tmp_arr[0].y, tmp_surf_map.get(tmp_arr[0]))
-	clean_coordinate = Vector2i(coordinate.x, coordinate.y)
+func unit_setup(provided_info:Dictionary, provided_faction_id:int, given_unit_manager:UnitManager) -> void:
+	unit_manager_ref = given_unit_manager
+	faction_id = provided_faction_id
 	allowed_actions = []
 	visible_tiles = [clean_coordinate]
-	set_xy()
-	set_unit_type()
-	unit_setup(provided_info)
+	set_entity_type()
+	# Parse info from provided_info and assign actions/gear/other stuff
 	update_vision()
-	
-@warning_ignore("unused_parameter") # This will be overrided by the inheriting classes
-func unit_setup(provided_info:Dictionary) -> void:
-	pass
 	
 func _ready() -> void:
 	pass
+	
+func execute_turn()->void:
+	pass
+	
+# Overrided by Inherited classes
+func set_entity_type()->void:
+	# Default to NPC
+	entity_type = Entity.entity_types.NPC_UNIT
 	
 func add_action(provided_action:Action):
 	allowed_actions.append(provided_action)
@@ -90,6 +84,12 @@ func adjust_health(delta:int) -> void:
 	if health <= 0:
 		destroy_unit()
 		
+func health_calc(provided_action:Healaction) -> void:
+	adjust_health(provided_action.heal)
+		
+func afflicted_by_attack(provided_action:Attackaction) -> void:
+	adjust_health(-1 * provided_action.damage.dmg)
+	
 func adjust_mana(delta:int) -> void:
 	current_mana += delta
 	current_mana = max(0, min(current_mana, max_mana))
@@ -107,26 +107,30 @@ func _set_mana_max(provided_maximum:int) -> void:
 	max_mana = max(0, provided_maximum)
 
 func destroy_unit() -> void:
-	pass
+	remove_from_group("PCunits")
+	remove_from_group("enemies")
+	remove_from_group("friendlies")
+	remove_from_group("neutrals")
+	queue_free()
 	
 #this should be probably managed by damage function but i wanted something for the trap
 func isHurt(amount: int):
 	adjust_health(amount * -1);
 	print("owie");
 	
-func _get_unit_type()->int:
-	return unit_type
-	
-# This will be overrided by the inheriting classes
-func set_unit_type()->void:
-	pass
+func get_faction_id()->int:
+	return faction_id
 	
 func provide_vision()->Array:
 	return visible_tiles
 	
 func update_vision()->void:
 	visible_tiles = Globals.get_bfs_range(clean_coordinate, vision_dist)
-	unit_manager_ref.update_tiles_visible_to_team(unit_type)
+	unit_manager_ref.provide_factions().get(faction_id).assemble_faction_vision()
+	#update_tiles_visible_to_team(faction_id)
+	
+func parse_atk_signal()->void:
+	pass
 	
 func send_data(provided_action_type:int) -> void:
 	if provided_action_type not in action_type:
@@ -139,4 +143,6 @@ func send_data(provided_action_type:int) -> void:
 			
 func recieve_information(provided_coordinate:Vector3i, action_heard:int):
 	information_heard[provided_coordinate] = action_heard
-			
+		
+func is_turn_unfinished()->bool:
+	return actions_left > 0	
