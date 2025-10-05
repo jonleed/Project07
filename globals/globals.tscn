@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://0lqe85e6tnjl"]
+
+[ext_resource type="Script" uid="uid://t3fdlc5rbr41" path="res://globals/globals.gd" id="1_jmrm8"]
+[ext_resource type="PackedScene" uid="uid://evc6pglbeeqm" path="res://scenes/ui/settings/Pause-Menu.tscn" id="2_6nnoh"]
+
+[node name="Globals" type="Node"]
+script = ExtResource("1_jmrm8")
+
+[node name="UI" type="AudioStreamPlayer" parent="."]
+bus = &"UI"
+
+[node name="PauseMenu" parent="." instance=ExtResource("2_6nnoh")]
+visible = false
+top_level = true
+
+[connection signal="finished" from="UI" to="." method="_on_ui_finished"]

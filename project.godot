@@ -11,11 +11,12 @@ config_version=5
 [application]
 
 config/name="Project07"
+run/main_scene="uid://bjwfrloo6oxt0"
 config/features=PackedStringArray("4.5", "Forward Plus")
 
 [autoload]
 
-Globals="*res://globals/globals.gd"
+Globals="*res://globals/globals.tscn"
 
 [display]
 

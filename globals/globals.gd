@@ -1,7 +1,7 @@
 extends Node
 
 #this node will contain global variables and useful functions
-
+var party_units:Dictionary ={}
 
 ##this will pass the possible tiles back
 ##now tile validation will have to come from whoever makes the tiles
@@ -54,3 +54,29 @@ func get_scaled_pattern_tiles(origin: Vector2i, pattern: Pattern2D, distance: in
 			valid_tiles.append(target_pos)
 
 	return valid_tiles
+
+@onready var ui_sounds:Dictionary[String,AudioStream] ={
+	"Confirm":preload("res://assets/audio/Confirm 1.wav"),
+	"Cancel":preload("res://assets/audio/Cancel 1.wav")
+}
+
+func play_ui_sound(stream_source):
+	var stream:AudioStream = null
+	if stream_source is String or stream_source is StringName:
+		if ui_sounds.has(stream_source):
+			stream = ui_sounds[stream_source]
+		else:
+			var source = load(stream_source)
+			if source and source is AudioStream:
+				stream = source
+	elif stream_source is AudioStream:
+		stream = stream_source
+	$UI.stream = stream
+	$UI.play()
+
+signal sound_finished
+func _on_ui_finished() -> void:
+	sound_finished.emit()
+
+func show_options():
+	$PauseMenu.visible = true

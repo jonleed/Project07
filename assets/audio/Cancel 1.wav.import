@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bo0umckpvc18e"
+path="res://.godot/imported/Cancel 1.wav-8c72d09d6eca748eaf0d2bbe1ceb8871.sample"
+
+[deps]
+
+source_file="res://assets/audio/Cancel 1.wav"
+dest_files=["res://.godot/imported/Cancel 1.wav-8c72d09d6eca748eaf0d2bbe1ceb8871.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
