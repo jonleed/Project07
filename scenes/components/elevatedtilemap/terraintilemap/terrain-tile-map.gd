@@ -11,7 +11,7 @@ static var default_validator := func(_a): return true;
 static func generate_custom_data_helper(layer_name: String, default_value: Variant, validator: Callable = default_validator) -> Callable:
 	return func(tile_data: TileData):
 		var res = default_value;
-		if tile_data.has_custom_data(layer_name):
+		if tile_data != null and tile_data.has_custom_data(layer_name):
 			var unvalidated = tile_data.get_custom_data(layer_name);
 			if validator.call(unvalidated) == true:
 				res = tile_data.get_custom_data(layer_name);
@@ -31,6 +31,7 @@ static func sort_custom_tile_layers(a: CustomTileMapLayer, b: CustomTileMapLayer
 	return a.layer < b.layer;
 
 func generate_surface():
+	surface_map.clear();
 	var tile_map_layers := get_children();
 	tile_map_layers.sort_custom(sort_custom_tile_layers);
 	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
@@ -72,10 +73,26 @@ func global_to_surface(_global_position: Vector2):
 	tile_map_layers.reverse();
 	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
 		const UP_CHECKS := 5;
-		for i in range(UP_CHECKS+1):
+		for i in range(UP_CHECKS + 1):
 			var local_pos := tile_map_layer.to_local(_global_position);
-			var adjusted_local_pos := local_pos + Vector2.UP*tile_z*(i / float(UP_CHECKS));
+			var adjusted_local_pos := local_pos + Vector2.UP * tile_z * (i / float(UP_CHECKS));
 			var local_to_map_res := tile_map_layer.local_to_map(adjusted_local_pos);
 			if surface_map.has(local_to_map_res) and surface_map[local_to_map_res] == tile_map_layer.layer:
 				return local_to_map_res;
 	return null;
+
+func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1, -1), alternative_tile: int = 0):
+	super.set_cell(coords, source_id, atlas_coords, alternative_tile);
+	generate_surface();
+
+func erase_cell(coords: Vector3i) -> void:
+	super.erase_cell(coords);
+	generate_surface();
+
+func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
+	super.set_cells_terrain_connect(cells, terrain_set, terrain, ignore_empty_terrains);
+	generate_surface();
+
+func set_cells_terrain_path(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
+	super.set_cells_terrain_path(cells, terrain_set, terrain, ignore_empty_terrains);
+	generate_surface();
