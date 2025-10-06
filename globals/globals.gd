@@ -65,10 +65,13 @@ func play_ui_sound(stream_source):
 	if stream_source is String or stream_source is StringName:
 		if ui_sounds.has(stream_source):
 			stream = ui_sounds[stream_source]
-		else:
+		elif FileAccess.file_exists(stream_source):
 			var source = load(stream_source)
 			if source and source is AudioStream:
 				stream = source
+		else:
+			sound_finished.emit()
+			return
 	elif stream_source is AudioStream:
 		stream = stream_source
 	$UI.stream = stream

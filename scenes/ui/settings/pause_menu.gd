@@ -23,4 +23,4 @@ func _on_confirmation_dialog_canceled() -> void:
 
 func _on_close_pressed() -> void:
 	Globals.play_ui_sound("Confirm")
-	$Options.visible = false
+	visible = false
