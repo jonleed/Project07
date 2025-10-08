@@ -26,14 +26,14 @@ enum action_type {
 var has_moved:bool = false
 var action_count : int
 var allowed_actions:Array[Action]
-var unit_manager_ref:UnitManager
+var turn_manager_ref:TurnManager
 var visible_tiles:Array = [clean_coordinate]
 var information_heard:Dictionary[Vector3i, int] = {}
-var faction_id:int
+var manager_id:int
 
-func unit_setup(provided_info:Dictionary, provided_faction_id:int, given_unit_manager:UnitManager) -> void:
-	unit_manager_ref = given_unit_manager
-	faction_id = provided_faction_id
+func unit_setup(provided_info:Dictionary, provided_manager_id:int, given_turn_manager:TurnManager) -> void:
+	turn_manager_ref = given_turn_manager
+	manager_id = provided_manager_id
 	allowed_actions = []
 	visible_tiles = [clean_coordinate]
 	set_entity_type()
@@ -118,16 +118,16 @@ func isHurt(amount: int):
 	adjust_health(amount * -1);
 	print("owie");
 	
-func get_faction_id()->int:
-	return faction_id
+func get_manager_id()->int:
+	return manager_id
 	
 func provide_vision()->Array:
 	return visible_tiles
 	
 func update_vision()->void:
 	visible_tiles = Globals.get_bfs_range(clean_coordinate, vision_dist)
-	unit_manager_ref.provide_factions().get(faction_id).assemble_faction_vision()
-	#update_tiles_visible_to_team(faction_id)
+	turn_manager_ref.provide_managers().get(manager_id).assemble_manager_vision()
+	#update_tiles_visible_to_team(manager_id)
 	
 func parse_atk_signal()->void:
 	pass
@@ -137,7 +137,7 @@ func send_data(provided_action_type:int) -> void:
 		return
 	var heard_tiles:Array = Globals.get_bfs_range(clean_coordinate, unit_volume)
 	for tile in heard_tiles:
-		var unit_ref:Unit = unit_manager_ref.get_unit_on_tile(tile)
+		var unit_ref:Unit = turn_manager_ref.get_unit_on_tile(tile)
 		if unit_ref != null:
 			unit_ref.recieve_information(tile, provided_action_type)
 			

@@ -56,7 +56,7 @@ func examine_information() -> void:
 	
 func examine_surroundings() -> void:
 	# NOTE: This is an array with two dictionarys
-	visible_hostiles = unit_manager_ref.provide_factions().get(faction_id).provide_hostile_units()
+	visible_hostiles = turn_manager_ref.provide_managers().get(manager_id).provide_hostile_units()
 	var active_watch = false
 	for hostile_unit_coord in visible_hostiles:
 		if hostile_unit_coord in visible_tiles:

@@ -2,8 +2,8 @@ extends Node
 
 #this node will contain global variables and useful functions
 
-var PLAYER_FACTION_ID:int = 0
-var TRAP_FACTION_ID:int = 1
+var PLAYER_MANAGER_ID:int = 0
+var TRAP_MANAGER_ID:int = 1
 
 
 ##this will pass the possible tiles back

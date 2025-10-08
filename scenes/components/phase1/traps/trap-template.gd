@@ -12,12 +12,12 @@ class_name Trap
 
 #local vars
 var action_max : int = 1
-var unit_manager_ref:UnitManager
+var turn_manager_ref:TurnManager
 var has_activated:bool = false
 var finished_turn:bool = false
 var is_functional:bool = true
 
-func run_set_up(provided_info:Dictionary, provided_faction_id:int, given_unit_manager:UnitManager)->void:
+func run_set_up(provided_info:Dictionary, provided_manager_id:int, given_turn_manager:TurnManager)->void:
 	entity_type = Entity.entity_types.TRAP
 	# Parse dictionary info
 

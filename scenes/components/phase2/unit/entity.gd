@@ -21,7 +21,7 @@ enum entity_types {
 	STATIC # As in something unmoveable
 }
 
-func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, given_unit_manager:UnitManager, provided_info:Dictionary, provided_faction_id:int=999) -> void:
+func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, given_turn_manager:TurnManager, provided_info:Dictionary, provided_manager_id:int=999) -> void:
 	pathfinder = pathfinder_ref
 	entity_name = provided_info.get("name")
 	entity_id = provided_info.get("id")
@@ -34,7 +34,7 @@ func _init(pathfinder_ref:Pathfinder, spawn_pos:Vector2i, given_unit_manager:Uni
 		coordinate = Vector3i(tmp_arr[0].x, tmp_arr[0].y, tmp_surf_map.get(tmp_arr[0]))
 	clean_coordinate = Vector2i(coordinate.x, coordinate.y)
 	set_xy()
-	run_set_up(provided_info, provided_faction_id, given_unit_manager)
+	run_set_up(provided_info, provided_manager_id, given_turn_manager)
 
 func _ready() -> void:
 	pass
@@ -44,7 +44,7 @@ func set_xy() -> void:
 	y_coord = clean_coordinate.y
 
 # Overridden by Unit and Trap
-func run_set_up(provided_info:Dictionary, provided_faction_id:int, given_unit_manager:UnitManager)->void:
+func run_set_up(provided_info:Dictionary, provided_manager_id:int, given_turn_manager:TurnManager)->void:
 	entity_type = entity_types.STATIC
 	
 func convert_position(coord:Vector2i) -> int:
