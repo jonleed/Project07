@@ -2,5 +2,19 @@
 
 [ext_resource type="Script" uid="uid://btb07xpvnl0bd" path="res://scenes/ui/phase1/ui-phase-1.gd" id="1_ho0fg"]
 
-[node name="Ui-phase-1" type="Node2D"]
+[node name="Ui-phase-1" type="Node"]
 script = ExtResource("1_ho0fg")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Proceed to Phase 2" type="Button" parent="Control"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "ONWARDS!!!"
+
+[connection signal="pressed" from="Control/Proceed to Phase 2" to="." method="_on_proceed_to_phase_2_pressed"]

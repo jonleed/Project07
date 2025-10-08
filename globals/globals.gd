@@ -5,6 +5,7 @@ extends Node
 var PLAYER_MANAGER_ID:int = 0
 var TRAP_MANAGER_ID:int = 1
 
+var party_units:Dictionary ={}
 
 ##this will pass the possible tiles back
 ##now tile validation will have to come from whoever makes the tiles
@@ -94,3 +95,32 @@ func get_2d_euclidean_distance(origin:Vector2i, target:Vector2i) -> float:
 	
 func get_3d_euclidean_distance(origin:Vector3i, target:Vector3i) -> float:
 	return sqrt(pow(origin.x-target.x, 2)+pow(origin.y-target.y, 2)+pow(origin.z-target.z, 2))
+
+@onready var ui_sounds:Dictionary[String,AudioStream] ={
+	"Confirm":preload("res://assets/audio/Confirm 1.wav"),
+	"Cancel":preload("res://assets/audio/Cancel 1.wav")
+}
+
+func play_ui_sound(stream_source):
+	var stream:AudioStream = null
+	if stream_source is String or stream_source is StringName:
+		if ui_sounds.has(stream_source):
+			stream = ui_sounds[stream_source]
+		elif FileAccess.file_exists(stream_source):
+			var source = load(stream_source)
+			if source and source is AudioStream:
+				stream = source
+		else:
+			sound_finished.emit()
+			return
+	elif stream_source is AudioStream:
+		stream = stream_source
+	$UI.stream = stream
+	$UI.play()
+
+signal sound_finished
+func _on_ui_finished() -> void:
+	sound_finished.emit()
+
+func show_options():
+	$PauseMenu.visible = true
