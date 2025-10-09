@@ -1,12 +1,18 @@
-[gd_scene load_steps=54 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=60 format=3 uid="uid://b18istpat370g"]
 
+[ext_resource type="Script" uid="uid://cnecn4apvbdlu" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_1iy8h"]
+[ext_resource type="Script" uid="uid://bya4oup0dacli" path="res://scenes/ui/phase2/components/gui scripting/unit_gui.gd" id="1_4ycoo"]
 [ext_resource type="Texture2D" uid="uid://dkeb6lwnq13mk" path="res://assets/ui/movementicon.png" id="1_nb6pv"]
 [ext_resource type="Texture2D" uid="uid://cghkwru6dteuo" path="res://assets/ui/jester.png" id="2_73c2s"]
 [ext_resource type="Texture2D" uid="uid://dqhcyyw52y2ab" path="res://assets/ui/healthicon.png" id="3_0ti8f"]
+[ext_resource type="Script" uid="uid://de8rwgmbndx0p" path="res://scenes/ui/phase2/components/gui scripting/action_gui.gd" id="4_5kixl"]
 [ext_resource type="Texture2D" uid="uid://cy7j2t823fi4l" path="res://assets/ui/basedamageicon.png" id="4_335d7"]
 [ext_resource type="Texture2D" uid="uid://by27lobi6knwl" path="res://assets/ui/attackordericon.png" id="6_qsu7h"]
 [ext_resource type="Texture2D" uid="uid://dd64gyfathsrw" path="res://assets/ui/mapicon.png" id="7_mfuxc"]
+[ext_resource type="Script" uid="uid://8fy0nydvlkc2" path="res://scenes/ui/phase2/components/gui scripting/combat_log_gui.gd" id="7_qsu7h"]
+[ext_resource type="Script" uid="uid://bhoi8t3i6rkrv" path="res://scenes/ui/phase2/components/gui scripting/turn_counter_gui.gd" id="8_mfuxc"]
 [ext_resource type="Texture2D" uid="uid://csa0lmn73jilr" path="res://assets/ui/turncountborder.png" id="8_qsu7h"]
+[ext_resource type="Script" uid="uid://dhvcipypgmgtf" path="res://scenes/ui/phase2/components/gui scripting/turn_banner_gui.gd" id="12_628vg"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_628vg"]
 
@@ -152,7 +158,8 @@ font_color = Color(0.89, 0.89, 0.89, 1)
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Ui-phase-3" type="Node2D"]
+[node name="UI-Phase-2" type="Node2D"]
+script = ExtResource("1_1iy8h")
 
 [node name="Graphical User Interface" type="Control" parent="."]
 layout_mode = 3
@@ -289,6 +296,7 @@ offset_top = 17.0
 offset_right = 618.0
 offset_bottom = 242.0
 scale = Vector2(0.75, 0.75)
+script = ExtResource("1_4ycoo")
 
 [node name="UnitPanelHeader" type="Control" parent="Graphical User Interface/UnitGUI"]
 clip_contents = true
@@ -683,6 +691,7 @@ offset_left = 18.0
 offset_top = 468.0
 offset_right = 418.0
 offset_bottom = 648.0
+script = ExtResource("4_5kixl")
 
 [node name="StatPanelHeader" type="Control" parent="Graphical User Interface/ActionGUI"]
 clip_contents = true
@@ -782,7 +791,7 @@ size_flags_vertical = 4
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_yhe56")
 
-[node name="ActionOneBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/StatPanelHeader/RecoveryContainer"]
+[node name="RecoveryBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/StatPanelHeader/RecoveryContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = SubResource("NoiseTexture2D_335d7")
@@ -846,6 +855,7 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="ItemContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -896,6 +906,7 @@ layout_mode = 2
 texture = SubResource("NoiseTexture2D_kwxeg")
 
 [node name="MenuGUI" type="Control" parent="Graphical User Interface"]
+visible = false
 anchors_preset = 0
 offset_left = 1005.0
 offset_top = 18.0
@@ -948,6 +959,7 @@ offset_left = 822.0
 offset_top = 409.0
 offset_right = 1142.0
 offset_bottom = 629.0
+script = ExtResource("7_qsu7h")
 
 [node name="LogPanelHeader" type="Control" parent="Graphical User Interface/CombatLogGUI"]
 custom_minimum_size = Vector2(300, 0)
@@ -1010,6 +1022,7 @@ Turn"
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("8_mfuxc")
 
 [node name="TurnCounterContainer" type="Control" parent="Graphical User Interface/TurnCounterGUI"]
 anchors_preset = 0
@@ -1034,4 +1047,25 @@ offset_right = 64.0
 offset_bottom = 72.0
 text = "2"
 label_settings = SubResource("LabelSettings_mfuxc")
+horizontal_alignment = 1
+
+[node name="TurnBannerGUI" type="Control" parent="Graphical User Interface"]
+anchors_preset = 0
+offset_left = 471.0
+offset_top = 82.0
+offset_right = 511.0
+offset_bottom = 122.0
+script = ExtResource("12_628vg")
+
+[node name="TurnBannerCenterer" type="CenterContainer" parent="Graphical User Interface/TurnBannerGUI"]
+layout_mode = 0
+offset_right = 219.99997
+offset_bottom = 62.0
+
+[node name="TurnBannerBackground" type="TextureRect" parent="Graphical User Interface/TurnBannerGUI/TurnBannerCenterer"]
+layout_mode = 2
+
+[node name="TurnBannerLabel" type="Label" parent="Graphical User Interface/TurnBannerGUI/TurnBannerCenterer"]
+layout_mode = 2
+text = "TURN START BANNER"
 horizontal_alignment = 1

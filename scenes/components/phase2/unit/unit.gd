@@ -10,6 +10,7 @@ class_name Unit
 
 #local variables
 var has_moved:bool = false
+var has_acted:bool = false
 var action_count : int
 #you can delete these i just thought it would be good to have
 var x_cord: int

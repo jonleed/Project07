@@ -1,0 +1,38 @@
+class_name Turn_Manager
+extends Node
+
+signal turn_banner_update(faction_name: String)
+
+var unit_managers: Array = []
+var cur_turn_index: int = 0
+
+func _ready():
+	# Grabs all children to populate Managers array
+	for manager in get_children():
+		if manager.has_method("start_turn"):
+			unit_managers.append(manager)
+			manager.faction_turn_complete.connect(end_faction_turn)
+	
+	# Start first turn if exists at least one manager
+	if unit_managers.size() > 0:
+		start_faction_turn()
+	
+
+func start_faction_turn() -> void:
+	var current_manager = unit_managers[cur_turn_index]
+	
+	# Sends signal to TurnBannerGUI
+	emit_signal("turn_banner_update", current_manager.faction_name)
+	
+	print("New Manager Turn Start")
+	current_manager.start_turn() 
+
+func end_faction_turn() -> void:
+	cur_turn_index = (cur_turn_index + 1) % unit_managers.size()
+	start_faction_turn()
+
+func gameover() -> void:
+	emit_signal("turn_banner_update", "Failure")
+	
+func victory() -> void:
+	emit_signal("turn_banner_update", "Survived")
