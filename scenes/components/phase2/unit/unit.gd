@@ -8,3 +8,5 @@ class_name Unit
 var action_count:int = action_max
 @export var move_max:int = 5
 var move_count:int = move_max
+
+@export var icon_sprite:Texture2D = null
