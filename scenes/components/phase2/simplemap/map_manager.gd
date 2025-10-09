@@ -1,3 +1,4 @@
+class_name MapManager
 extends Node2D
 
 @export var surface_layer:TileMapLayer
