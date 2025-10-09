@@ -22,6 +22,7 @@ var health:int = base_health:
 @onready var anim_sprite:AnimatedSprite2D = $AnimatedSprite2D
 
 func ready_entity():
+	add_to_group("Entity")
 	#init health
 	health = base_health
 	#init animation

@@ -1,10 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmwrkn13c45qj"]
+[gd_scene load_steps=3 format=3 uid="uid://cmwrkn13c45qj"]
 
 [ext_resource type="Script" uid="uid://b7tqlupoes6nm" path="res://scenes/ui/phase2/components/cursor/cursor.gd" id="1_u63bx"]
+[ext_resource type="Texture2D" uid="uid://dfy8npalw87lk" path="res://assets/sprites/spritesheets/Selects.png" id="2_d8vav"]
 
 [node name="Cursor" type="Node2D"]
 script = ExtResource("1_u63bx")
 
 [node name="Marker" type="Polygon2D" parent="."]
+visible = false
 color = Color(1, 0, 0, 1)
 polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 1)
+texture = ExtResource("2_d8vav")
+hframes = 12
+vframes = 4

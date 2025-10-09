@@ -41,6 +41,10 @@ folder_colors={
 [global_group]
 
 "Player Unit"="This group is capable of holding all player units"
+"Enemy Unit"=""
+Trap=""
+Entity=""
+Unit=""
 
 [input]
 
