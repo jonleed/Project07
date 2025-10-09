@@ -148,7 +148,6 @@ func highlight_tiles(tiles: Array[Vector2i], color: Color = Color.WHITE, pattern
 		print("attemptint to set : ",tile_pos)
 		select_layer.set_cell(tile_pos, 0, atlas_coord_to_use)
 
-
 func _ready() -> void:
 	init_walls()
 	_cache_highlight_tiles()
