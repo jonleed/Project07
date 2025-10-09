@@ -1,3 +1,4 @@
+@tool
 class_name VoxelInfo
 extends Resource
 
@@ -5,11 +6,21 @@ extends Resource
 
 # Atlas Properties - only visible when tile_type is FROM_ATLAS
 @export_group("From Atlas")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var enable_atlas: bool:
+	get:
+		return tile_type == Enums.TileType.FROM_ATLAS;
+	set(value):
+		tile_type = Enums.TileType.FROM_ATLAS if value else Enums.TileType.FROM_TERRAIN;
 @export var coords := Vector3i(0, 0, 0);
 @export var atlas_info: AtlasInfo = null;
 
 # Terrain Properties - only visible when tile_type is FROM_TERRAIN
 @export_group("From Terrain")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var enable_terrain: bool:
+	get:
+		return tile_type == Enums.TileType.FROM_TERRAIN;
+	set(value):
+		tile_type = Enums.TileType.FROM_TERRAIN if value else Enums.TileType.FROM_ATLAS;
 @export var path: Array[Vector3i] = []
 @export var terrain_info: TerrainInfo = null;
 

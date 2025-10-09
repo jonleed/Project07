@@ -40,7 +40,7 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 				# Calculate the logical, centered position for this cell.
 				var pos := Vector2(x_raw - offset.x, y_raw - offset.y)
 				
-				var checkbox = CheckButton.new()
+				var checkbox = CheckBox.new()
 				checkbox.tooltip_text = str(pos)
 				
 				# Highlight the origin tile (0,0), which is now the center.

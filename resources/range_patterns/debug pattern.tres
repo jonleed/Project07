@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_t160k")
-affected_tiles = PackedVector2Array(-1, -2, 1, -2, 2, -1, 2, 1, 1, 2, -1, 2, -2, 1, -2, -1)
-grid_size = Vector2i(5, 5)
+affected_tiles = PackedVector2Array(-1, 0, 0, 1, 1, 0, 0, -1, 2, -2, -2, 2)
+grid_size = Vector2i(7, 7)
 metadata/_custom_type_script = "uid://c7yr4smfu07vp"
