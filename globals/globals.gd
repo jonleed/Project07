@@ -82,6 +82,25 @@ func get_scaled_pattern_tiles(origin: Vector2i, pattern: Pattern2D, distance: in
 
 	return valid_tiles
 
+func get_scaled_pattern_empty_tiles(origin: Vector2i, pattern: Pattern2D, distance: int, map_manager: MapManager) -> Array[Vector2i]:
+	var valid_tiles: Array[Vector2i] = []
+	if not pattern:
+		return valid_tiles # Return empty if no pattern is provided.
+
+	var effective_distance = max(1, distance)
+	#this repeats the pattern
+	for offset in pattern.affected_tiles:
+		for increment in effective_distance:
+			var scaled_offset = (offset * increment).round()
+			var target_pos = origin + Vector2i(scaled_offset)
+
+			# NEW LOGIC: A target position is valid if the MapManager considers its
+			# surface tile to be anything other than 'Air'.
+			if not map_manager.map_dict.has(target_pos) and map_manager.get_surface_tile(target_pos) != MapManager.TileType.Air:
+				valid_tiles.append(target_pos)
+
+	return valid_tiles
+
 @onready var ui_sounds:Dictionary[String,AudioStream] ={
 	"Confirm":preload("res://assets/audio/Confirm 1.wav"),
 	"Cancel":preload("res://assets/audio/Cancel 1.wav")

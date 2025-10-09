@@ -3,13 +3,13 @@ extends Unit_Manager
 
 # Todo: Action Selection, Move Highlights, Deselection
 
-signal unit_selected(Unit)
+signal unit_selected(unit:Unit)
 signal unit_deselected 
-signal update_unit_display(Array) # Updates UnitGUI to current Party
+signal update_unit_display(arr:Array) # Updates UnitGUI to current Party
 
 var selected_unit: Unit = null
-@onready var cursor = get_tree().current_scene.get_node("Cursor")
-
+#@onready var cursor = get_tree().current_scene.get_node("Cursor")
+@export var cursor:Cursor
 
 func _ready():
 	faction_name = "Player"
@@ -19,8 +19,15 @@ func _ready():
 	get_units()
 	if units.size() == 0:
 		end_turn()
-	
 	emit_signal("update_unit_display", units) # Refresh UnitGUI
+
+func get_units() -> void:
+	units.clear()
+	for child in get_tree().get_nodes_in_group("Player Unit"):
+		if not units.has(child):
+			units.append(child)
+	#also check the group
+	reset_unit_turns()
 
 # Player control phase, waits for cursor input
 func _step_turn() -> void:
@@ -36,7 +43,7 @@ func _step_turn() -> void:
 	print("Unit Selection active")
 
 # On cursor or UnitGUI selection
-func _on_unit_selected(unit) -> void:
+func _on_unit_selected(unit:Unit) -> void:
 	# Base Cases
 	if not is_active: # Prevent unit selection outside of Player turn
 		print("Not Player Turn")
@@ -44,9 +51,15 @@ func _on_unit_selected(unit) -> void:
 	if unit not in units: # Check if Player unit
 		print("Unit not a player unit")
 		return
-	if unit.has_acted: # Check if Unit is unused
-		print("Unit already acted")
+	if unit.action_count<1 and unit.move_count<1: # Check if Unit has actions left, if it doesnt, then unit has already acted
+		print("Unit is exhausted (is out of actions and moves)")
 		return
+	if unit.action_count<1:
+		print("Unit is out of Actions")
+
+	if unit.move_count<1:
+		print("Unit is out of movement")
+
 	if unit == selected_unit:
 		_on_unit_deselected()
 	
@@ -72,3 +85,8 @@ func end_selected_unit_turn() -> void:
 		selected_unit.has_acted = true
 		_on_unit_deselected()
 		print(selected_unit.name, "'s turn has ended")
+
+func attempt_to_move_unit(coord:Vector2i):
+	if selected_unit:
+		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(coord,selected_unit.move_count,map_manager).has(coord):
+			move_unit(selected_unit,coord)

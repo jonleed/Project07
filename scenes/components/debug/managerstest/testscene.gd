@@ -40,8 +40,8 @@ func attempt_entity_move(entity:Entity,dir:Vector2):
 		#if not occupied, that means nothing is here, so we must check whether its a walkable tile, there is an enum on the mapdict
 		if $MapManager.get_surface_tile(coord) == 0:
 			$MapManager.entity_move(entity.cur_pos,coord)
-			entity.cur_pos = coord
-			entity.global_position = $MapManager.coords_to_glob(coord)
+			#entity.cur_pos = coord
+			#entity.global_position = $MapManager.coords_to_glob(coord)
 
 ##This is a simple highlight tiles example, set up with the new cursor signal, tile clicked
 var selected_coords:Array[Vector2i] = []
@@ -54,10 +54,12 @@ func _on_cursor_tile_selected(coord:Vector2i) -> void:
 
 ##this is a simple highlight example for a bfs targeting implementation
 func _on_cursor_entity_selected(entity: Entity) -> void:
-	var bfs_tiles = Globals.get_bfs_empty_tiles(entity.cur_pos,entity.health,$MapManager)
-	print(bfs_tiles)
-	$MapManager.highlight_tiles(bfs_tiles,Color.BLUE,3)
-	pass # Replace with function body.
+	if entity is Unit:
+		var bfs_tiles = Globals.get_bfs_empty_tiles(entity.cur_pos,entity.move_count,$MapManager)
+		print("bfs tiles: ",bfs_tiles)
+		var pattern_tiles = Globals.get_scaled_pattern_empty_tiles(entity.cur_pos,load("res://resources/range_patterns/debug pattern.tres"),entity.move_count,$MapManager)
+		print(pattern_tiles)
+		$MapManager.highlight_tiles(bfs_tiles,Color.BLUE,3)
 
 
 func _on_cursor_deselected() -> void:

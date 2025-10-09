@@ -1,16 +1,21 @@
-[gd_scene load_steps=39 format=4 uid="uid://crwopy4mxpl4j"]
+[gd_scene load_steps=40 format=4 uid="uid://crwopy4mxpl4j"]
 
 [ext_resource type="Script" uid="uid://crwrwo3kj842t" path="res://scenes/components/debug/managerstest/testscene.gd" id="1_l0fab"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="1_xmvci"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="2_l0fab"]
-[ext_resource type="Script" uid="uid://qmdv7xn7fe18" path="res://scenes/components/phase2/entity/entity.gd" id="3_xxqej"]
 [ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="4_0rhd1"]
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_gjook"]
 [ext_resource type="Texture2D" uid="uid://r6076kt8noq5" path="res://assets/sprites/spritesheets/MinifolksHumans/Outline/MiniSwordMan.png" id="5_5ygqr"]
+[ext_resource type="Script" uid="uid://eyowdp8e6dvu" path="res://scenes/components/phase2/unit/ally_unit.gd" id="5_gjook"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="6_n06u7"]
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="6_qh3fu"]
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="9_5ygqr"]
-[ext_resource type="Script" uid="uid://uguk7yw7a10j" path="res://scenes/components/phase2/unit/unit.gd" id="10_0vcgn"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="10_n06u7"]
+
+[sub_resource type="Resource" id="Resource_pil5w"]
+script = ExtResource("6_qh3fu")
+affected_tiles = PackedVector2Array(0, 0)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l0tr1"]
 atlas = ExtResource("5_5ygqr")
@@ -230,7 +235,7 @@ animations = [{
 
 [node name="testscene" type="Node2D" node_paths=PackedStringArray("debug_entity")]
 script = ExtResource("1_l0fab")
-debug_entity = NodePath("DebugEntity")
+debug_entity = NodePath("Player Unit")
 
 [node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "select_layer")]
 script = ExtResource("1_xmvci")
@@ -253,12 +258,15 @@ tile_set = ExtResource("4_gjook")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
 
-[node name="DebugEntity" type="Node2D" parent="."]
+[node name="Player Unit" type="Node2D" parent="."]
 position = Vector2(0, 17)
-script = ExtResource("3_xxqej")
+script = ExtResource("5_gjook")
+action_max = 0
+entity_shape = SubResource("Resource_pil5w")
 anim_frames = ExtResource("4_0rhd1")
+metadata/_custom_type_script = "uid://eyowdp8e6dvu"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DebugEntity"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player Unit"]
 position = Vector2(0, -8)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_ryxm8")
@@ -275,15 +283,14 @@ autostart = true
 script = ExtResource("9_5ygqr")
 metadata/_custom_type_script = "uid://g6evar1ip8pg"
 
-[node name="Player_Unit_Manager" type="Node" parent="Turn_Manager"]
+[node name="Player_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("cursor", "map_manager")]
 script = ExtResource("10_n06u7")
+cursor = NodePath("../../Cursor")
+map_manager = NodePath("../../MapManager")
 metadata/_custom_type_script = "uid://j80klyllg32k"
-
-[node name="Unit1" type="Node2D" parent="Turn_Manager/Player_Unit_Manager"]
-script = ExtResource("10_0vcgn")
-metadata/_custom_type_script = "uid://uguk7yw7a10j"
 
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
 [connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]
 [connection signal="entity_selected" from="Cursor" to="." method="_on_cursor_entity_selected"]
 [connection signal="tile_selected" from="Cursor" to="." method="_on_cursor_tile_selected"]
+[connection signal="tile_selected" from="Cursor" to="Turn_Manager/Player_Unit_Manager" method="attempt_to_move_unit"]

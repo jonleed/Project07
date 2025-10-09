@@ -29,6 +29,7 @@ enabled=PackedStringArray("res://addons/pattern_2d_editor/plugin.cfg")
 [file_customization]
 
 folder_colors={
+"res://Deprecated/": "red",
 "res://addons/": "gray",
 "res://assets/": "orange",
 "res://globals/": "gray",
@@ -36,6 +37,10 @@ folder_colors={
 "res://scenes/": "yellow",
 "res://shaders/": "pink"
 }
+
+[global_group]
+
+"Player Unit"="This group is capable of holding all player units"
 
 [input]
 

@@ -73,12 +73,16 @@ func entity_move(prev_coord:Vector2i,new_coord:Vector2i):
 	if entity and not entity is int:
 		map_dict.erase(prev_coord)
 		map_dict.set(new_coord,entity)
+		entity.cur_pos = new_coord
+		entity.global_position = coords_to_glob(new_coord)
 
-func spawn_entity(entity:Entity,coord:Vector2i):
+func spawn_entity(entity:Entity,coord:Vector2i)->bool:
 	if map_dict.get(coord):
 		printerr("Tried to spawn entity in wall or inside another entity")
+		return false
 	else:
 		map_dict.set(coord,entity)
+		return true
 
 ##patterns
 #0, blank
