@@ -73,5 +73,11 @@ func entity_move(prev_coord:Vector2i,new_coord:Vector2i):
 		map_dict.erase(prev_coord)
 		map_dict.set(new_coord,entity)
 
+func spawn_entity(entity:Entity,coord:Vector2i):
+	if map_dict.get(coord):
+		printerr("Tried to spawn entity in wall or inside another entity")
+	else:
+		map_dict.set(coord,entity)
+
 func _ready() -> void:
 	init_walls()

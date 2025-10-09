@@ -7,19 +7,31 @@ func _update_timeout():
 	var input_dir:Vector2 = Input.get_vector("Left","Right","Up","Down")
 	
 	if input_dir:
-		attempt_entity_move(input_dir)
+		attempt_entity_move(debug_entity,input_dir)
 
 func _ready() -> void:
-	attempt_entity_move(Vector2.ZERO)
+	attempt_entity_spawn(debug_entity,Vector2i.ZERO)
+	attempt_entity_move(debug_entity,Vector2.ZERO)
+
+func attempt_entity_spawn(entity:Entity,coord:Vector2i):
+	if $MapManager.map_dict.get(coord,null)!=null:
+		#if occupied, that means something exists here, so we will just print it
+		print($MapManager.map_dict.get(coord))
+	else:
+		#if not occupied, that means nothing is here, so we must check whether its a walkable tile, there is an enum on the mapdict
+		if $MapManager.get_surface_tile(coord) == 0:
+			$MapManager.spawn_entity(entity,coord)
+			entity.cur_pos = coord
+			entity.global_position = $MapManager.coords_to_glob(coord)
 
 ##this is an example of how to move an entity
-func attempt_entity_move(dir:Vector2):
+func attempt_entity_move(entity:Entity,dir:Vector2):
 	# Rotate the input vector by -45 degrees to align with the isometric grid
 	#var iso_dir: Vector2 = dir.rotated(-PI / 4)
 	var iso_dir: Vector2 = dir.rotated(0)
 	# Round the result to get the nearest clear isometric direction (e.g., (1,0) or (1,1))
 	var coord_dir: Vector2i = Vector2i(iso_dir.round()) 
-	var coord:Vector2i = coord_dir + debug_entity.cur_pos
+	var coord:Vector2i = coord_dir + entity.cur_pos
 	print("moving to: ",coord,$MapManager.map_dict.get(coord,null))
 	if $MapManager.map_dict.get(coord,null)!=null:
 		#if occupied, that means something exists here, so we will just print it
@@ -27,6 +39,6 @@ func attempt_entity_move(dir:Vector2):
 	else:
 		#if not occupied, that means nothing is here, so we must check whether its a walkable tile, there is an enum on the mapdict
 		if $MapManager.get_surface_tile(coord) == 0:
-			$MapManager.entity_move(debug_entity.cur_pos,coord)
-			debug_entity.cur_pos = coord
-			debug_entity.global_position = $MapManager.coords_to_glob(coord)
+			$MapManager.entity_move(entity.cur_pos,coord)
+			entity.cur_pos = coord
+			entity.global_position = $MapManager.coords_to_glob(coord)
