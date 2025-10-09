@@ -4,6 +4,7 @@ extends Node2D
 @export var surface_layer:TileMapLayer
 @export var wall_layer:TileMapLayer
 
+
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary
 
@@ -79,5 +80,71 @@ func spawn_entity(entity:Entity,coord:Vector2i):
 	else:
 		map_dict.set(coord,entity)
 
+##patterns
+#0, blank
+#1, X
+#2, -
+#3, eye
+@export var select_layer:TileMapLayer
+var _highlight_atlas_coords: Dictionary = {}
+## Scans the select_layer's tileset and caches the atlas coordinates
+## for each tile that has a "TileType" custom data property.
+func _cache_highlight_tiles():
+	if not select_layer:
+		push_warning("Select Layer is not assigned in the MapManager.")
+		return
+	
+	var tile_set: TileSet = select_layer.tile_set
+	if not tile_set:
+		push_warning("Select Layer has no TileSet assigned.")
+		return
+
+	# Get the number of sources in the TileSet
+	var source_count = tile_set.get_source_count()
+
+	# Loop through all available sources by their index (0 to count-1)
+	for i in range(source_count):
+		# Get the unique ID for the source at the current index
+		var source_id = tile_set.get_source_id(i)
+		# Use that retrieved ID to get the actual source object
+		var source: TileSetSource = tile_set.get_source(source_id)
+		
+		# Optional but good practice: Only process atlas sources
+		if not source is TileSetAtlasSource:
+			continue
+
+		var tile_count = source.get_tiles_count()
+
+		for j in range(tile_count):
+			var atlas_coords = source.get_tile_id(j)
+			var tile_data: TileData = source.get_tile_data(atlas_coords, 0)
+			
+			if tile_data and tile_data.has_custom_data("TileType"):
+				var tile_type = tile_data.get_custom_data("TileType")
+				_highlight_atlas_coords[tile_type] = atlas_coords
+				print("Cached highlight tile: Type %s at %s" % [tile_type, atlas_coords])
+
+## Clears the selection layer and draws a new set of highlights.
+## Uses a pre-cached dictionary for fast lookups of pattern tiles.
+func highlight_tiles(tiles: Array[Vector2i], color: Color = Color.WHITE, pattern: int = 0):
+	select_layer.clear()
+	select_layer.modulate = color
+	
+	# 1. Check if the requested pattern was found and cached.
+	if not _highlight_atlas_coords.has(pattern):
+		push_warning("Highlight pattern %s not found in the tileset's 'TileType' custom data." % pattern)
+		return
+
+	# 2. Get the atlas coordinates for the desired pattern tile from the cache.
+	var atlas_coord_to_use: Vector2i = _highlight_atlas_coords[pattern]
+	
+	# 3. Loop through the input coordinates and place the tile.
+	# The source ID is 0, assuming you have one tileset source.
+	for tile_pos: Vector2i in tiles:
+		print("attemptint to set : ",tile_pos)
+		select_layer.set_cell(tile_pos, 0, atlas_coord_to_use)
+
+
 func _ready() -> void:
 	init_walls()
+	_cache_highlight_tiles()

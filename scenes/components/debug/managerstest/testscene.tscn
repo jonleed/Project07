@@ -1,10 +1,11 @@
-[gd_scene load_steps=38 format=4 uid="uid://crwopy4mxpl4j"]
+[gd_scene load_steps=39 format=4 uid="uid://crwopy4mxpl4j"]
 
 [ext_resource type="Script" uid="uid://crwrwo3kj842t" path="res://scenes/components/debug/managerstest/testscene.gd" id="1_l0fab"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="1_xmvci"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="2_l0fab"]
 [ext_resource type="Script" uid="uid://qmdv7xn7fe18" path="res://scenes/components/phase2/entity/entity.gd" id="3_xxqej"]
 [ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="4_0rhd1"]
+[ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_gjook"]
 [ext_resource type="Texture2D" uid="uid://r6076kt8noq5" path="res://assets/sprites/spritesheets/MinifolksHumans/Outline/MiniSwordMan.png" id="5_5ygqr"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="6_n06u7"]
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="9_5ygqr"]
@@ -231,10 +232,11 @@ animations = [{
 script = ExtResource("1_l0fab")
 debug_entity = NodePath("DebugEntity")
 
-[node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer")]
+[node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "select_layer")]
 script = ExtResource("1_xmvci")
 surface_layer = NodePath("Map Layer")
 wall_layer = NodePath("Wall Layer")
+select_layer = NodePath("Selects")
 
 [node name="Map Layer" type="TileMapLayer" parent="MapManager"]
 tile_map_data = PackedByteArray("AAD//wMAAAAAAAAAAAD//wIAAAAAAAAAAAD//wEAAAAAAAAAAAD//wAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAP7/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAACAP//AAAAAAIAAAACAAAAAAAAAAIAAAABAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAD+/wEAAAAAAAAAAAD9/wEAAAAAAAIAAAD9/wAAAAAAAAIAAAD8/wAAAAAAAAIAAAD8////AAAAAAIAAAD8//7/AAAAAAIAAAD8//3/AAAAAAIAAAD9//3/AAAAAAIAAAD+//3/AAAAAAIAAAD///3/AAAAAAIAAAD///7/AAAAAAAAAAACAAEAAAAAAAIAAAACAAIAAAAAAAIAAAABAAMAAAAAAAIAAAAAAAMAAAAAAAAAAAD+/wIAAAAAAAAAAAD9/wIAAAAAAAIAAAD9////AAAAAAIAAAD+////AAAAAAIAAAD+/wAAAAAAAAAAAAD+/wMAAAAAAAIAAAD9/wMAAAAAAAIAAAD8/wIAAAAAAAIAAAD8/wEAAAAAAAIAAAD+//7/AAAAAAIAAAABAAAAAAAAAAAAAAABAAIAAAAAAAAAAAD+//z/AAAAAAIAAAD///z/AAAAAAIAAAAAAPz/AAAAAAIAAAAAAP3/AAAAAAIAAAD8//z/AAAAAAIAAAD9//v/AAAAAAIAAAD+//v/AAAAAAIAAAD///v/AAAAAAIAAAABAPz/AAAAAAIAAAABAP3/AAAAAAIAAAACAP3/AAAAAAIAAAACAP7/AAAAAAIAAAAAAAAAAAAAAAAAAAD9//7/AAAAAAIAAAD9//z/AAAAAAIAAAD/////AAAAAAAAAAA=")
@@ -244,6 +246,9 @@ tile_set = ExtResource("2_l0fab")
 position = Vector2(0, -8)
 tile_map_data = PackedByteArray("AAACAP//AAAKAAgAAAABAP//AAAKAAgAAAAAAP//AAAKAAgAAAD/////AAAKAAgAAAD+////AAAKAAgAAAD9////AAAKAAgAAAD//wEAAAAKAAkAAAD//wIAAAAKAAkAAAD+//3/AAAKAAkAAAD+//z/AAAKAAkAAAA=")
 tile_set = ExtResource("2_l0fab")
+
+[node name="Selects" type="TileMapLayer" parent="MapManager"]
+tile_set = ExtResource("4_gjook")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
@@ -279,3 +284,6 @@ script = ExtResource("10_0vcgn")
 metadata/_custom_type_script = "uid://uguk7yw7a10j"
 
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
+[connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]
+[connection signal="entity_selected" from="Cursor" to="." method="_on_cursor_entity_selected"]
+[connection signal="tile_selected" from="Cursor" to="." method="_on_cursor_tile_selected"]

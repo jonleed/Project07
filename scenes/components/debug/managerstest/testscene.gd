@@ -42,3 +42,24 @@ func attempt_entity_move(entity:Entity,dir:Vector2):
 			$MapManager.entity_move(entity.cur_pos,coord)
 			entity.cur_pos = coord
 			entity.global_position = $MapManager.coords_to_glob(coord)
+
+##This is a simple highlight tiles example, set up with the new cursor signal, tile clicked
+var selected_coords:Array[Vector2i] = []
+func _on_cursor_tile_selected(coord:Vector2i) -> void:
+	if selected_coords.has(coord):
+		selected_coords.erase(coord)
+	else:
+		selected_coords.append(coord)
+	$MapManager.highlight_tiles(selected_coords,Color.GREEN)
+
+##this is a simple highlight example for a bfs targeting implementation
+func _on_cursor_entity_selected(entity: Entity) -> void:
+	var bfs_tiles = Globals.get_bfs_empty_tiles(entity.cur_pos,entity.health,$MapManager)
+	print(bfs_tiles)
+	$MapManager.highlight_tiles(bfs_tiles,Color.BLUE,3)
+	pass # Replace with function body.
+
+
+func _on_cursor_deselected() -> void:
+	selected_coords = []
+	$MapManager.highlight_tiles(selected_coords)

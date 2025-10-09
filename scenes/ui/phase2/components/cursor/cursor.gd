@@ -3,9 +3,10 @@ extends Node2D
 
 # Todo: Add support for keyboard
 
-signal entity_selected(Entity)
-signal unit_selected(Unit)
+signal entity_selected(entity:Entity)
+signal unit_selected(unit:Unit)
 signal deselected()
+signal tile_selected(coord:Vector2i)
 
 @onready var map_manager: MapManager = $"../MapManager"
 @onready var surface_layer: TileMapLayer = map_manager.surface_layer
@@ -33,7 +34,12 @@ func _unhandled_input(event):
 	# Left click: Entity Selection
 	if event.is_action_pressed("Left_Click"):
 		var entity = map_manager.map_dict.get(cursor_position, null)
-		if entity == null or entity is int:
+		var tile = map_manager.get_surface_tile(cursor_position)
+		if entity == null:
+			if tile != 5:
+				print("No entity at Selected Tile: %s Tile Type: %s"% [cursor_position, tile])
+				tile_selected.emit(cursor_position)
+				return
 			print("Invalid tile:", cursor_position, entity)
 			return
 		# Determine if Unit or Entity 

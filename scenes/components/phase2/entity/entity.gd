@@ -6,8 +6,8 @@ class_name Entity
 @export_subgroup("Entity Stats")
 signal health_changed(changed_node:Entity)
 ##the base health of the entity, when initialized
-@export var base_health:int = 10
-var health:int = 0:
+@export var base_health:int = 5
+var health:int = base_health:
 	set(value):
 		if not immortal:
 			health = value
