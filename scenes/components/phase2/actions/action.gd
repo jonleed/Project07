@@ -2,6 +2,7 @@ extends Resource
 class_name Action
 ##this is the base class for the action type
 #Q:1 does this action have infinite range?
+@export_group("Action Stats")
 @export var can_target_anywhere:bool = false #A:1 
 
 #Q:3 can this action be used outside of vision?
@@ -19,3 +20,6 @@ class_name Action
 @export_enum("Pattern","Flow") var multihit_type:int = 0
 @export var multihit_pattern : Pattern2D
 @export var multihit_dist :int = 1
+
+@export_group("Cosmetics")
+@export var action_icon:Texture2D
