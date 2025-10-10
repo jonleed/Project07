@@ -21,12 +21,18 @@ func _on_update_unit_display(units):
 
 # Populates Portaits and HP
 func _populate_unit_box(box, unit, index): 
-	# Icon for Current Unit
-	var unit_portrait = box.get_node("UnitSelClassCenterContainer/ClassIconTexture")
-	unit_portrait.texture = unit.portrait ## Update to real names
+	print("Populating UnitGUI for ", unit.name)
+	# Populate Portraits
+	#var unit_portrait = box.get_node("UnitSelClassCenterContainer/ClassIconTexture")
+	#unit_portrait.texture = unit.portrait ## Update to real names
+
+	# Populate Selected Unit Name
+	if index == 0:
+		var unit_label = $UnitPanelHeader/ClassPanelCenterer/ClassLabel
+		unit_label.text = unit.name
 
 	# Populate Hearts for all Units
-	_update_hearts(box, unit.health, unit.max_health) ## Update to real names
+	_update_hearts(box, unit.health, unit.base_health) ## Update to real names
 
 	# Connects signals for selectable unit portraits (2–4)
 	if index > 0:
@@ -37,7 +43,7 @@ func _populate_unit_box(box, unit, index):
 # Shows/hides hearts depending on HP
 func _update_hearts(box, current_health: int, max_health: int):
 	current_health = clamp(current_health, 0, max_health) # Clamp current HP
-	var hearts = box.get_node("UnitSelHealthBar/HBoxContainer").get_children()
+	var hearts = box.get_node("UnitSelHealthBar/HealthBarMover/HBoxContainer").get_children()
 	for i in range(hearts.size()):
 		hearts[i].visible = i < current_health and i < max_health
 

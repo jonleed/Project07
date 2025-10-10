@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=65 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://cnecn4apvbdlu" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_1iy8h"]
 [ext_resource type="Script" uid="uid://bya4oup0dacli" path="res://scenes/ui/phase2/components/gui scripting/unit_gui.gd" id="1_4ycoo"]
@@ -48,7 +48,15 @@ colors = PackedColorArray(0, 0, 0.576471, 1, 1, 1, 1, 1)
 noise = SubResource("FastNoiseLite_3b1oa")
 color_ramp = SubResource("Gradient_k8s3k")
 
+[sub_resource type="Gradient" id="Gradient_2n8q5"]
+offsets = PackedFloat32Array(0, 0.7130542, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.7130542, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sawr6"]
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_y41b5"]
+noise = SubResource("FastNoiseLite_sawr6")
+color_ramp = SubResource("Gradient_2n8q5")
 
 [sub_resource type="Gradient" id="Gradient_r78rm"]
 colors = PackedColorArray(0.176471, 0.513726, 0.819608, 1, 1, 0.839216, 0.835294, 1)
@@ -102,6 +110,15 @@ colors = PackedColorArray(0, 0, 0, 1, 0.0235294, 1, 1, 1)
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qsu7h"]
 noise = SubResource("FastNoiseLite_jnaxr")
 color_ramp = SubResource("Gradient_kltk7")
+
+[sub_resource type="Gradient" id="Gradient_1iy8h"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.4806667, 0.24000001, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2n8q5"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0kqh0"]
+noise = SubResource("FastNoiseLite_2n8q5")
+color_ramp = SubResource("Gradient_1iy8h")
 
 [sub_resource type="Gradient" id="Gradient_alvlg"]
 colors = PackedColorArray(0, 0, 0, 1, 1, 0.364706, 1, 1)
@@ -166,6 +183,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
+mouse_filter = 2
 
 [node name="ObjectiveGUI" type="Control" parent="Graphical User Interface"]
 visible = false
@@ -319,7 +337,7 @@ stretch_mode = 3
 
 [node name="ClassLabel" type="Label" parent="Graphical User Interface/UnitGUI/UnitPanelHeader/ClassPanelCenterer"]
 layout_mode = 2
-text = "Jester"
+text = "Unit Name"
 label_settings = SubResource("LabelSettings_73c2s")
 
 [node name="Class Icon" type="TextureRect" parent="Graphical User Interface/UnitGUI"]
@@ -696,15 +714,17 @@ script = ExtResource("4_5kixl")
 [node name="StatPanelHeader" type="Control" parent="Graphical User Interface/ActionGUI"]
 clip_contents = true
 anchors_preset = 0
-offset_top = -21.0
+offset_left = 1.0
+offset_top = 16.0
 offset_right = 275.0
-offset_bottom = 34.0
+offset_bottom = 48.0
 
 [node name="StatPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/StatPanelHeader"]
-visible = false
 layout_mode = 0
-offset_right = 128.0
-offset_bottom = 40.0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 93.0
+offset_bottom = 42.0
 texture = SubResource("NoiseTexture2D_y41b5")
 expand_mode = 1
 
@@ -815,10 +835,8 @@ expand_mode = 1
 
 [node name="ActionPanel" type="HBoxContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 layout_mode = 0
-offset_right = 372.0
+offset_right = 463.0
 offset_bottom = 129.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="ActionOneContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
 custom_minimum_size = Vector2(80, 80)
@@ -851,6 +869,23 @@ texture = SubResource("NoiseTexture2D_dwrl1")
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_normal = SubResource("NoiseTexture2D_qsu7h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ActionThreeContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ActionThreeBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionThreeContainer"]
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_dwrl1")
+
+[node name="ActionThreeBTN" type="TextureButton" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionThreeContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = SubResource("NoiseTexture2D_0kqh0")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -890,6 +925,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="PassiveContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4

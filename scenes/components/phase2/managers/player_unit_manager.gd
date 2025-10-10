@@ -15,11 +15,12 @@ func _ready():
 	faction_name = "Player"
 	cursor.unit_selected.connect(_on_unit_selected)
 	cursor.deselected.connect(_on_unit_deselected)
-	
 	get_units()
 	if units.size() == 0:
+		print("Empty Units Array on Ready")
 		end_turn()
-	emit_signal("update_unit_display", units) # Refresh UnitGUI
+	#refresh_gui(units[0]) #Initalize GUI
+	call_deferred("refresh_gui", units[0])
 
 func get_units() -> void:
 	units.clear()
@@ -27,7 +28,8 @@ func get_units() -> void:
 		if not units.has(child):
 			units.append(child)
 	#also check the group
-	reset_unit_turns()
+	reset_unit_turns() # Problematic if get_units() is run mid-turn
+	print("Getting Units", units)
 
 # Player control phase, waits for cursor input
 func _step_turn() -> void:
@@ -69,8 +71,7 @@ func _on_unit_selected(unit:Unit) -> void:
 
 	# Update Selected Unit and GUI
 	selected_unit = unit
-	emit_signal("unit_selected", unit) # Refresh ActionGUI
-	emit_signal("update_unit_display", units) # Refresh UnitGUI
+	refresh_gui(unit)
 	print("Selected unit: ", unit.name)
 
 # For removing highlights for Selected Unit / Right click maybe
@@ -82,18 +83,26 @@ func _on_unit_deselected() -> void:
 # Ends the selected unit's turn
 func end_selected_unit_turn() -> void:
 	if selected_unit:
-		selected_unit.has_acted = true
+		selected_unit.move_count = 0
+		selected_unit.action_count = 0
+		refresh_gui(selected_unit) # Always call before deselection
 		_on_unit_deselected()
-		print(selected_unit.name, "'s turn has ended")
+		print("Turn has ended")
 
 func attempt_to_move_unit(coord:Vector2i):
 	if selected_unit:
 		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(coord,selected_unit.move_count,map_manager).has(coord):
 			move_unit(selected_unit,coord)
+			refresh_gui(selected_unit) # Update Move Count
 
 
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
 		remove_unit(changed_node)
+
+# Refreshes GUI
+func refresh_gui(unit) -> void:
+	emit_signal("unit_selected", unit) # Refresh ActionGUI
+	emit_signal("update_unit_display", units) # Refresh UnitGUI
 
 #im not sure who will be holding the call to the Action Decoder to perform the operation of the action

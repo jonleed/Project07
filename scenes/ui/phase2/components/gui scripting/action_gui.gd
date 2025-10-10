@@ -11,6 +11,7 @@ extends Control
 @onready var recovery_btn = $StatPanelHeader/RecoveryContainer/RecoveryBTN
 @onready var action_one_btn = $ActionPanelHeader/ActionPanel/ActionOneContainer/ActionOneBTN
 @onready var action_two_btn = $ActionPanelHeader/ActionPanel/ActionTwoContainer/ActionTwoBTN
+@onready var action_three_btn = $ActionPanelHeader/ActionPanel/ActionThreeContainer/ActionThreeBTN
 # @onready var item_btn = $ActionPanelHeader/ActionPanel/ItemContainer/ItemVBoxContainer/ItemBTN
 # @onready var item_cycle_up_btn = $ActionPanelHeader/ActionPanel/ItemContainer/ItemVBoxContainer/ItemCycleUp
 # @onready var item_cycle_down_btn = $ActionPanelHeader/ActionPanel/ItemContainer/ItemVBoxContainer/ItemCycleDown
@@ -20,6 +21,7 @@ extends Control
 # Containers
 @onready var action_one_container = $ActionPanelHeader/ActionPanel/ActionOneContainer
 @onready var action_two_container = $ActionPanelHeader/ActionPanel/ActionTwoContainer
+@onready var action_three_container = $ActionPanelHeader/ActionPanel/ActionThreeContainer
 @onready var passive_container = $ActionPanelHeader/ActionPanel/PassiveContainer
 
 var heal_amount : int = 1
@@ -33,6 +35,7 @@ func _ready():
 	# Connect Ability buttons
 	action_one_btn.pressed.connect(_on_action_one)
 	action_two_btn.pressed.connect(_on_action_two)
+	action_three_btn.pressed.connect(_on_action_three)
 	
 	# Connect Item Buttons
 	#$ActionPanelHeader/ActionPanel/ItemContainer/ItemVBoxContainer/ItemBTN
@@ -42,18 +45,18 @@ func _ready():
 # Called when current unit updates
 func _on_unit_selected(unit):
 	_update_stats(unit)
-	_update_recovery(unit)
+	#_update_recovery(unit)
 	_update_abilities(unit)
-	_update_passive(unit)
+	#_update_passive(unit)
 
 # Update base stats (damage / movement)
 func _update_stats(unit):
-	base_damage_label.text = str(unit.base_attack)
-	move_dist_label.text = str(unit.move_dist)
+	move_dist_label.text = str(unit.move_count)
 
 # Update recovery section
 func _update_recovery(unit):
-	heal_amount = unit.recovery_amount
+	#heal_amount = unit.recovery_amount
+	return
 
 func _on_recovery_pressed():
 	#player_unit_manager._on_unit_health_changed(heal_amount)
@@ -62,30 +65,39 @@ func _on_recovery_pressed():
 
 # Update current unit abilities 
 func _update_abilities(unit):
-	var abilities = unit.abilities
+	var abilities = unit.action_array
 
 	# Hide both by default
 	action_one_container.visible = false
 	action_two_container.visible = false
+	action_three_container.visible = false
 
 	if abilities.size() >= 1:
 		var a1 = abilities[0]
-		var btn1 = action_one_btn
-		btn1.text = a1.name
+		base_damage_label.text = str(a1.base_dmg)
+		#action_one_btn.text = a1.name
 		action_one_container.visible = true
 
 	if abilities.size() >= 2:
 		var a2 = abilities[1]
-		var btn2 = action_two_btn
-		btn2.text = a2.name
+		#action_two_btn.text = a2.name
 		action_two_container.visible = true
+	
+	if abilities.size() >= 3:
+		var a3 = abilities[2]
+		#action_three_btn.text = a3.name
+		action_three_container.visible = true
 
 
 func _on_action_one():
-	player_unit_manager.emit_signal("action_selected", {"type": "actionone"})
+	print("Action One Selected")
+	#player_unit_manager.emit_signal("action_selected", {"type": "actionone"})
 
 func _on_action_two():
 	player_unit_manager.emit_signal("action_selected", {"type": "actiontwo"})
+
+func _on_action_three():
+	player_unit_manager.emit_signal("action_selected", {"type": "actionthree"})
 
 # Update passive ability
 func _update_passive(unit):
