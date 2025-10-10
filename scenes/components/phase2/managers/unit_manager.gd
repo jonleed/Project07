@@ -11,6 +11,7 @@ var used_units: Array = []
 var is_active: bool = false 
 #reference to the map
 @export var map_manager:MapManager
+@export var action_decoder:ActionDecoder
 
 func _ready():
 	get_units()

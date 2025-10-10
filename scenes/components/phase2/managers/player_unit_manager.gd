@@ -90,3 +90,10 @@ func attempt_to_move_unit(coord:Vector2i):
 	if selected_unit:
 		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(coord,selected_unit.move_count,map_manager).has(coord):
 			move_unit(selected_unit,coord)
+
+
+func _on_player_unit_health_changed(changed_node: Entity) -> void:
+	if changed_node.health<=0:
+		remove_unit(changed_node)
+
+#im not sure who will be holding the call to the Action Decoder to perform the operation of the action
