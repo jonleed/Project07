@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=66 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://cnecn4apvbdlu" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_1iy8h"]
 [ext_resource type="Script" uid="uid://bya4oup0dacli" path="res://scenes/ui/phase2/components/gui scripting/unit_gui.gd" id="1_4ycoo"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://bhoi8t3i6rkrv" path="res://scenes/ui/phase2/components/gui scripting/turn_counter_gui.gd" id="8_mfuxc"]
 [ext_resource type="Texture2D" uid="uid://csa0lmn73jilr" path="res://assets/ui/turncountborder.png" id="8_qsu7h"]
 [ext_resource type="Script" uid="uid://dhvcipypgmgtf" path="res://scenes/ui/phase2/components/gui scripting/turn_banner_gui.gd" id="12_628vg"]
+[ext_resource type="PackedScene" uid="uid://evc6pglbeeqm" path="res://scenes/ui/settings/Pause-Menu.tscn" id="14_2n8q5"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_628vg"]
 
@@ -175,14 +176,22 @@ font_color = Color(0.89, 0.89, 0.89, 1)
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
-[node name="UI-Phase-2" type="Node2D"]
+[node name="UI-Phase-2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_1iy8h")
 
 [node name="Graphical User Interface" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="ObjectiveGUI" type="Control" parent="Graphical User Interface"]
@@ -1105,3 +1114,7 @@ layout_mode = 2
 layout_mode = 2
 text = "TURN START BANNER"
 horizontal_alignment = 1
+
+[node name="PauseMenu" parent="." instance=ExtResource("14_2n8q5")]
+visible = false
+layout_mode = 1

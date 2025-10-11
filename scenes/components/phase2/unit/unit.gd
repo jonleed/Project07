@@ -18,3 +18,23 @@ func can_act() -> bool:
 # Checks if unit has moves remaining
 func can_move() -> bool:
 	return move_count > 1
+
+func load_unit_res(unit_res:UnitResource):
+	#unit variables
+	action_array = unit_res.action_array.duplicate(true)
+	action_max = unit_res.action_max
+	action_count = action_max
+	move_max = unit_res.move_max
+	move_count = move_max
+	icon_sprite = unit_res.icon_sprite
+	#entity variables
+	base_health = unit_res.base_health
+	health = base_health
+	immortal = unit_res.immortal
+	entity_shape = unit_res.entity_shape
+	anim_frames = unit_res.anim_frames
+	anim_sprite.sprite_frames = anim_frames
+	if anim_frames.get_animation_names().has("Idle"):
+		anim_sprite.animation = "Idle"
+	
+	

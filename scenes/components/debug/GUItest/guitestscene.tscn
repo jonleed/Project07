@@ -56,7 +56,6 @@ zoom = Vector2(4, 4)
 position = Vector2(0, 17)
 script = ExtResource("5_rjioh")
 action_array = Array[ExtResource("6_bvb7h")]([SubResource("Resource_wdlco")])
-action_max = 0
 entity_shape = SubResource("Resource_pil5w")
 anim_frames = ExtResource("9_hwjpr")
 metadata/_custom_type_script = "uid://eyowdp8e6dvu"
@@ -84,11 +83,14 @@ metadata/_custom_type_script = "uid://j80klyllg32k"
 
 [node name="Cursor" parent="." instance=ExtResource("10_gjfvi")]
 
-[node name="UI-Phase-2" parent="." node_paths=PackedStringArray("turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
-position = Vector2(-145, -81)
-scale = Vector2(0.25, 0.25)
-turn_manager = NodePath("../Turn_Manager")
-player_unit_manager = NodePath("../Turn_Manager/Player_Unit_Manager")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
+visible = false
+offset_right = -1152.0
+offset_bottom = -648.0
+turn_manager = NodePath("../../Turn_Manager")
+player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 
 [connection signal="health_changed" from="Player Unit" to="Turn_Manager/Player_Unit_Manager" method="_on_player_unit_health_changed"]
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
