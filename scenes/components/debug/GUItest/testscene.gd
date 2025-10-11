@@ -15,8 +15,8 @@ func _ready() -> void:
 		$"CanvasLayer/UI-Phase-2".visible = false
 	else:
 		$"CanvasLayer/UI-Phase-2".visible = true
-	attempt_entity_spawn(debug_entity,Vector2i.ZERO)
-	attempt_entity_move(debug_entity,Vector2.ZERO)
+		attempt_entity_spawn(debug_entity,Vector2i.ZERO)
+		attempt_entity_move(debug_entity,Vector2.ZERO)
 
 func attempt_entity_spawn(entity:Entity,coord:Vector2i):
 	if $MapManager.map_dict.get(coord,null)!=null:
