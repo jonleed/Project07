@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://cda7pxyq1ugar"]
+
+[ext_resource type="Script" uid="uid://dq4a40dyig4ls" path="res://scenes/ui/settings/options_container.gd" id="1_joqh5"]
+[ext_resource type="PackedScene" uid="uid://byqk771q36ny4" path="res://scenes/ui/settings/Sound-Options.tscn" id="1_vud5k"]
+
+[node name="Options" type="VBoxContainer"]
+script = ExtResource("1_joqh5")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+tab_alignment = 1
+current_tab = 0
+tabs_position = 1
+
+[node name="Sound" parent="TabContainer" instance=ExtResource("1_vud5k")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

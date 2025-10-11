@@ -1,9 +1,5 @@
 extends PanelContainer
 
-func _on_back_pressed() -> void:
-	Globals.play_ui_sound("Cancel")
-	$Options.visible = false
-
 func _on_main_menu_pressed() -> void:
 	Globals.play_ui_sound("Confirm")
 	$ConfirmationDialog.popup_centered()
