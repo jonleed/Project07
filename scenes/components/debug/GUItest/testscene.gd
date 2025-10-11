@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 
 @export var debug_entity:Entity
@@ -10,6 +11,10 @@ func _update_timeout():
 		attempt_entity_move(debug_entity,input_dir)
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		$"CanvasLayer/UI-Phase-2".visible = false
+	else:
+		$"CanvasLayer/UI-Phase-2".visible = true
 	attempt_entity_spawn(debug_entity,Vector2i.ZERO)
 	attempt_entity_move(debug_entity,Vector2.ZERO)
 
