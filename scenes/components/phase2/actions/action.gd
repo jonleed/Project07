@@ -22,4 +22,5 @@ class_name Action
 @export var multihit_dist :int = 1
 
 @export_group("Cosmetics")
+@export var action_name:String = "Action 1"
 @export var action_icon:Texture2D

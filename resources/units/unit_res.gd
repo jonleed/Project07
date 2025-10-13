@@ -6,6 +6,7 @@ class_name UnitResource
 @export var move_max:int = 5
 
 @export var icon_sprite:Texture2D = null
+@export var unit_name:String = "Joe"
 @export_category("Entity Variables")
 @export var base_health:int = 5
 @export var immortal:bool = false

@@ -48,6 +48,15 @@ func get_units() -> void:
 	#also check the group
 	reset_unit_turns()
 
+##use this in tandem with add_unit to create a unit resource from scratch, we do not edit these resources directly
+func create_unit_from_res(res:UnitResource)->Unit:
+	var un :Unit = Unit.new()
+	un.u_res = res
+	un.load_unit_res(res)
+	un.ready_entity()
+	un.add_to_group("Unit")
+	return un
+
 # Add a unit to this unit manager
 func add_unit(unit: Unit,coord:Vector2i) -> void:
 	if unit not in units:

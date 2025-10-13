@@ -95,6 +95,14 @@ func attempt_to_move_unit(coord:Vector2i):
 			move_unit(selected_unit,coord)
 			refresh_gui(selected_unit) # Update Move Count
 
+func create_unit_from_res(res:UnitResource)->Unit:
+	var un :Unit = Unit.new()
+	un.u_res = res
+	un.load_unit_res(res)
+	un.ready_entity()
+	un.add_to_group("Unit")
+	un.add_to_group("Player Unit")
+	return un
 
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
