@@ -1,7 +1,7 @@
 extends Node
 
 #this node will contain global variables and useful functions
-var party_units:Dictionary ={}
+var party_units
 
 ## Calculates reachable tiles using Breadth-First Search, respecting obstacles
 ## defined in the MapManager's dictionary.

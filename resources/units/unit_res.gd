@@ -5,8 +5,10 @@ class_name UnitResource
 @export var action_max:int = 1
 @export var move_max:int = 5
 
+@export_category("Cosmetic")
 @export var icon_sprite:Texture2D = null
 @export var unit_name:String = "Joe"
+@export_multiline var unit_desc:String = ""
 @export_category("Entity Variables")
 @export var base_health:int = 5
 @export var immortal:bool = false

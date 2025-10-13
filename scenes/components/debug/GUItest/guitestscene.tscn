@@ -85,7 +85,6 @@ metadata/_custom_type_script = "uid://j80klyllg32k"
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
-visible = false
 offset_right = -1152.0
 offset_bottom = -648.0
 turn_manager = NodePath("../../Turn_Manager")

@@ -17,6 +17,7 @@ func _ready() -> void:
 		$"CanvasLayer/UI-Phase-2".visible = true
 		attempt_entity_spawn(debug_entity,Vector2i.ZERO)
 		attempt_entity_move(debug_entity,Vector2.ZERO)
+		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 
 func attempt_entity_spawn(entity:Entity,coord:Vector2i):
 	if $MapManager.map_dict.get(coord,null)!=null:

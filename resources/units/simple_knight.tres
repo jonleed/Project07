@@ -22,6 +22,7 @@ script = ExtResource("2_o1d5v")
 action_array = Array[ExtResource("1_vors4")]([SubResource("Resource_wdlco")])
 icon_sprite = ExtResource("5_81c7v")
 unit_name = "Knight"
+unit_desc = "dwa"
 entity_shape = SubResource("Resource_pil5w")
 anim_frames = ExtResource("3_81c7v")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"
