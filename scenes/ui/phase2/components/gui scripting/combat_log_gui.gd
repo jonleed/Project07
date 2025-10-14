@@ -13,7 +13,8 @@ func _ready():
 	reset_btn.pressed.connect(_on_reset)
 
 func _on_end_turn():
-	player_unit_manager.end_selected_unit_turn()
+	#player_unit_manager.end_selected_unit_turn()
+	player_unit_manager.end_turn()
 
 func _on_undo():
 	return
