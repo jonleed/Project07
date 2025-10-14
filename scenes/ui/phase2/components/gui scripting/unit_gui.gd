@@ -30,7 +30,7 @@ func _populate_unit_box(box, unit, index):
 	# Populate Selected Unit Name
 	if index == 0:
 		var unit_label = $UnitPanelHeader/ClassPanelCenterer/ClassLabel
-		unit_label.text = unit.name
+		unit_label.text = unit.unit_name
 
 	# Populate Hearts for all Units
 	_update_hearts(box, unit.health, unit.base_health) ## Update to real names
