@@ -1,35 +1,17 @@
-[gd_scene load_steps=18 format=4 uid="uid://cfxrrm1xwg2a2"]
+[gd_scene load_steps=10 format=4 uid="uid://cfxrrm1xwg2a2"]
 
 [ext_resource type="Script" uid="uid://2uwa5007dpor" path="res://scenes/components/debug/GUItest/testscene.gd" id="1_x5woq"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_7vq22"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="3_jk8yq"]
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_6avrs"]
-[ext_resource type="Script" uid="uid://eyowdp8e6dvu" path="res://scenes/components/phase2/unit/ally_unit.gd" id="5_rjioh"]
-[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="6_bvb7h"]
-[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="7_lx0i2"]
-[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="8_d5mn5"]
-[ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="9_hwjpr"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="10_gjfvi"]
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="11_5w6rj"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="12_ayot3"]
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="13_hiat0"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="14_mqkbs"]
 
-[sub_resource type="Resource" id="Resource_wdlco"]
-script = ExtResource("7_lx0i2")
-base_dmg = 10
-metadata/_custom_type_script = "uid://dhgqt46va2g45"
-
-[sub_resource type="Resource" id="Resource_pil5w"]
-script = ExtResource("8_d5mn5")
-affected_tiles = PackedVector2Array(0, 0)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0vcgn"]
-
-[node name="testscene" type="Node2D" node_paths=PackedStringArray("debug_entity")]
+[node name="testscene" type="Node2D"]
 script = ExtResource("1_x5woq")
-debug_entity = NodePath("Player Unit")
 
 [node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "select_layer")]
 script = ExtResource("2_7vq22")
@@ -50,19 +32,6 @@ tile_set = ExtResource("4_6avrs")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
-
-[node name="Player Unit" type="Node2D" parent="."]
-position = Vector2(0, 17)
-script = ExtResource("5_rjioh")
-action_array = Array[ExtResource("6_bvb7h")]([SubResource("Resource_wdlco")])
-entity_shape = SubResource("Resource_pil5w")
-anim_frames = ExtResource("9_hwjpr")
-metadata/_custom_type_script = "uid://eyowdp8e6dvu"
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player Unit"]
-position = Vector2(0, -8)
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_0vcgn")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
@@ -85,12 +54,12 @@ metadata/_custom_type_script = "uid://j80klyllg32k"
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
+visible = false
 offset_right = -1152.0
 offset_bottom = -648.0
 turn_manager = NodePath("../../Turn_Manager")
 player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 
-[connection signal="health_changed" from="Player Unit" to="Turn_Manager/Player_Unit_Manager" method="_on_player_unit_health_changed"]
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
 [connection signal="unit_selected" from="Turn_Manager/Player_Unit_Manager" to="." method="_on_cursor_entity_selected"]
 [connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]

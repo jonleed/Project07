@@ -26,9 +26,10 @@ func ready_entity():
 	#init health
 	health = base_health
 	#init animation
-	anim_sprite.sprite_frames = anim_frames
-	if anim_frames.get_animation_names().has("Idle"):
-		anim_sprite.animation = "Idle"
+	if anim_frames:
+		anim_sprite.sprite_frames = anim_frames
+		if anim_frames.get_animation_names().has("Idle"):
+			anim_sprite.animation = "Idle"
 
 ##this current position represents the tile coordinate the entity is on
 var cur_pos:Vector2i = Vector2i.ZERO

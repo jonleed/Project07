@@ -15,9 +15,15 @@ func _ready() -> void:
 		$"CanvasLayer/UI-Phase-2".visible = false
 	else:
 		$"CanvasLayer/UI-Phase-2".visible = true
-		attempt_entity_spawn(debug_entity,Vector2i.ZERO)
-		attempt_entity_move(debug_entity,Vector2.ZERO)
+		#attempt_entity_spawn(debug_entity,Vector2i.ZERO)
+		#attempt_entity_move(debug_entity,Vector2.ZERO)
+		for res in Globals.party_units:
+			var unit :Unit = $Turn_Manager/Player_Unit_Manager.create_unit_from_res(res)
+			$Turn_Manager/Player_Unit_Manager.add_unit(unit,Vector2i.ZERO)
+			$Turn_Manager/Player_Unit_Manager.move_unit(unit,Vector2i.ZERO)
+			
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
+		$Turn_Manager/Player_Unit_Manager.start_turn()
 
 func attempt_entity_spawn(entity:Entity,coord:Vector2i):
 	if $MapManager.map_dict.get(coord,null)!=null:

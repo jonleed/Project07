@@ -20,7 +20,7 @@ func _ready():
 		print("Empty Units Array on Ready")
 		end_turn()
 	#refresh_gui(units[0]) #Initalize GUI
-	call_deferred("refresh_gui", units[0])
+	#call_deferred("refresh_gui", units[0])
 
 func get_units() -> void:
 	units.clear()
@@ -95,8 +95,11 @@ func attempt_to_move_unit(coord:Vector2i):
 			move_unit(selected_unit,coord)
 			refresh_gui(selected_unit) # Update Move Count
 
+@onready var unit_packed:PackedScene = preload("res://scenes/components/phase2/unit/Player Unit.tscn")
+
 func create_unit_from_res(res:UnitResource)->Unit:
-	var un :Unit = Unit.new()
+	var un :Unit = unit_packed.instantiate()
+	add_child(un)
 	un.u_res = res
 	un.load_unit_res(res)
 	un.ready_entity()
