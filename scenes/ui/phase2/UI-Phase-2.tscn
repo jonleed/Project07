@@ -205,6 +205,7 @@ offset_top = 18.0
 offset_right = 1236.0
 offset_bottom = 268.0
 scale = Vector2(0.75, 0.75)
+mouse_filter = 2
 
 [node name="ObjCenterer" type="CenterContainer" parent="Graphical User Interface/ObjectiveGUI"]
 custom_minimum_size = Vector2(300, 250)
@@ -324,6 +325,7 @@ offset_top = 17.0
 offset_right = 618.0
 offset_bottom = 242.0
 scale = Vector2(0.75, 0.75)
+mouse_filter = 2
 script = ExtResource("1_4ycoo")
 
 [node name="UnitPanelHeader" type="Control" parent="Graphical User Interface/UnitGUI"]
@@ -331,6 +333,7 @@ clip_contents = true
 anchors_preset = 0
 offset_right = 225.0
 offset_bottom = 225.0
+mouse_filter = 2
 
 [node name="ClassPanelCenterer" type="CenterContainer" parent="Graphical User Interface/UnitGUI/UnitPanelHeader"]
 clip_contents = true
@@ -364,6 +367,7 @@ expand_mode = 1
 layout_mode = 0
 offset_right = 600.0
 offset_bottom = 150.0
+mouse_filter = 2
 theme_override_constants/separation = 2
 
 [node name="UnitBox1" type="Control" parent="Graphical User Interface/UnitGUI/HBoxContainer"]
@@ -719,6 +723,7 @@ offset_left = 18.0
 offset_top = 468.0
 offset_right = 418.0
 offset_bottom = 648.0
+mouse_filter = 2
 script = ExtResource("4_5kixl")
 
 [node name="StatPanelHeader" type="Control" parent="Graphical User Interface/ActionGUI"]
@@ -728,6 +733,7 @@ offset_left = 1.0
 offset_top = 16.0
 offset_right = 275.0
 offset_bottom = 48.0
+mouse_filter = 2
 
 [node name="StatPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/StatPanelHeader"]
 layout_mode = 0
@@ -735,6 +741,7 @@ offset_left = 1.0
 offset_top = 2.0
 offset_right = 93.0
 offset_bottom = 42.0
+mouse_filter = 2
 texture = SubResource("NoiseTexture2D_y41b5")
 expand_mode = 1
 
@@ -742,6 +749,7 @@ expand_mode = 1
 anchors_preset = 0
 offset_left = -3.0
 offset_right = -3.0
+mouse_filter = 2
 
 [node name="DamagePanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI/StatPanelHeader/BaseDamagePanelContainer"]
 visible = false
@@ -776,6 +784,7 @@ label_settings = SubResource("LabelSettings_lhy63")
 anchors_preset = 0
 offset_left = 41.0
 offset_right = 41.0
+mouse_filter = 2
 
 [node name="MovementPanelBackground" type="TextureRect" parent="Graphical User Interface/ActionGUI/StatPanelHeader/MovementPanelContainer"]
 visible = false
@@ -834,6 +843,7 @@ anchors_preset = 0
 offset_top = 32.0
 offset_right = 300.0
 offset_bottom = 232.0
+mouse_filter = 2
 
 [node name="ActionPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 visible = false
@@ -847,12 +857,14 @@ expand_mode = 1
 layout_mode = 0
 offset_right = 463.0
 offset_bottom = 129.0
+mouse_filter = 2
 
 [node name="ActionOneContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="ActionOneBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionOneContainer"]
 layout_mode = 2
@@ -870,6 +882,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="ActionTwoBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionTwoContainer"]
 layout_mode = 2
@@ -904,6 +917,7 @@ visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="ItemBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ItemContainer"]
 custom_minimum_size = Vector2(80, 120)
@@ -1078,6 +1092,7 @@ offset_left = 540.0
 offset_top = 13.0
 offset_right = 540.0
 offset_bottom = 13.0
+mouse_filter = 2
 
 [node name="TurnCounterIcon" type="TextureRect" parent="Graphical User Interface/TurnCounterGUI/TurnCounterContainer"]
 custom_minimum_size = Vector2(80, 80)
@@ -1103,6 +1118,7 @@ offset_left = 471.0
 offset_top = 82.0
 offset_right = 511.0
 offset_bottom = 122.0
+mouse_filter = 2
 script = ExtResource("12_628vg")
 
 [node name="TurnBannerCenterer" type="CenterContainer" parent="Graphical User Interface/TurnBannerGUI"]
