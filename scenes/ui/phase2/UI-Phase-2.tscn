@@ -1,10 +1,11 @@
-[gd_scene load_steps=66 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=67 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://cnecn4apvbdlu" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_1iy8h"]
 [ext_resource type="Script" uid="uid://bya4oup0dacli" path="res://scenes/ui/phase2/components/gui scripting/unit_gui.gd" id="1_4ycoo"]
 [ext_resource type="Texture2D" uid="uid://dkeb6lwnq13mk" path="res://assets/ui/movementicon.png" id="1_nb6pv"]
 [ext_resource type="Texture2D" uid="uid://cghkwru6dteuo" path="res://assets/ui/jester.png" id="2_73c2s"]
 [ext_resource type="Texture2D" uid="uid://dqhcyyw52y2ab" path="res://assets/ui/healthicon.png" id="3_0ti8f"]
+[ext_resource type="Texture2D" uid="uid://c7corju1cdsa2" path="res://assets/ui/portraits/random.png" id="3_sawr6"]
 [ext_resource type="Script" uid="uid://de8rwgmbndx0p" path="res://scenes/ui/phase2/components/gui scripting/action_gui.gd" id="4_5kixl"]
 [ext_resource type="Texture2D" uid="uid://cy7j2t823fi4l" path="res://assets/ui/basedamageicon.png" id="4_335d7"]
 [ext_resource type="Texture2D" uid="uid://by27lobi6knwl" path="res://assets/ui/attackordericon.png" id="6_qsu7h"]
@@ -379,7 +380,7 @@ offset_bottom = 150.0
 [node name="ClassIconTexture" type="TextureRect" parent="Graphical User Interface/UnitGUI/HBoxContainer/UnitBox1/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-texture = ExtResource("2_73c2s")
+texture = ExtResource("3_sawr6")
 expand_mode = 1
 
 [node name="UnitSelHealthBar" type="Control" parent="Graphical User Interface/UnitGUI/HBoxContainer/UnitBox1"]
@@ -466,7 +467,7 @@ expand_mode = 1
 [node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitGUI/HBoxContainer/UnitBox2/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-texture_normal = ExtResource("2_73c2s")
+texture_normal = ExtResource("3_sawr6")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -554,7 +555,7 @@ expand_mode = 1
 [node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitGUI/HBoxContainer/UnitBox3/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-texture_normal = ExtResource("2_73c2s")
+texture_normal = ExtResource("3_sawr6")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -642,7 +643,7 @@ expand_mode = 1
 [node name="UnitSelClassTextureButton" type="TextureButton" parent="Graphical User Interface/UnitGUI/HBoxContainer/UnitBox4/UnitSelClassCenterContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-texture_normal = ExtResource("2_73c2s")
+texture_normal = ExtResource("3_sawr6")
 ignore_texture_size = true
 stretch_mode = 0
 
