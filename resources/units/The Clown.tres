@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=6 format=3 uid="uid://b7d4ceedmf682"]
+
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_6jcb4"]
+[ext_resource type="SpriteFrames" uid="uid://b60of5g33h0fw" path="res://resources/animations/The Clown.tres" id="2_c73w4"]
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_swvdy"]
+[ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_0jk40"]
+[ext_resource type="Texture2D" uid="uid://cghkwru6dteuo" path="res://assets/ui/jester.png" id="4_o4ar2"]
+
+[resource]
+script = ExtResource("2_swvdy")
+action_max = 2
+move_max = 3
+icon_sprite = ExtResource("4_o4ar2")
+unit_name = "The Clown"
+entity_shape = ExtResource("3_0jk40")
+anim_frames = ExtResource("2_c73w4")
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"
