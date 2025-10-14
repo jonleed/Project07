@@ -23,6 +23,7 @@ func add_unit(res:UnitResource):
 func remove_unit(res:UnitResource):
 	if not unit_array.has(res):
 		return
+	Globals.play_ui_sound("Cancel")
 	remove_party_label(res)
 	unit_array.erase(res)
 	disable_unit_display(res,false)
@@ -85,5 +86,7 @@ func _ready():
 	update_proceed_button()
 
 func _on_proceed_to_phase_2_pressed() -> void:
+	Globals.play_ui_sound("Confirm")
+	await Globals.sound_finished
 	Globals.party_units = unit_array.duplicate(true)
 	get_tree().change_scene_to_file("res://scenes/components/debug/GUItest/guitestscene.tscn")

@@ -20,4 +20,5 @@ func button_disabled(bul:bool):
 
 signal unit_chosen(res:UnitResource)
 func _on_button_pressed() -> void:
+	Globals.play_ui_sound("Confirm")
 	unit_chosen.emit(cur_res)
