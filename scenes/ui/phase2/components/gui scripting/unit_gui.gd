@@ -23,13 +23,14 @@ func _on_update_unit_display(units):
 func _populate_unit_box(box, unit, index): 
 	print("Populating UnitGUI for ", unit.name)
 	# Populate Portraits
-	#var unit_portrait = box.get_node("UnitSelClassCenterContainer/ClassIconTexture")
-	#unit_portrait.texture = unit.portrait ## Update to real names
+	var unit_portrait = box.get_node("UnitSelClassCenterContainer/ClassIconTexture")
+	if unit.icon_sprite != null:
+		unit_portrait.texture = unit.icon_sprite
 
 	# Populate Selected Unit Name
 	if index == 0:
 		var unit_label = $UnitPanelHeader/ClassPanelCenterer/ClassLabel
-		unit_label.text = unit.name
+		unit_label.text = unit.unit_name
 
 	# Populate Hearts for all Units
 	_update_hearts(box, unit.health, unit.base_health) ## Update to real names
@@ -37,13 +38,18 @@ func _populate_unit_box(box, unit, index):
 	# Connects signals for selectable unit portraits (2–4)
 	if index > 0:
 		var button:TextureButton = box.get_node("UnitSelClassCenterContainer/UnitSelClassTextureButton")
+		
+		# Populate Unit Portraits
+		if unit.icon_sprite != null:
+			button.texture_normal = unit.icon_sprite
+		
 		for connection:Dictionary in button.pressed.get_connections():
 			#[{"callable":balls()}]
 			#signal
 			#callable
 			#flags
 			button.pressed.disconnect(connection["callable"])
-		#button.pressed.disconnect_all() # ensure clean reconnects
+		#button.pressed.disconnect_all() # ensure clean reconnects # check if necessary
 		button.pressed.connect(func(): _on_unit_selected(unit))
 
 # Shows/hides hearts depending on HP

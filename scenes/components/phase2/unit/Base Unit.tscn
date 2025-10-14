@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bls2opb520x44"]
+
+[ext_resource type="Script" uid="uid://b2kcev8dkaef8" path="res://scenes/components/phase2/unit/unit.gd" id="1_o1srr"]
+
+[node name="BaseUnit" type="Node2D"]
+script = ExtResource("1_o1srr")
+metadata/_custom_type_script = "uid://b2kcev8dkaef8"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
