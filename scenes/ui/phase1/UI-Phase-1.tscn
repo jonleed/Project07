@@ -15,6 +15,14 @@ cur_party = NodePath("Control/VBoxContainer/Cur Party/VBoxContainer")
 party_count = NodePath("Control/VBoxContainer/Party Count")
 proceed_button = NodePath("Control/VBoxContainer/Proceed to Phase 2")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.427493, 0.42749307, 0.42749307, 1)
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
