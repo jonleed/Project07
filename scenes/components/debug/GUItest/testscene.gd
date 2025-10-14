@@ -26,6 +26,13 @@ func _ready() -> void:
 			await get_tree().process_frame
 			temp_vec.x+=2
 		print($MapManager.map_dict)
+		
+		var hostile_unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
+		$Turn_Manager/Hostile_Unit_Manager.add_unit(hostile_unit,Vector2i(7, 7))
+		$Turn_Manager/Hostile_Unit_Manager.move_unit(hostile_unit,Vector2i(7, 7))
+		
+		
+			
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 

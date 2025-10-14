@@ -19,6 +19,7 @@ func _ready():
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
+	print("On faction: ", unit_managers[cur_turn_index].faction_name)
 	
 	var has_units:bool = false
 	for manager in unit_managers:

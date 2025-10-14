@@ -29,6 +29,8 @@ func start_turn():
 # Main logic for Unit Manager - skeleton for the base class
 func _step_turn():
 	var unused_units = get_unused_units()
+	for unit in unused_units:
+		unit.execute_turn()
 	
 	# Base case - No unused units remaining
 	if unused_units.is_empty():

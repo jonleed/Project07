@@ -89,4 +89,4 @@ func _on_proceed_to_phase_2_pressed() -> void:
 	Globals.play_ui_sound("Confirm")
 	await Globals.sound_finished
 	Globals.party_units = unit_array.duplicate(true)
-	get_tree().change_scene_to_file("res://scenes/components/debug/GUItest/guitestscene.tscn")
+	get_tree().change_scene_to_file("res://scenes/components/debug/AITest/enemy_guitestscene.tscn")
