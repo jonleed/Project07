@@ -29,7 +29,9 @@ func _ready() -> void:
 		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		print($MapManager.map_dict)
 		
-		var hostile_unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
+		var hostile_unit:Hostile_Unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
+		
+		
 		$Turn_Manager/Hostile_Unit_Manager.add_unit(hostile_unit,Vector2i(7, 7))
 		$Turn_Manager/Hostile_Unit_Manager.move_unit(hostile_unit,Vector2i(7, 7))
 		

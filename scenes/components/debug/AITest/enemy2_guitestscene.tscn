@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="5_odk2x"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_phq36"]
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_36gdr"]
-[ext_resource type="Script" uid="uid://ci5a1fo4lp0hk" path="res://scenes/components/phase2/managers/unit_manager.gd" id="7_kpq0c"]
+[ext_resource type="Script" uid="uid://cqxhg00a17hk6" path="res://scenes/components/phase2/managers/npc_unit_manager.gd" id="7_kpq0c"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="8_mu7m6"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="9_7ia3k"]
 
@@ -51,7 +51,7 @@ metadata/_custom_type_script = "uid://j80klyllg32k"
 
 [node name="Hostile_Unit_Manager" type="Node" parent="Turn_Manager"]
 script = ExtResource("7_kpq0c")
-metadata/_custom_type_script = "uid://ci5a1fo4lp0hk"
+metadata/_custom_type_script = "uid://cqxhg00a17hk6"
 
 [node name="ActionDecoder" parent="." instance=ExtResource("7_36gdr")]
 
