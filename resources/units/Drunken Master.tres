@@ -10,6 +10,7 @@
 script = ExtResource("2_w5yi2")
 icon_sprite = ExtResource("4_3m1c4")
 unit_name = "Drunken Master"
+unit_desc = "The Drunken Master has an interest in the Castle of Metal and Soul because it holds relics that resonate with his art: enchanted goblets that refill with [color=Yellow]liquid courage[/color]."
 entity_shape = ExtResource("3_884dk")
 anim_frames = ExtResource("2_5fivb")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

@@ -29,9 +29,11 @@ offset_bottom = 40.0
 layout_mode = 2
 
 [node name="Undo" type="Button" parent="General Container/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Redo" type="Button" parent="General Container/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="End Turn" type="Button" parent="General Container/VBoxContainer"]

@@ -12,6 +12,7 @@ action_max = 2
 move_max = 3
 icon_sprite = ExtResource("4_o4ar2")
 unit_name = "The Clown"
+unit_desc = "He seeks the bounty not for fame, but for [color=purple]flair[/color]. With the castle’s artifacts, he could bend light into laughter, summon illusions that dance on air, and choreograph [color=red]chaos[/color] with precision."
 entity_shape = ExtResource("3_0jk40")
 anim_frames = ExtResource("2_c73w4")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

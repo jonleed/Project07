@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjwfrloo6oxt0"]
+[gd_scene load_steps=7 format=3 uid="uid://bjwfrloo6oxt0"]
 
 [ext_resource type="Script" uid="uid://egvl51m3eq8c" path="res://scenes/ui/main/main_menu.gd" id="1_ffjwx"]
+[ext_resource type="Texture2D" uid="uid://ctam6l14r1kcd" path="res://assets/sprites/mainmenu/gemini hill.png" id="2_a4wqr"]
+[ext_resource type="Texture2D" uid="uid://bp6fori01t645" path="res://assets/sprites/mainmenu/gemini mountain.png" id="3_3jwct"]
+[ext_resource type="Texture2D" uid="uid://det4quwtg48oa" path="res://assets/sprites/mainmenu/gemini dungeon.png" id="4_3jwct"]
+[ext_resource type="Texture2D" uid="uid://1oy3tkjfpla7" path="res://assets/sprites/mainmenu/gemini ocean.png" id="4_q5qg5"]
+[ext_resource type="Texture2D" uid="uid://be4hh5hnkcjv6" path="res://assets/sprites/mainmenu/gemini volcano.png" id="4_vexhd"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -12,6 +17,7 @@ grow_vertical = 2
 script = ExtResource("1_ffjwx")
 
 [node name="Art Container" type="TabContainer" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,26 +30,41 @@ tabs_position = 1
 
 [node name="Hills" type="TextureRect" parent="Art Container"]
 layout_mode = 2
+texture = ExtResource("2_a4wqr")
+expand_mode = 2
+stretch_mode = 6
 metadata/_tab_index = 0
 
 [node name="Mountain" type="TextureRect" parent="Art Container"]
 visible = false
 layout_mode = 2
+texture = ExtResource("3_3jwct")
+expand_mode = 2
+stretch_mode = 6
 metadata/_tab_index = 1
 
 [node name="Ocean" type="TextureRect" parent="Art Container"]
 visible = false
 layout_mode = 2
+texture = ExtResource("4_q5qg5")
+expand_mode = 2
+stretch_mode = 6
 metadata/_tab_index = 2
 
 [node name="Volcano" type="TextureRect" parent="Art Container"]
 visible = false
 layout_mode = 2
+texture = ExtResource("4_vexhd")
+expand_mode = 2
+stretch_mode = 6
 metadata/_tab_index = 3
 
 [node name="Dungeon" type="TextureRect" parent="Art Container"]
 visible = false
 layout_mode = 2
+texture = ExtResource("4_3jwct")
+expand_mode = 2
+stretch_mode = 6
 metadata/_tab_index = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

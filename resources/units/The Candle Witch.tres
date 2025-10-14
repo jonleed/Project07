@@ -17,7 +17,7 @@ action_array = Array[ExtResource("1_vp64j")]([SubResource("Resource_2as78")])
 move_max = 13
 icon_sprite = ExtResource("4_suwkm")
 unit_name = "Candle Witch"
-unit_desc = "[color=Blue]Balls"
+unit_desc = "She seeks the bounty of the Castle of Metal and Soul not for gold or glory, but for its rare alloyed essence—living steel infused with the echoes of forgotten spirits. To her, this bounty is [b]sacred[/b]. With it, she can forge [color=yellow]eternal[/color] candles that burn with the soul of the castle itself."
 base_health = 7
 entity_shape = ExtResource("3_f2ci8")
 anim_frames = ExtResource("3_suwkm")
