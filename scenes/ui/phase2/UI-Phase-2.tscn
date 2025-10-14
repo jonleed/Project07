@@ -1053,12 +1053,14 @@ layout_mode = 2
 text = "End Turn"
 
 [node name="UndoBTN" type="Button" parent="Graphical User Interface/CombatLogGUI/LogPanelHeader/SplitContainer/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(85, 40)
 layout_mode = 2
 text = "Undo 
 Move"
 
 [node name="ResetBTN" type="Button" parent="Graphical User Interface/CombatLogGUI/LogPanelHeader/SplitContainer/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(85, 40)
 layout_mode = 2
 text = "Reset 
