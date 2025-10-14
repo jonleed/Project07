@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhfcrtofn1euu"]
+[gd_scene load_steps=3 format=3 uid="uid://dhfcrtofn1euu"]
 
 [ext_resource type="Script" uid="uid://bm46dc1ena0um" path="res://scenes/components/phase1/phase-1.gd" id="1_vdkx3"]
+[ext_resource type="PackedScene" uid="uid://bcfxa6mta7eek" path="res://scenes/ui/phase1/UI-Phase-1.tscn" id="2_oik4e"]
 
 [node name="Phase-1" type="Node2D"]
 script = ExtResource("1_vdkx3")
+
+[node name="Ui-phase-1" parent="." instance=ExtResource("2_oik4e")]

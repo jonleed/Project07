@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dijrrh00n1i58"]
+
+[ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="1_bk4yi"]
+[ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="2_ryjif"]
+
+[node name="MapManager" type="Node2D" node_paths=PackedStringArray("surface_layer", "wall_layer")]
+script = ExtResource("1_bk4yi")
+surface_layer = NodePath("Map Layer")
+wall_layer = NodePath("Wall Layer")
+
+[node name="Map Layer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_ryjif")
+
+[node name="Wall Layer" type="TileMapLayer" parent="."]
+position = Vector2(0, -8)
+tile_set = ExtResource("2_ryjif")

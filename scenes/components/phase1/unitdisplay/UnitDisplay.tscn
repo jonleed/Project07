@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://bki1ukwh76bte"]
+
+[ext_resource type="Script" uid="uid://cjaogfjniqo0k" path="res://scenes/components/phase1/unitdisplay/unit_display.gd" id="1_bgyif"]
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/ui/portraits/knight.png" id="2_m4phi"]
+
+[node name="Unit Display" type="PanelContainer" node_paths=PackedStringArray("unit_label", "unit_texture", "rich_text", "unit_button")]
+custom_minimum_size = Vector2(200, 400)
+offset_top = 1.0
+offset_right = 200.0
+offset_bottom = 401.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_bgyif")
+unit_label = NodePath("VBoxContainer/Label")
+unit_texture = NodePath("VBoxContainer/TextureRect")
+rich_text = NodePath("VBoxContainer/RichTextLabel")
+unit_button = NodePath("VBoxContainer/Button")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Knight"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_m4phi")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Basic attacks
+Interesting movement"
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Choose"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

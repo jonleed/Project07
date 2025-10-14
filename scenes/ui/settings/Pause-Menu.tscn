@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://evc6pglbeeqm"]
 
 [ext_resource type="Script" uid="uid://chu2dthd0eiuk" path="res://scenes/ui/settings/pause_menu.gd" id="1_etvbu"]
-[ext_resource type="PackedScene" uid="uid://byqk771q36ny4" path="res://scenes/ui/settings/Sound-Options.tscn" id="1_iuvyg"]
+[ext_resource type="PackedScene" uid="uid://cda7pxyq1ugar" path="res://scenes/ui/settings/Options Container.tscn" id="2_etvbu"]
 
 [node name="PauseMenu" type="PanelContainer"]
 anchors_preset = 15
@@ -27,24 +27,9 @@ text = "Main Menu"
 layout_mode = 2
 text = "Close"
 
-[node name="Options" type="VBoxContainer" parent="."]
+[node name="Options" parent="." instance=ExtResource("2_etvbu")]
 visible = false
 layout_mode = 2
-
-[node name="TabContainer" type="TabContainer" parent="Options"]
-layout_mode = 2
-size_flags_vertical = 3
-tab_alignment = 1
-current_tab = 0
-tabs_position = 1
-
-[node name="Sound" parent="Options/TabContainer" instance=ExtResource("1_iuvyg")]
-layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="Back" type="Button" parent="Options"]
-layout_mode = 2
-text = "Back"
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 ok_button_text = "Yes"
@@ -53,6 +38,5 @@ dialog_text = "Quit (no saving!)"
 [connection signal="pressed" from="VBoxContainer/Open Options" to="." method="_on_open_options_pressed"]
 [connection signal="pressed" from="VBoxContainer/Main Menu" to="." method="_on_main_menu_pressed"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]
-[connection signal="pressed" from="Options/Back" to="." method="_on_back_pressed"]
 [connection signal="canceled" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_canceled"]
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]

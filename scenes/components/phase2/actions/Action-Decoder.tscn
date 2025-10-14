@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdngd8yodmnym"]
+
+[ext_resource type="Script" uid="uid://rsloominm0p1" path="res://scenes/components/phase2/actions/action_decoder.gd" id="1_xll3l"]
+
+[node name="ActionDecoder" type="Node"]
+script = ExtResource("1_xll3l")
