@@ -12,7 +12,9 @@ func load_unit_res(u_res:UnitResource):
 		return
 	unit_label.text = u_res.unit_name
 	unit_texture.texture = u_res.icon_sprite
-	rich_text.text = u_res.unit_desc
+	#rich_text.text = u_res.unit_desc
+	rich_text.text = ""
+	rich_text.append_text(u_res.unit_desc)
 	cur_res = u_res
 
 func button_disabled(bul:bool):

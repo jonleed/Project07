@@ -5,7 +5,7 @@ var unit_array:Array = []
 @export_subgroup("Preloads")
 @onready var unit_display_packed:PackedScene = preload("res://scenes/components/phase1/unitdisplay/UnitDisplay.tscn")
 @export var unit_resources:Array[UnitResource]
-@export var max_party:int = 1
+@export var max_party:int = 2
 var cur_display:Dictionary[Control,UnitResource]
 
 @export_subgroup("Control Nodes")
