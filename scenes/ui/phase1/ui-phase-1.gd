@@ -89,4 +89,10 @@ func _on_proceed_to_phase_2_pressed() -> void:
 	Globals.play_ui_sound("Confirm")
 	await Globals.sound_finished
 	Globals.party_units = unit_array.duplicate(true)
+	for unit_res:UnitResource in unit_array:
+		if Logs.loaded_data.has(unit_res.unit_name):
+			Logs.loaded_data[unit_res.unit_name] += 1
+		else:
+			Logs.loaded_data.set(unit_res.unit_name,1)
+	Logs.save_dictionary(Logs.loaded_data)
 	get_tree().change_scene_to_file("res://scenes/components/debug/GUItest/guitestscene.tscn")

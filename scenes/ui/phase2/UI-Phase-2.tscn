@@ -741,6 +741,7 @@ offset_left = 1.0
 offset_top = 2.0
 offset_right = 93.0
 offset_bottom = 42.0
+mouse_filter = 2
 texture = SubResource("NoiseTexture2D_y41b5")
 expand_mode = 1
 
@@ -842,6 +843,7 @@ anchors_preset = 0
 offset_top = 32.0
 offset_right = 300.0
 offset_bottom = 232.0
+mouse_filter = 2
 
 [node name="ActionPanelBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader"]
 visible = false
@@ -855,12 +857,14 @@ expand_mode = 1
 layout_mode = 0
 offset_right = 463.0
 offset_bottom = 129.0
+mouse_filter = 2
 
 [node name="ActionOneContainer" type="CenterContainer" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="ActionOneBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionOneContainer"]
 layout_mode = 2
@@ -878,6 +882,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="ActionTwoBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ActionTwoContainer"]
 layout_mode = 2
@@ -912,6 +917,7 @@ visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="ItemBorder" type="TextureRect" parent="Graphical User Interface/ActionGUI/ActionPanelHeader/ActionPanel/ItemContainer"]
 custom_minimum_size = Vector2(80, 120)

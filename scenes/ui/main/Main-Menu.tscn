@@ -99,7 +99,6 @@ layout_mode = 2
 text = "Settings"
 
 [node name="Open Logs" type="Button" parent="PanelContainer2/Options"]
-visible = false
 layout_mode = 2
 text = "Logs"
 
@@ -108,4 +107,5 @@ layout_mode = 2
 text = "Quit"
 
 [connection signal="pressed" from="PanelContainer2/Options/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="PanelContainer2/Options/Open Logs" to="." method="_on_open_logs_pressed"]
 [connection signal="pressed" from="PanelContainer2/Options/Quit" to="." method="_on_quit_pressed"]
