@@ -49,17 +49,16 @@ func load_unit_res(unit_res:UnitResource = null):
 		anim_sprite.animation = "Idle"
 	
 # Move actions should set go_final to true; ATK actions should set go_final to false (as the final point is the tile the enemy unit is on)
-func move_down_path(path_arr:Array[int], go_final:bool):
+func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 	var pathfinder:Pathfinder = get_parent().get_pathfinder()
 	for index in range(1, len(path_arr)):
 		if index != len(path_arr) - 1 or (go_final):
-			var parsed = pathfinder.parse_point(path_arr[index])
-			if parsed == Vector2i(-1234, -1234):
+			if path_arr[index] == Vector2(-1234, -1234):
 				break
 			else:
 				move_count -= 1
 				# Move incrementally, not all at once, to give traps a chance to trigger for when the body is entered.
-				get_parent().move_unit(self, parsed)
+				get_parent().move_unit(self, path_arr[index])
 				if move_count <= 0:
 					break
 

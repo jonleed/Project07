@@ -49,8 +49,9 @@ cursor = NodePath("../../Cursor")
 map_manager = NodePath("../../MapManager")
 metadata/_custom_type_script = "uid://j80klyllg32k"
 
-[node name="Hostile_Unit_Manager" type="Node" parent="Turn_Manager"]
+[node name="Hostile_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager")]
 script = ExtResource("7_kpq0c")
+map_manager = NodePath("../../MapManager")
 metadata/_custom_type_script = "uid://cqxhg00a17hk6"
 
 [node name="ActionDecoder" parent="." instance=ExtResource("7_36gdr")]

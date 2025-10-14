@@ -7,12 +7,16 @@ extends Node2D
 
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary
+var map_dict_v2:Dictionary
 
 func init_walls():
 	## Go through the wall layer and fill in the spots in map_dict.
 	## This assumes your tiles in the wall layer's tileset have a custom data
 	## layer named "TileType" of type Int, where the integer corresponds
 	## to the TileType enum.
+	for entry in surface_layer.get_used_cells():
+		map_dict_v2[entry] = true
+		
 	map_dict.clear()
 	
 	var used_cells = wall_layer.get_used_cells()
@@ -26,12 +30,12 @@ func init_walls():
 			# Ensure the value is a valid enum index before adding it.
 			if type_enum_value >= 0 and type_enum_value <= 4: # Corresponds to the 5 members of TileType
 				map_dict[cell_coords] = type_enum_value
+				map_dict_v2.erase(cell_coords)
 				print("using: ",cell_coords)
 			else:
 				push_warning("Tile at %s has an invalid TileType value: %s" % [cell_coords, type_enum_value])
 		else:
 			push_warning("Wall tile at %s is missing 'TileType' custom data." % cell_coords)
-	print(map_dict)
 
 enum TileType{
 	Ground,#0

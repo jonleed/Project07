@@ -98,8 +98,8 @@ func attempt_to_move_unit(coord:Vector2i):
 
 @onready var unit_packed:PackedScene = preload("res://scenes/components/phase2/unit/Player Unit.tscn")
 
-func create_unit_from_res(res:UnitResource)->Unit:
-	var un :Unit = unit_packed.instantiate()
+func create_unit_from_res(res:UnitResource)->PlayerUnit:
+	var un :PlayerUnit = unit_packed.instantiate()
 	add_child(un)
 	un.u_res = res
 	un.load_unit_res(res)

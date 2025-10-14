@@ -7,7 +7,7 @@ var remembered_sightings:Dictionary[Vector2i, Flag]
 var audio_cues:Dictionary[Vector2i, int]
 
 
-var vision_range:int = 5
+var vision_range:int = 20
 var relative_range:int = 5
 var ideal_melee_dpt:float = 0.0
 var ideal_ranged_dpt:float = 0.0
@@ -24,8 +24,8 @@ var time_since_alert_update:int = 0
 	
 func get_friendly_factions() -> Array[String]:
 	var faction_name_ref:String = get_parent().faction_name
-	if faction_name_ref == "Friendly" or faction_name_ref == "Player":
-		return ["Friendly", "Player"]
+	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
+		return ["Friendly", "Player Unit"]
 	elif faction_name_ref == "Traps":
 		return ["Traps"]
 	elif faction_name_ref == "Enemy":
@@ -34,13 +34,13 @@ func get_friendly_factions() -> Array[String]:
 
 func get_enemy_unit_factions() -> Array[String]:	
 	var faction_name_ref:String = get_parent().faction_name
-	if faction_name_ref == "Friendly" or faction_name_ref == "Player":
+	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
 		return ["Enemy"]
 	elif faction_name_ref == "Traps":
-		return ["Friendly", "Player", "Enemy"]
+		return ["Friendly", "Player Unit", "Enemy"]
 	elif faction_name_ref == "Enemy":
-		return ["Player", "Friendly"]
-	return ["Friendly", "Player"]
+		return ["Player Unit", "Friendly"]
+	return ["Friendly", "Player Unit"]
 	
 func calculate_relative_strength_norm() -> float:
 	return health * 2.0 + max(ideal_melee_dpt, ideal_ranged_dpt)
@@ -60,6 +60,7 @@ func calculate_heading(target:Vector2i) -> Vector2i:
 	return (target - cur_pos)	
 	
 func ideal_attack(target_unit:Unit) -> Attackaction:
+	print("ACTIONS: ", action_array)
 	var atk_actions:Array[Attackaction] = []
 	for action in action_array:
 		if action.is_class("Attackaction"):
@@ -72,6 +73,8 @@ func ideal_recovery() -> Action:
 	return null
 	
 func execute_turn() -> void:
+	print("RUNNING NPC TURN")
+	print(get_enemy_unit_factions())
 	move_count = move_max
 	action_count = action_max	
 	examine_surroundings()
@@ -97,11 +100,11 @@ func alert_lvl_update() -> void:
 		current_alert_level = alert_level.GREEN_ALERT
 	else:
 		time_since_alert_update += 1
-		
+	print(current_alert_level)
 		
 ##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
 func update_visible_tiles() -> void:
-	var new_vision = {}
+	var new_vision:Dictionary[Vector2i, bool] = {}
 	var vision_arr:Array = Globals.get_bfs_tiles(cur_pos, vision_range, get_parent().map_manager)
 	for coordinate in vision_arr:
 		new_vision[coordinate] = true
@@ -110,17 +113,17 @@ func update_visible_tiles() -> void:
 ##Updates current_vision, sighted_hostiles, and remembered_sightings
 func examine_surroundings() -> void:
 	update_visible_tiles()
-	var new_sighted_hostiles = {}
-	var cached_entity_ids:Dictionary[int, Vector2i]
+	var new_sighted_hostiles:Dictionary[Vector2i, Unit] = {}
+	var cached_entity_ids:Dictionary[Unit, Vector2i] = {}
 	for faction_name_ref in get_enemy_unit_factions():
 		if faction_name_ref != get_parent().faction_name:
 			var unit_arr:Array = get_tree().get_nodes_in_group(faction_name_ref)		
 			if len(unit_arr) > 0:
-				if unit_arr[0] is Unit or unit_arr[0] is Hostile_Unit or unit_arr[0] is PlayerUnit:
-					for other_unit in unit_arr:
-						if other_unit.cur_pos in current_vision:
-							new_sighted_hostiles[other_unit.cur_pos] = other_unit
-							cached_entity_ids[other_unit] = other_unit.cur_pos
+				for other_unit in unit_arr:
+					if other_unit.cur_pos in current_vision:
+						new_sighted_hostiles[other_unit.cur_pos] = other_unit
+						cached_entity_ids[other_unit] = other_unit.cur_pos
+	print(new_sighted_hostiles)
 
 	for coordinate in sighted_hostiles:
 		var entry_unit:Unit = sighted_hostiles.get(coordinate)
@@ -213,12 +216,12 @@ func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influ
 ##Returns [valid:bool, path_cost:int, point_path:Array[ int ]]
 func coordinate_validated(coordinate:Vector2i) -> Array:
 	var pathfinder:Pathfinder = get_parent().get_pathfinder()
-	var returned_path = pathfinder._return_path(cur_pos, coordinate)
+	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
 	if len(returned_path) <= 1:
 		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
 		return [false, INF]
 	else:
-		var parsed:Vector2i = pathfinder.parse_point(returned_path[-1])
+		var parsed:Vector2i = returned_path[-1]
 		# We don't know what the point returned is
 		if parsed == Vector2i(-1234, -1234):
 			return [false, INF]
@@ -251,6 +254,8 @@ func find_rally_point() -> Array:
 						var weight = get_friendly_support_at_location(tile, -500) - get_hostile_threat_at_location(tile, true, -500) - min(my_dist, 30.0)
 						weighted_coords[tile] = [weight, validation_distance[2]] # Save the path taken
 						weights.append(weight)
+	if len(weights) < 1:
+		return [Vector2i(-1234, -1234), PackedVector2Array([Vector2i(-1234, -1234)])]
 	var index = get_parent().get_parent().get_random_generator().rand_weighted(weights)
 	var weight_keys = weighted_coords.keys()
 	var weight_values = weighted_coords.values()
@@ -261,7 +266,7 @@ func find_rally_point() -> Array:
 func find_retreat_point() -> Array:
 	var max_score:float = -INF
 	var max_coord:Vector2i = Vector2i(-1234, -1234)
-	var max_path:Array[int] = []
+	var max_path:PackedVector2Array = []
 	var possible_move_tiles = Globals.get_bfs_empty_tiles(cur_pos, move_count, get_parent().map_manager)
 	for coordinate in possible_move_tiles:
 		var validation_distance = coordinate_validated(coordinate)
@@ -280,13 +285,14 @@ func find_exposed_hostile() -> Array:
 	var max_strength:float = -INF
 	var max_ratio:float = 1.0
 	var max_coord:Vector2i = Vector2i(-1234, -1234)
-	var max_path:Array[int] = []
+	var max_path:PackedVector2Array = []
 	var path_cost:float = 0.0
 	var only_ranged:bool = false
 	for coordinate in sighted_hostiles:
 		var adj_tiles = Globals.get_bfs_empty_tiles(coordinate, 1, get_parent().map_manager)
 		var num_empty_adj = len(adj_tiles)
 		if num_empty_adj <= 0 and relative_range <= 1:
+			# print("No empty tiles adjacent to ", coordinate)
 			continue
 		var f_support = get_friendly_support_at_location(coordinate) + calculate_relative_strength_target(coordinate)
 		var e_support = get_hostile_threat_at_location(coordinate, false)
@@ -307,7 +313,7 @@ func get_best_supported_tile(provided_target:Vector2i, provided_range:int=1) -> 
 	var max_strength:float = -INF
 	var max_coord:Vector2i = Vector2i(-1234, -1234)
 	var max_ratio:float = 1.0
-	var max_path:Array[int] = []
+	var max_path:PackedVector2Array = []
 	var path_cost:float = 0.0
 	var adj_tiles = Globals.get_bfs_empty_tiles(provided_target, provided_range, get_parent().map_manager)
 	for coordinate in adj_tiles:
@@ -317,25 +323,29 @@ func get_best_supported_tile(provided_target:Vector2i, provided_range:int=1) -> 
 		if disparity > max_strength:
 			var validation = coordinate_validated(coordinate)
 			if validation[0]:				
-				if validation[4] > move_count: # if we can't move there immediantly, deprioritize
-					disparity -= (validation[4]/move_count)
+				if validation[1] > move_count: # if we can't move there immediantly, deprioritize
+					disparity -= (validation[1]/move_count)
 				if disparity > max_strength:
 					max_strength = disparity
 					max_coord = coordinate
 					max_ratio = f_support / max(e_support, 0.001)
 					max_path = validation[2]
 					path_cost = validation[1]
+	print("DEBUG/Support: ", max_coord, max_strength, max_ratio, max_path, path_cost)		
 	return [max_coord, max_strength, max_ratio, max_path, path_cost]
 		
 func threat_analysis() -> bool:
 	var course_select:bool = false
 	var rerun_allowed:bool = false
 	if alert_level.RED_ALERT:
-		var threat_diff = get_friendly_support_at_location(cur_pos) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
+		print("Entering -> Red Alert")
+		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
+		print(threat_diff)
 		if threat_diff > 2: # Charge - We can take em- 
 			var returned_arr:Array = find_exposed_hostile()
 			if returned_arr[0] != Vector2i(-1234, -1234):
-				returned_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]))
+				print("Found an exposed hostile!")
+				returned_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
 				if returned_arr[0] != Vector2i(-1234, -1234):
 					move_down_path(returned_arr[3], true)	
 					var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
@@ -345,8 +355,11 @@ func threat_analysis() -> bool:
 						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))			
 					if move_count > 0:
 						rerun_allowed = true
+			else:
+				print("No exposed hostiles!")
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
 		if (not course_select and threat_diff > 1.0) or not course_select:
+			print("-> -> Entering Rally")
 			var returned_arr:Array = find_rally_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
@@ -354,6 +367,7 @@ func threat_analysis() -> bool:
 				if move_count > 0:
 					rerun_allowed = true
 		if not course_select:
+			print("-> -> Entering Retreat")
 			var returned_arr:Array = find_retreat_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
@@ -361,6 +375,7 @@ func threat_analysis() -> bool:
 				if move_count > 0:
 					rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT:
+		print("Entering -> Orange Alert")
 		if len(remembered_sightings) > 0:
 			var selected_sighting:Vector2i = select_memory_location()
 			if selected_sighting != Vector2i(-1234, -1234):
@@ -369,6 +384,7 @@ func threat_analysis() -> bool:
 				if move_count > 0:
 					rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT:
+		print("Entering -> Yellow Alert")
 		if len(audio_cues) > 0:
 			var selected_sighting:Vector2i = select_investigation_location()
 			if selected_sighting != Vector2i(-1234, -1234):
@@ -377,8 +393,10 @@ func threat_analysis() -> bool:
 				if move_count > 0:
 					rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.GREEN_ALERT:
+		print("Entering -> Green Alert")
 		pass
 	if not course_select and current_alert_level >= alert_level.BLUE_ALERT:
+		print("Entering -> Blue Alert")
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null:
 			course_select = true

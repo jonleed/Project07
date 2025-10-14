@@ -2,19 +2,19 @@ class_name Pathfinder
 extends AStar2D
 
 var tile_map_ref:MapManager
-var surface_map:Dictionary[Vector2i, int]
+var surface_map:Dictionary
 @export var identifier_map:Dictionary[Vector2i, int]
 @export var inverted_identifier_map:Dictionary[int, Vector2i]
 
 func _init(tile_map:MapManager):
 	tile_map_ref = tile_map
-	surface_map = tile_map_ref.map_dict
+	surface_map = tile_map_ref.map_dict_v2
 
 func _ready():
 	pass
 	
 func surrounding_vectors(provided_coordinate:Vector2i) -> Array[Vector2i]:
-	var return_arr = []
+	var return_arr:Array[Vector2i] = []
 	for row in range(provided_coordinate.y-1, provided_coordinate.y+2): # +2 because the upper bound of range is exclusive
 		for column in range(provided_coordinate.x-1, provided_coordinate.x+2):
 			if row != provided_coordinate.y and column != provided_coordinate.x:
@@ -56,11 +56,13 @@ func _return_path(provided_coordinate:Vector2i, provided_target:Vector2i):
 		target_id = get_closest_point(Vector2(provided_target.x, provided_target.y))
 	return get_point_path(point_id, target_id)
 	
-func calculate_path_cost(provided_path:Array[int]):
+func calculate_path_cost(provided_path:PackedVector2Array):
 	var total_cost:float = 0.0
-	for point_id in provided_path:
-		var parsed:Vector2i = parse_point(point_id)
-		if parsed != Vector2i(-1234, -1234):
-			total_cost += get_point_weight_scale(point_id)
+	for coordinate in provided_path:
+		var cround:Vector2i = Vector2i(coordinate)
+		if cround in identifier_map:
+			total_cost += get_point_weight_scale(identifier_map.get(cround))
+		else:
+			total_cost += get_point_weight_scale(get_closest_point(cround))
 	return total_cost
 		

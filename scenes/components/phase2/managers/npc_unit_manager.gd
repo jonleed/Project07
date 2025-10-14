@@ -7,6 +7,8 @@ func _ready():
 	if units.size() == 0:
 		end_turn()
 	pathfinder = Pathfinder.new(get_parent().get_parent().get_child(0))
+	pathfinder._rebuild_connections()
+	print(pathfinder)
 
 func _step_turn():
 	var unused_units = get_unused_units()
@@ -30,3 +32,9 @@ func create_unit_from_res(res:UnitResource)->Hostile_Unit:
 	un.add_to_group("Unit")
 	un.add_to_group("Enemy Unit")
 	return un
+
+func get_random_generator():
+	return get_parent().get_random_generator()
+	
+func get_pathfinder() -> Pathfinder:
+	return pathfinder

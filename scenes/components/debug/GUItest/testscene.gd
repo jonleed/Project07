@@ -2,6 +2,7 @@
 extends Node2D
 
 @export var debug_entity:Entity
+var num_generator:RandomNumberGenerator
 
 func _update_timeout():
 	##connected to a timer because process function was too fast
@@ -18,7 +19,7 @@ func _ready() -> void:
 		#attempt_entity_spawn(debug_entity,Vector2i.ZERO)
 		#attempt_entity_move(debug_entity,Vector2.ZERO)
 		var temp_vec:Vector2i = Vector2i.ONE
-		var unit:Unit
+		var unit:PlayerUnit
 		for res in Globals.party_units:
 			print_rich("[color=Red]",res,"->",temp_vec)
 			unit = $Turn_Manager/Player_Unit_Manager.create_unit_from_res(res)
@@ -28,7 +29,8 @@ func _ready() -> void:
 			temp_vec.x+=2
 		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		print($MapManager.map_dict)
-		
+		num_generator = RandomNumberGenerator.new()
+		num_generator.seed = hash("EnemyTestScene")
 		var hostile_unit:Hostile_Unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
 		
 		
@@ -95,3 +97,6 @@ func _on_cursor_entity_selected(entity: Entity) -> void:
 func _on_cursor_deselected() -> void:
 	selected_coords = []
 	$MapManager.highlight_tiles(selected_coords)
+
+func get_random_generator() -> RandomNumberGenerator:
+	return num_generator
