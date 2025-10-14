@@ -10,21 +10,45 @@ extends Control
 func _ready() -> void:
 	if not (map_manager and turn_manager and player_unit_manager):
 		printerr("Game Node Missing!!!")
-	if not (actions_vbox):
+	if not (actions_box):
 		printerr("Control Node Missing!!!")
 
 @export_subgroup("Control Nodes")
-@export var actions_vbox:VBoxContainer
+@export var actions_box:BoxContainer
+@export var units_box:BoxContainer
+@export var action_but_packed:PackedScene
+@export var unit_icon_packed:PackedScene
+##load all actions of the unit given
+func load_unit_actions(un:Unit):
+	clear_action_container()
+	for act in un.action_array:
+		add_to_action_container(act)
+
 func add_to_action_container(act:Action):
 	#create button for action
-	var but:Button = Button.new()
-	but.text = act.action_name
-	
-	#connect button to our state machine
-	
-	#add button to the vbox container
-	actions_vbox.add_child(but)
+	var action_but_instance=action_but_packed.instantiate()
+	action_but_instance.load_action(act)
+	actions_box.add_child(action_but_instance)
+	#connect action_but_instance signal
+	action_but_instance.action_pressed.connect() #this signal emits with an Action variable
 
+func clear_action_container():
+	for child in actions_box.get_children():
+		child.queue_free()
+##Load all unit icons in the array after clearing the box
+func load_unit_icons(un_array:Array[Unit]):
+	clear_unit_container()
+	for un:Unit in un_array:
+		add_to_unit_container(un)
+
+func add_to_unit_container(un:Unit):
+	var unit_icon_instance = unit_icon_packed.instantiate()
+	unit_icon_instance.load_unit(un)
+	units_box.add_child(unit_icon_instance)
+
+func clear_unit_container():
+	for child in units_box.get_children():
+		child.queue_free()
 
 #we need a state machine
 #the states are
