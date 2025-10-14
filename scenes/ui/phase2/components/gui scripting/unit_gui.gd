@@ -36,8 +36,14 @@ func _populate_unit_box(box, unit, index):
 
 	# Connects signals for selectable unit portraits (2–4)
 	if index > 0:
-		var button = box.get_node("UnitSelClassCenterContainer/UnitSelClassTextureButton")
-		button.pressed.disconnect_all() # ensure clean reconnects
+		var button:TextureButton = box.get_node("UnitSelClassCenterContainer/UnitSelClassTextureButton")
+		for connection:Dictionary in button.pressed.get_connections():
+			#[{"callable":balls()}]
+			#signal
+			#callable
+			#flags
+			button.pressed.disconnect(connection["callable"])
+		#button.pressed.disconnect_all() # ensure clean reconnects
 		button.pressed.connect(func(): _on_unit_selected(unit))
 
 # Shows/hides hearts depending on HP

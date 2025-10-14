@@ -17,13 +17,15 @@ func _ready() -> void:
 		$"CanvasLayer/UI-Phase-2".visible = true
 		#attempt_entity_spawn(debug_entity,Vector2i.ZERO)
 		#attempt_entity_move(debug_entity,Vector2.ZERO)
-		var temp_vec:Vector2i = Vector2i.ZERO
+		var temp_vec:Vector2i = Vector2i.ONE
 		for res in Globals.party_units:
+			print_rich("[color=Red]",res,"->",temp_vec)
 			var unit :Unit = $Turn_Manager/Player_Unit_Manager.create_unit_from_res(res)
-			$Turn_Manager/Player_Unit_Manager.add_unit(unit,temp_vec)
+			$Turn_Manager/Player_Unit_Manager.add_unit(unit,Vector2i.ZERO)
 			$Turn_Manager/Player_Unit_Manager.move_unit(unit,temp_vec)
+			await get_tree().process_frame
 			temp_vec.x+=2
-			
+		print($MapManager.map_dict)
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 
