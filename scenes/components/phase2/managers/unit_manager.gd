@@ -48,9 +48,12 @@ func get_units() -> void:
 	#also check the group
 	reset_unit_turns()
 
+@onready var base_unit_packed:PackedScene = preload("res://scenes/components/phase2/unit/Base Unit.tscn")
+
 ##use this in tandem with add_unit to create a unit resource from scratch, we do not edit these resources directly
 func create_unit_from_res(res:UnitResource)->Unit:
-	var un :Unit = Unit.new()
+	var un :Unit = base_unit_packed.instantiate()
+	add_child(un)
 	un.u_res = res
 	un.load_unit_res(res)
 	un.ready_entity()
