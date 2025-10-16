@@ -3,22 +3,26 @@ extends AStar2D
 
 var tile_map_ref:MapManager
 var surface_map:Dictionary
+var move_pattern:Pattern2D
+var converted_vectors:Array[Vector2i]
 @export var identifier_map:Dictionary[Vector2i, int]
 @export var inverted_identifier_map:Dictionary[int, Vector2i]
 
-func _init(tile_map:MapManager):
+func _init(tile_map:MapManager, provided_move_pattern:Pattern2D=load("res://resources/range_patterns/adjacent_tiles.tres")):
 	tile_map_ref = tile_map
 	surface_map = tile_map_ref.map_dict_v2
-
-func _ready():
-	pass
+	move_pattern = provided_move_pattern
+	var temp_grid:PackedVector2Array = move_pattern.affected_tiles
+	var midx:int = move_pattern.grid_size.x / 2
+	var midy:int = move_pattern.grid_size.y / 2
+	var new_vec:Vector2i = Vector2i(midx, midy)
+	for vector in temp_grid:
+		converted_vectors.append(Vector2i(vector) - new_vec)
 	
 func surrounding_vectors(provided_coordinate:Vector2i) -> Array[Vector2i]:
 	var return_arr:Array[Vector2i] = []
-	for row in range(provided_coordinate.y-1, provided_coordinate.y+2): # +2 because the upper bound of range is exclusive
-		for column in range(provided_coordinate.x-1, provided_coordinate.x+2):
-			if row != provided_coordinate.y and column != provided_coordinate.x:
-				return_arr.append(Vector2i(column, row))
+	for vector in converted_vectors:
+		return_arr.append(vector + provided_coordinate)
 	return return_arr
 	
 func _rebuild_connections():
