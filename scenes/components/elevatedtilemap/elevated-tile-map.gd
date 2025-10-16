@@ -179,3 +179,11 @@ func get_or_create_tile_map_layer(z: int) -> CustomTileMapLayer:
 	tile_map_layer.translate(Vector2(0, -tile_z * z));
 	
 	return tile_map_layer;
+
+@export_tool_button("Cleanup Layers", "Callable") var cleanup_layers_action := cleanup_layers
+
+func cleanup_layers() -> void:
+	for child in get_children():
+		if child is CustomTileMapLayer and child.get_used_cells().is_empty():
+			remove_child(child)
+			child.queue_free()
