@@ -150,7 +150,7 @@ func set_cells_terrain_path(cells: Array[Vector3i], terrain_set: int, terrain: i
 		paths.append({"z": prev_z, "path": current_path});
 	for path in paths:
 		var tile_map_layer := get_or_create_tile_map_layer(path["z"]);
-		tile_map_layer.set_cells_terrain_connect(path["path"], terrain_set, terrain, ignore_empty_terrains);
+		tile_map_layer.set_cells_terrain_path(path["path"], terrain_set, terrain, ignore_empty_terrains);
 
 func get_tile_map_layer(z: int) -> CustomTileMapLayer:
 	return find_child("TileMapLayer" + str(z));
