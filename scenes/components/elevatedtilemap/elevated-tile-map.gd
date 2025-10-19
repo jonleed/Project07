@@ -66,11 +66,16 @@ func draw_voxels(voxels: Array[VoxelInfo]) -> void:
 				var middle_layer_cells: Array[Vector3i] = [];
 				var bottom_layer_cells: Array[Vector3i] = [];
 				
+				# Pre-build lookup set for O(1) has() checks
+				var path_set: Dictionary[Vector3i, bool] = {};
+				for c in voxel_info.path:
+					path_set[c] = true;
+						
 				for cell: Vector3i in voxel_info.path:
 					var layer_cells: Array[Vector3i];
 					
-					var has_cell_above := voxel_info.path.has(cell + Vector3i(0, 0, 1));
-					var has_cell_below := voxel_info.path.has(cell - Vector3i(0, 0, 1));
+					var has_cell_above := path_set.has(cell + Vector3i.BACK); # BACK refers to UP in our 3D axes
+					var has_cell_below := path_set.has(cell - Vector3i.BACK);
 					
 					if !has_cell_above:
 						# Top cell (or standalone cell)
