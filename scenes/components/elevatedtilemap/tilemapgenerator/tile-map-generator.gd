@@ -16,6 +16,7 @@ extends Node2D;
 @export var heightmap_size_y := 25;
 @export var heightmap_size_z := 25; # Number of possible height values (0 to heightmap_size_z-1)
 @export var noise_scale := 4.0;
+@export var under_layer_depth := 5; # Depth of under layer from top for terrain classification
 
 var max_seed_value := 999999999; # There seems to be a max seed for FastNoiseLite
 
@@ -120,7 +121,7 @@ func generate_voxels() -> GenerateVoxelsOutput:
 			
 			# Generate terrain voxels
 			for z in range(height):
-				if z > height - 5:
+				if z > height - under_layer_depth:
 					terrain_under_coords.append(Vector3i(x, y, z));
 				else:
 					terrain_stone_coords.append(Vector3i(x, y, z));
