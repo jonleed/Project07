@@ -127,7 +127,7 @@ func _execute_on_layer(coords: Vector3i, method_name: String, default_value = nu
 func erase_cell(coords: Vector3i) -> void:
 	var does_tile_exist := get_cell_tile_data(coords) != null;
 	_execute_on_layer(coords, "erase_cell");
-	if not does_tile_exist:
+	if does_tile_exist:
 		var changes: Array[CellChangedInfo] = [CellChangedInfo.new(coords, Enums.CellChangeType.DELETE)];
 		cells_changed.emit(changes);
 
@@ -162,11 +162,10 @@ func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain
 	for cell in cells:
 		var changed_type: Enums.CellChangeType;
 		var cell_exists := get_cell_tile_data(cell) != null;
-		match cell_exists:
-			false:
-				changed_type = Enums.CellChangeType.CREATE;
-			true:
-				changed_type = Enums.CellChangeType.MODIFY;
+		if cell_exists:
+			changed_type = Enums.CellChangeType.MODIFY;
+		else:
+			changed_type = Enums.CellChangeType.CREATE;
 		changes.append(CellChangedInfo.new(cell, changed_type));
 	var cells_by_z := _group_cells_by_z(cells);
 	for z in cells_by_z:
@@ -180,11 +179,10 @@ func set_cells_terrain_path(path: Array[Vector3i], terrain_set: int, terrain: in
 	for point in path:
 		var changed_type: Enums.CellChangeType;
 		var cell_exists := get_cell_tile_data(point) != null;
-		match cell_exists:
-			false:
-				changed_type = Enums.CellChangeType.CREATE;
-			true:
-				changed_type = Enums.CellChangeType.MODIFY;
+		if cell_exists:
+			changed_type = Enums.CellChangeType.MODIFY;
+		else:
+			changed_type = Enums.CellChangeType.CREATE;
 		changes.append(CellChangedInfo.new(point, changed_type));
 	var sub_paths: Array[Dictionary] = [];
 	var prev_z = null;

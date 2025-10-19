@@ -24,13 +24,26 @@ static var get_surface_type := generate_custom_data_helper(SURFACE_TYPE, Enums.S
 
 var surface_map: Dictionary[Vector2i, int] = {};
 
+var dirty_coords: Array[Vector2i] = [];
+
 func _ready() -> void:
 	generate_surface();
+	cells_changed.connect(_on_cells_changed);
+
+func _on_cells_changed(changes: Array[ElevatedTileMap.CellChangedInfo]) -> void:
+	for change in changes:
+		var coord := change.coord
+		var coord_2d := Vector2i(coord.x, coord.y)
+		if not dirty_coords.has(coord_2d):
+			dirty_coords.append(coord_2d)
+	generate_surface_incremental();
 
 static func sort_custom_tile_layers(a: CustomTileMapLayer, b: CustomTileMapLayer) -> bool:
 	return a.layer < b.layer;
 
 func generate_surface():
+	# Full regeneration for initial load or explicit call
+	dirty_coords.clear();
 	surface_map.clear();
 	var tile_map_layers := get_children();
 	tile_map_layers.sort_custom(sort_custom_tile_layers);
@@ -46,6 +59,28 @@ func generate_surface():
 					pass ;
 				Enums.SurfaceType.SURFACE:
 					surface_map[cell_coords] = tile_map_layer.layer;
+
+func generate_surface_incremental():
+	if dirty_coords.is_empty():
+		return
+	var affected_coords: Array[Vector2i] = dirty_coords.duplicate()
+	dirty_coords.clear()
+	# For each dirty coord, re-evaluate from high to low Z
+	var layers := get_children().duplicate()
+	layers.sort_custom(sort_custom_tile_layers)
+	layers.reverse() # High to low
+	for coord in affected_coords:
+		surface_map.erase(coord)
+		for layer in layers:
+			if layer is CustomTileMapLayer:
+				var tile_data: TileData = layer.get_cell_tile_data(coord)
+				if tile_data:
+					var st: Enums.SurfaceType = get_surface_type.call(tile_data)
+					if st == Enums.SurfaceType.SURFACE:
+						surface_map[coord] = layer.layer
+						break # Topmost surface
+					elif st == Enums.SurfaceType.BLOCKING:
+						break # No surface at or below
 
 func surface_to_local(surface_position: Vector2i):
 	if !surface_map.has(surface_position):
@@ -72,6 +107,7 @@ func global_to_surface(_global_position: Vector2):
 	tile_map_layers.sort_custom(sort_custom_tile_layers);
 	tile_map_layers.reverse();
 	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
+		# Number of upward probe steps for surface detection; increase for finer precision if tile_z varies
 		const UP_CHECKS := 5;
 		for i in range(UP_CHECKS + 1):
 			var local_pos := tile_map_layer.to_local(_global_position);
@@ -80,19 +116,3 @@ func global_to_surface(_global_position: Vector2):
 			if surface_map.has(local_to_map_res) and surface_map[local_to_map_res] == tile_map_layer.layer:
 				return local_to_map_res;
 	return null;
-
-func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1, -1), alternative_tile: int = 0):
-	super.set_cell(coords, source_id, atlas_coords, alternative_tile);
-	generate_surface();
-
-func erase_cell(coords: Vector3i) -> void:
-	super.erase_cell(coords);
-	generate_surface();
-
-func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
-	super.set_cells_terrain_connect(cells, terrain_set, terrain, ignore_empty_terrains);
-	generate_surface();
-
-func set_cells_terrain_path(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
-	super.set_cells_terrain_path(cells, terrain_set, terrain, ignore_empty_terrains);
-	generate_surface();
