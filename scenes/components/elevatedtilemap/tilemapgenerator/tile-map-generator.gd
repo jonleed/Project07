@@ -20,6 +20,8 @@ extends Node2D;
 
 var max_seed_value := 999999999; # There seems to be a max seed for FastNoiseLite
 
+@export var noise_seed: int = 0;
+
 @export_subgroup("Tile Info")
 @export var top_tile_info := TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(1, 0)));
 @export var under_tile_info := TerrainOrAtlasInfo.from_defined_atlas(AtlasInfo.new(0, Vector2i(0, 0)));
@@ -98,7 +100,10 @@ func generate_voxels() -> GenerateVoxelsOutput:
 	var res := GenerateVoxelsOutput.new();
 	var noise := FastNoiseLite.new();
 	# Seed has a max value
-	noise.seed = randi() % max_seed_value;
+	var used_seed: int = noise_seed if noise_seed != 0 else randi() % max_seed_value;
+	noise.seed = used_seed;
+	if noise_seed == 0:
+		print("Generated terrain with random seed: ", used_seed, ". Set noise_seed to this value for reproducibility.");
 	
 	var terrain_voxels: Array[VoxelInfo] = [];
 	var water_voxels: Array[VoxelInfo] = [];
