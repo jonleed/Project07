@@ -144,18 +144,21 @@ func get_cell_tile_data(coords: Vector3i) -> TileData:
 	return _execute_on_layer(coords, "get_cell_tile_data", null);
 
 func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1, -1), alternative_tile: int = 0):
-	var changes:Array[CellChangedInfo] = [];
+	var changes: Array[CellChangedInfo] = [];
 	var tile_map_layer := get_or_create_tile_map_layer(coords.z);
+	var cell_2d := Vector2i(coords.x, coords.y);
+	var cell_exists := tile_map_layer.get_cell_tile_data(cell_2d) != null;
 	var changed_type: Enums.CellChangeType;
-	var cell_exists := tile_map_layer.get_cell_tile_data(Vector2i(coords.x, coords.y)) != null;
-	match cell_exists:
-		true:
+	if (source_id == -1 or atlas_coords == Vector2i(-1, -1) or alternative_tile == -1) and cell_exists:
+		changed_type = Enums.CellChangeType.DELETE;
+	else:
+		if cell_exists:
 			changed_type = Enums.CellChangeType.MODIFY;
-		false:
+		else:
 			changed_type = Enums.CellChangeType.CREATE;
 	changes.append(CellChangedInfo.new(coords, changed_type));
-	tile_map_layer.set_cell(Vector2i(coords.x, coords.y), source_id, atlas_coords, alternative_tile);
-	cells_changed.emit(changes)
+	tile_map_layer.set_cell(cell_2d, source_id, atlas_coords, alternative_tile);
+	cells_changed.emit(changes);
 
 func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
 	var changes: Array[CellChangedInfo] = []
