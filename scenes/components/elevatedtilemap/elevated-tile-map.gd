@@ -175,8 +175,8 @@ func get_or_create_tile_map_layer(z: int) -> CustomTileMapLayer:
 	add_child(tile_map_layer);
 	tile_map_layer.owner = get_tree().edited_scene_root
 	
-	# Shift layer up for each layer using Vector2 for translation
-	tile_map_layer.translate(Vector2(0, -tile_z * z));
+	# Shift layer up for each layer using position.y for clarity on negative Z handling
+	tile_map_layer.position.y = - tile_z * z;
 	
 	return tile_map_layer;
 
