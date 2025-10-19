@@ -66,28 +66,34 @@ func draw_voxels(voxels: Array[VoxelInfo]) -> void:
 				var middle_layer_cells: Array[Vector3i] = [];
 				var bottom_layer_cells: Array[Vector3i] = [];
 				
-				# Pre-build lookup set for O(1) has() checks
-				var path_set: Dictionary[Vector3i, bool] = {};
-				for c in voxel_info.path:
-					path_set[c] = true;
-						
+				# Group by (x,y) columns for efficient vertical classification (O(n) build, localized O(1) lookups per stack)
+				var columns: Dictionary[Vector2i, Dictionary] = {}
 				for cell: Vector3i in voxel_info.path:
-					var layer_cells: Array[Vector3i];
-					
-					var has_cell_above := path_set.has(cell + Vector3i.BACK); # BACK refers to UP in our 3D axes
-					var has_cell_below := path_set.has(cell - Vector3i.BACK);
-					
-					if !has_cell_above:
-						# Top cell (or standalone cell)
-						layer_cells = top_layer_cells;
-					elif !has_cell_below:
-						# Bottom cell
-						layer_cells = bottom_layer_cells;
-					else:
-						# Middle cell (has both above and below)
-						layer_cells = middle_layer_cells;
-					
-					layer_cells.push_back(cell);
+					var xy: Vector2i = Vector2i(cell.x, cell.y)
+					if not columns.has(xy):
+						columns[xy] = {}
+					columns[xy][cell.z] = true
+				
+				for xy: Vector2i in columns:
+					var z_set: Dictionary = columns[xy]
+					for z: int in z_set.keys():
+						var cell: Vector3i = Vector3i(xy.x, xy.y, z)
+						var has_cell_above := z_set.has(z + Vector3i.BACK.z)
+						var has_cell_below := z_set.has(z - Vector3i.BACK.z)
+						
+						var layer_cells: Array[Vector3i]
+						
+						if !has_cell_above:
+							# Top cell (or standalone cell)
+							layer_cells = top_layer_cells;
+						elif !has_cell_below:
+							# Bottom cell
+							layer_cells = bottom_layer_cells;
+						else:
+							# Middle cell (has both above and below)
+							layer_cells = middle_layer_cells;
+						
+						layer_cells.append(cell);
 				for i: int in range(3):
 					var layer_cells: Array[Vector3i];
 					var terrain_set: int;
