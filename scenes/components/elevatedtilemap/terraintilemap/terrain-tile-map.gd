@@ -26,6 +26,8 @@ var surface_map: Dictionary[Vector2i, int] = {};
 
 var dirty_coords: Array[Vector2i] = [];
 
+@export var up_checks: int = 5 # Controls the number of upward probe steps for surface detection to handle varying tile_z and height_multiplier values more flexibly.
+
 func _ready() -> void:
 	generate_surface();
 	cells_changed.connect(_on_cells_changed);
@@ -108,10 +110,9 @@ func global_to_surface(_global_position: Vector2):
 	tile_map_layers.reverse();
 	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
 		# Number of upward probe steps for surface detection; increase for finer precision if tile_z varies
-		const UP_CHECKS := 5;
-		for i in range(UP_CHECKS + 1):
+		for i in range(up_checks + 1):
 			var local_pos := tile_map_layer.to_local(_global_position);
-			var adjusted_local_pos := local_pos + Vector2.UP * tile_z * (i / float(UP_CHECKS));
+			var adjusted_local_pos := local_pos + Vector2.UP * tile_z * (i / float(up_checks));
 			var local_to_map_res := tile_map_layer.local_to_map(adjusted_local_pos);
 			if surface_map.has(local_to_map_res) and surface_map[local_to_map_res] == tile_map_layer.layer:
 				return local_to_map_res;
