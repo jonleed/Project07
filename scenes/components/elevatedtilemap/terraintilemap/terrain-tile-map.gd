@@ -49,9 +49,12 @@ func generate_surface():
 	surface_map.clear();
 	var tile_map_layers := get_children();
 	tile_map_layers.sort_custom(sort_custom_tile_layers);
-	for tile_map_layer: CustomTileMapLayer in tile_map_layers:
-		for cell_coords: Vector2i in tile_map_layer.get_used_cells():
-			var tile_data := tile_map_layer.get_cell_tile_data(cell_coords);
+	for tile_map_layer in tile_map_layers:
+		if not tile_map_layer is CustomTileMapLayer:
+			continue
+		var layer: CustomTileMapLayer = tile_map_layer
+		for cell_coords: Vector2i in layer.get_used_cells():
+			var tile_data: TileData = layer.get_cell_tile_data(cell_coords);
 			var surface_type: Enums.SurfaceType = get_surface_type.call(tile_data);
 			match surface_type:
 				Enums.SurfaceType.BLOCKING:
@@ -60,29 +63,35 @@ func generate_surface():
 				Enums.SurfaceType.STATIC_ENTITY:
 					pass ;
 				Enums.SurfaceType.SURFACE:
-					surface_map[cell_coords] = tile_map_layer.layer;
+					surface_map[cell_coords] = layer.layer;
 
 func generate_surface_incremental():
 	if dirty_coords.is_empty():
 		return
 	var affected_coords: Array[Vector2i] = dirty_coords.duplicate()
 	dirty_coords.clear()
-	# For each dirty coord, re-evaluate from high to low Z
-	var layers := get_children().duplicate()
-	layers.sort_custom(sort_custom_tile_layers)
-	layers.reverse() # High to low
+	if affected_coords.size() > 100:
+		generate_surface()
+		return
 	for coord in affected_coords:
 		surface_map.erase(coord)
-		for layer in layers:
-			if layer is CustomTileMapLayer:
-				var tile_data: TileData = layer.get_cell_tile_data(coord)
+	var layers := get_children().duplicate()
+	layers.sort_custom(sort_custom_tile_layers)
+	for layer in layers:
+		if layer is CustomTileMapLayer:
+			var typed_layer: CustomTileMapLayer = layer
+			for coord in affected_coords:
+				var tile_data: TileData = typed_layer.get_cell_tile_data(coord)
 				if tile_data:
 					var st: Enums.SurfaceType = get_surface_type.call(tile_data)
-					if st == Enums.SurfaceType.SURFACE:
-						surface_map[coord] = layer.layer
-						break # Topmost surface
-					elif st == Enums.SurfaceType.BLOCKING:
-						break # No surface at or below
+					match st:
+						Enums.SurfaceType.BLOCKING:
+							if surface_map.has(coord):
+								surface_map.erase(coord)
+						Enums.SurfaceType.SURFACE:
+							surface_map[coord] = typed_layer.layer
+						Enums.SurfaceType.STATIC_ENTITY:
+							pass
 
 func surface_to_local(surface_position: Vector2i):
 	if !surface_map.has(surface_position):
