@@ -224,7 +224,8 @@ func get_or_create_tile_map_layer(z: int) -> CustomTileMapLayer:
 	tile_map_layer.y_sort_origin = -z;
 	
 	add_child(tile_map_layer);
-	tile_map_layer.owner = get_tree().edited_scene_root
+	if Engine.is_editor_hint():
+		tile_map_layer.owner = get_tree().edited_scene_root
 	
 	# Shift layer up for each layer using position.y for clarity on negative Z handling
 	tile_map_layer.position.y = - tile_z * z;

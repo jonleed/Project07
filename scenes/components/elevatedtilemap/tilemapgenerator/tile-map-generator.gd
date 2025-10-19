@@ -53,7 +53,8 @@ func _initialize_tile_map(tile_map: ElevatedTileMap, _name: String) -> void:
 	tile_map.tile_z = tile_z;
 	tile_map.name = _name;
 	add_child(tile_map)
-	tile_map.owner = get_tree().edited_scene_root;
+	if Engine.is_editor_hint():
+		tile_map.owner = get_tree().edited_scene_root;
 
 func generate_terrain() -> void:
 	clear_terrain();
