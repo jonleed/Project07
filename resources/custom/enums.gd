@@ -17,3 +17,9 @@ enum SurfaceType {
 
 	MAX
 }
+
+enum CellChangeType {
+	CREATE,
+	MODIFY,
+	DELETE
+}

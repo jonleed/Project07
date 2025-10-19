@@ -2,6 +2,15 @@
 class_name ElevatedTileMap;
 extends Node2D;
 
+class CellChangedInfo:
+	var coord: Vector3i;
+	var change_type: Enums.CellChangeType;
+	func _init(_coord: Vector3i, _change_type: Enums.CellChangeType):
+		self.coord = _coord;
+		self.change_type = _change_type;
+
+signal cells_changed(changes: Array[CellChangedInfo]); # Each dict: {"coord": Vector3i, "change_type": Enums.CellChangeType}; duplicates allowed for multi-type per coord
+
 # Height difference between layers in px, i.e. how much to shift an item from (x, y, z) to (x, y, z+1)
 @export var tile_z := 8;
 
@@ -111,7 +120,11 @@ func _execute_on_layer(coords: Vector3i, method_name: String, default_value = nu
 	return tile_map_layer.callv(method_name, call_args);
 
 func erase_cell(coords: Vector3i) -> void:
+	var does_tile_exist := get_cell_tile_data(coords) != null;
 	_execute_on_layer(coords, "erase_cell");
+	if not does_tile_exist:
+		var changes: Array[CellChangedInfo] = [CellChangedInfo.new(coords, Enums.CellChangeType.DELETE)];
+		cells_changed.emit(changes);
 
 func get_cell_alternative_tile(coords: Vector3i) -> int:
 	return _execute_on_layer(coords, "get_cell_alternative_tile", -1);
@@ -126,31 +139,63 @@ func get_cell_tile_data(coords: Vector3i) -> TileData:
 	return _execute_on_layer(coords, "get_cell_tile_data", null);
 
 func set_cell(coords: Vector3i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1, -1), alternative_tile: int = 0):
+	var changes:Array[CellChangedInfo] = [];
 	var tile_map_layer := get_or_create_tile_map_layer(coords.z);
+	var changed_type: Enums.CellChangeType;
+	var cell_exists := tile_map_layer.get_cell_tile_data(Vector2i(coords.x, coords.y)) != null;
+	match cell_exists:
+		true:
+			changed_type = Enums.CellChangeType.MODIFY;
+		false:
+			changed_type = Enums.CellChangeType.CREATE;
+	changes.append(CellChangedInfo.new(coords, changed_type));
 	tile_map_layer.set_cell(Vector2i(coords.x, coords.y), source_id, atlas_coords, alternative_tile);
+	cells_changed.emit(changes)
 
 func set_cells_terrain_connect(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
+	var changes: Array[CellChangedInfo] = []
+	for cell in cells:
+		var changed_type: Enums.CellChangeType;
+		var cell_exists := get_cell_tile_data(cell) != null;
+		match cell_exists:
+			false:
+				changed_type = Enums.CellChangeType.CREATE;
+			true:
+				changed_type = Enums.CellChangeType.MODIFY;
+		changes.append(CellChangedInfo.new(cell, changed_type));
 	var cells_by_z := _group_cells_by_z(cells);
 	for z in cells_by_z:
 		var tile_map_layer := get_or_create_tile_map_layer(z);
 		var new_cells := cells_by_z[z];
 		tile_map_layer.set_cells_terrain_connect(new_cells, terrain_set, terrain, ignore_empty_terrains);
+	cells_changed.emit(changes);
 
-func set_cells_terrain_path(cells: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
-	var paths: Array[Dictionary] = [];
+func set_cells_terrain_path(path: Array[Vector3i], terrain_set: int, terrain: int, ignore_empty_terrains: bool = true):
+	var changes: Array[CellChangedInfo] = []
+	for point in path:
+		var changed_type: Enums.CellChangeType;
+		var cell_exists := get_cell_tile_data(point) != null;
+		match cell_exists:
+			false:
+				changed_type = Enums.CellChangeType.CREATE;
+			true:
+				changed_type = Enums.CellChangeType.MODIFY;
+		changes.append(CellChangedInfo.new(point, changed_type));
+	var sub_paths: Array[Dictionary] = [];
 	var prev_z = null;
 	var current_path: Array[Vector2i] = [];
-	for point in cells:
+	for point in path:
 		if prev_z != null and point.z != prev_z:
-			paths.append({"z": prev_z, "path": current_path});
+			sub_paths.append({"z": prev_z, "path": current_path});
 			current_path = [];
 		current_path.append(Vector2i(point.x, point.y));
 		prev_z = point.z;
 	if len(current_path) > 0:
-		paths.append({"z": prev_z, "path": current_path});
-	for path in paths:
-		var tile_map_layer := get_or_create_tile_map_layer(path["z"]);
-		tile_map_layer.set_cells_terrain_path(path["path"], terrain_set, terrain, ignore_empty_terrains);
+		sub_paths.append({"z": prev_z, "path": current_path});
+	for sub_path in sub_paths:
+		var tile_map_layer := get_or_create_tile_map_layer(sub_path["z"]);
+		tile_map_layer.set_cells_terrain_path(sub_path["path"], terrain_set, terrain, ignore_empty_terrains);
+	cells_changed.emit(changes);
 
 func get_tile_map_layer(z: int) -> CustomTileMapLayer:
 	return find_child("TileMapLayer" + str(z));
