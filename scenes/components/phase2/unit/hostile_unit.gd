@@ -354,12 +354,13 @@ func threat_analysis() -> bool:
 				if returned_arr[0] != Vector2i(-1234, -1234):
 					move_down_path(returned_arr[3], true)	
 					var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-					if selected_attack != null:
+					if selected_attack != null and action_count > 0:
 						# So the attack is valid, we can target the selected unit
 						course_select = true
-						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))			
 					if move_count > 0:
 						rerun_allowed = true
+						action_count -= 1
+						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
 				print("No exposed hostiles!")
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
@@ -379,7 +380,7 @@ func threat_analysis() -> bool:
 				move_down_path(returned_arr[1], true)
 				if move_count > 0:
 					rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT:
+	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
 		print("Entering -> Orange Alert")
 		if len(remembered_sightings) > 0:
 			var selected_sighting:Vector2i = select_memory_location()
@@ -388,7 +389,7 @@ func threat_analysis() -> bool:
 				move_down_path(get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				if move_count > 0:
 					rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT:
+	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
 		print("Entering -> Yellow Alert")
 		if len(audio_cues) > 0:
 			var selected_sighting:Vector2i = select_investigation_location()
@@ -397,13 +398,13 @@ func threat_analysis() -> bool:
 				move_down_path(get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				if move_count > 0:
 					rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.GREEN_ALERT:
+	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
 		print("Entering -> Green Alert")
 		pass
-	if not course_select and current_alert_level >= alert_level.BLUE_ALERT:
+	if not course_select and current_alert_level >= alert_level.BLUE_ALERT and action_count > 0:
 		print("Entering -> Blue Alert")
 		var ideal_recovery_action:Healaction = ideal_recovery()
-		if ideal_recovery_action != null:
+		if ideal_recovery_action != null and action_count > 0:
 			course_select = true
 			ideal_recovery_action.execute()
 	
