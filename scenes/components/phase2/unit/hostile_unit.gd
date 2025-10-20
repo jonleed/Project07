@@ -74,8 +74,6 @@ func ideal_recovery() -> Healaction:
 		return null
 	return heal_actions[get_parent().get_random_generator().randi_range(0, len(heal_actions)-1)]
 	
-func ideal_recovery() -> Action:
-	return null
 	
 func execute_turn() -> void:
 	print("RUNNING NPC TURN")
@@ -357,22 +355,21 @@ func threat_analysis() -> bool:
 					if selected_attack != null and action_count > 0:
 						# So the attack is valid, we can target the selected unit
 						course_select = true
-					if move_count > 0:
 						rerun_allowed = true
 						action_count -= 1
 						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
 				print("No exposed hostiles!")
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
-		if (not course_select and threat_diff > 1.0) or not course_select:
+		if (not course_select and move_count > 0 and threat_diff > 0.4):
 			print("-> -> Entering Rally")
 			var returned_arr:Array = find_rally_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
 				if move_count > 0:
 					rerun_allowed = true
-		if not course_select:
 				get_parent().move_unit_via_path(self, returned_arr[1], true)
+		if not course_select and move_count > 0:
 			print("-> -> Entering Retreat")
 			var returned_arr:Array = find_retreat_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
