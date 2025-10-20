@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Moveaction" load_steps=6 format=3 uid="uid://qyqpvvonk167"]
+
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="1_3vogg"]
+[ext_resource type="Script" uid="uid://c4vo2cq2blyvo" path="res://scenes/components/phase2/actions/actiontypes/move-action.gd" id="1_rxprx"]
+
+[sub_resource type="Gradient" id="Gradient_3vogg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u1ym4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5a3ew"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_u1ym4")
+color_ramp = SubResource("Gradient_3vogg")
+
+[resource]
+script = ExtResource("1_rxprx")
+range_pattern = ExtResource("1_3vogg")
+action_name = "Move"
+action_icon = SubResource("NoiseTexture2D_5a3ew")
+metadata/_custom_type_script = "uid://c4vo2cq2blyvo"

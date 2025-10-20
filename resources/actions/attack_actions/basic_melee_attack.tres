@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Attackaction" load_steps=3 format=3 uid="uid://b5amteovsr0yc"]
+
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="1_p8hn5"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="1_pjt6e"]
+
+[resource]
+script = ExtResource("1_pjt6e")
+base_dmg = 2
+range_pattern = ExtResource("1_p8hn5")
+action_name = "Basic Attack"
+metadata/_custom_type_script = "uid://dhgqt46va2g45"

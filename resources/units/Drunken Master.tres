@@ -1,13 +1,17 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=6 format=3 uid="uid://bkbee2vs6l8f1"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=9 format=3 uid="uid://bkbee2vs6l8f1"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_8hqp8"]
 [ext_resource type="SpriteFrames" uid="uid://cvtvormou4elu" path="res://resources/animations/Drunken Master.tres" id="2_5fivb"]
+[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_gr4uv"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_w5yi2"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_884dk"]
+[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_psyey"]
 [ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/ui/portraits/drunkenmaster.png" id="4_3m1c4"]
+[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_en4qs"]
 
 [resource]
 script = ExtResource("2_w5yi2")
+action_array = Array[ExtResource("1_8hqp8")]([ExtResource("2_gr4uv"), ExtResource("3_psyey"), ExtResource("4_en4qs")])
 icon_sprite = ExtResource("4_3m1c4")
 unit_name = "Drunken Master"
 unit_desc = "The Drunken Master has an interest in the Castle of Metal and Soul because it holds relics that resonate with his art: enchanted goblets that refill with [color=Yellow]liquid courage[/color]."
