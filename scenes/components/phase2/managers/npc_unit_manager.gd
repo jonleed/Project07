@@ -8,6 +8,7 @@ func _ready():
 		end_turn()
 	pathfinder = Pathfinder.new(get_parent().get_parent().get_child(0))
 	pathfinder._rebuild_connections()
+	faction_name = "Hostile Faction"
 	print(pathfinder)
 
 func _step_turn():
