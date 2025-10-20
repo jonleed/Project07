@@ -68,6 +68,11 @@ func ideal_attack(target_unit:Unit) -> Attackaction:
 	if len(atk_actions) < 1:
 		return null
 	return atk_actions[get_parent().get_random_generator().randi_range(0, len(atk_actions)-1)]
+func ideal_recovery() -> Healaction:
+	var heal_actions:Array[Healaction] = get_restorative_actions()
+	if len(heal_actions) < 1 or health >= base_health:
+		return null
+	return heal_actions[get_parent().get_random_generator().randi_range(0, len(heal_actions)-1)]
 	
 func ideal_recovery() -> Action:
 	return null
