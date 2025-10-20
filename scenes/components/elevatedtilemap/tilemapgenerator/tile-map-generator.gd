@@ -37,6 +37,9 @@ var max_seed_value := 999999999; # There seems to be a max seed for FastNoiseLit
 @export var fog_tile_info := TerrainOrAtlasInfo.from_defined_terrain(TerrainInfo.new(0, 2, true, Enums.TerrainType.CONNECT))
 @export var is_fog_on_water := false;
 
+@export_group("Player Movement Highlight Layer")
+@export var player_movement_highlight_object_packed: PackedScene = preload("uid://ptnejipcawbo");
+
 func create_elevated_tile_map(_name: String) -> ElevatedTileMap:
 	var elevated_tile_map := ElevatedTileMap.new();
 	_initialize_tile_map(elevated_tile_map, _name);
@@ -46,6 +49,16 @@ func create_terrain_tile_map(_name: String) -> TerrainTileMap:
 	var terrain_tile_map := TerrainTileMap.new();
 	_initialize_tile_map(terrain_tile_map, _name);
 	return terrain_tile_map;
+
+func create_highlight_layer(_name: String, terrain_tile_map: TerrainTileMap, highlight_object_packed: PackedScene) -> HighlightLayer:
+	var highlight_layer := HighlightLayer.new();
+	highlight_layer.terrain_tile_map = terrain_tile_map;
+	highlight_layer.highlight_object_packed = highlight_object_packed;
+	highlight_layer.name = _name;
+	add_child(highlight_layer);
+	if Engine.is_editor_hint():
+		highlight_layer.owner = get_tree().edited_scene_root;
+	return highlight_layer;
 
 # Helper function to initialize common tile map properties
 func _initialize_tile_map(tile_map: ElevatedTileMap, _name: String) -> void:
@@ -71,18 +84,23 @@ func generate_terrain() -> void:
 		var fog_tile_map := create_elevated_tile_map("FogTileMap");
 		
 		fog_tile_map.draw_voxels(voxels.fog_voxels);
+	
+	create_highlight_layer("PlayerMovementHighlightLayer", terrain_tile_map, player_movement_highlight_object_packed);
 
 func clear_terrain() -> void:
-	for elevated_tile_map: ElevatedTileMap in [get_terrain(), get_fog()]:
-		if elevated_tile_map != null:
-			remove_child(elevated_tile_map);
-			elevated_tile_map.queue_free();
+	for node: Node2D in [get_terrain(), get_fog(), get_player_movement_highlight_layer()]:
+		if node != null:
+			remove_child(node);
+			node.queue_free();
 
 func get_terrain() -> TerrainTileMap:
 	return find_child("TerrainTileMap");
 
 func get_fog() -> ElevatedTileMap:
 	return find_child("FogTileMap");
+
+func get_player_movement_highlight_layer() -> HighlightLayer:
+	return find_child("PlayerMovementHighlightLayer");
 
 # Helper function to process tile info and append appropriate voxels to the target array
 func _process_tile_info(target_voxels: Array[VoxelInfo], coords: Array[Vector3i], tile_info: TerrainOrAtlasInfo) -> void:
