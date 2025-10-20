@@ -222,9 +222,9 @@ func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influ
 func coordinate_validated(coordinate:Vector2i) -> Array:
 	var pathfinder:Pathfinder = get_parent().get_pathfinder()
 	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
-	if len(returned_path) <= 1:
+	if len(returned_path) == 0:
 		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
-		return [false, INF]
+		return [true, 0, []]
 	else:
 		var parsed:Vector2i = returned_path[-1]
 		# We don't know what the point returned is
@@ -350,9 +350,9 @@ func threat_analysis() -> bool:
 			var returned_arr:Array = find_exposed_hostile()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				print("Found an exposed hostile!")
-				returned_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
-				if returned_arr[0] != Vector2i(-1234, -1234):
-					move_down_path(returned_arr[3], true)	
+				var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
+				if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
+					get_parent().move_unit_via_path(self, support_arr[3], true)	
 					var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
 					if selected_attack != null and action_count > 0:
 						# So the attack is valid, we can target the selected unit
@@ -369,35 +369,35 @@ func threat_analysis() -> bool:
 			var returned_arr:Array = find_rally_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				move_down_path(returned_arr[1], true)
 				if move_count > 0:
 					rerun_allowed = true
 		if not course_select:
+				get_parent().move_unit_via_path(self, returned_arr[1], true)
 			print("-> -> Entering Retreat")
 			var returned_arr:Array = find_retreat_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				move_down_path(returned_arr[1], true)
 				if move_count > 0:
 					rerun_allowed = true
+				get_parent().move_unit_via_path(self, returned_arr[1], true)
 	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
 		print("Entering -> Orange Alert")
 		if len(remembered_sightings) > 0:
 			var selected_sighting:Vector2i = select_memory_location()
 			if selected_sighting != Vector2i(-1234, -1234):
 				course_select = true
-				move_down_path(get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				if move_count > 0:
 					rerun_allowed = true
+				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
 		print("Entering -> Yellow Alert")
 		if len(audio_cues) > 0:
 			var selected_sighting:Vector2i = select_investigation_location()
 			if selected_sighting != Vector2i(-1234, -1234):
 				course_select = true
-				move_down_path(get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				if move_count > 0:
 					rerun_allowed = true
+				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
 		print("Entering -> Green Alert")
 		pass

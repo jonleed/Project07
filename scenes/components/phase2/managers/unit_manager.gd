@@ -95,7 +95,16 @@ func get_unused_units() -> Array:
 func get_unit_position(unit: Unit)-> Vector2i:
 	return unit.cur_pos
 
-func move_unit(unit:Unit,coord:Vector2i):
-	unit.move_count-= int(unit.cur_pos.distance_to(coord))
+## Move a unit directly to a specific tile (don't bother finding the path to move down, has no safeties for if it exceeds move_count)
+func move_unit(unit:Unit,coord:Vector2i, teleport:bool=false):
+	if not teleport:
+		unit.move_count-= int(unit.cur_pos.distance_to(coord))
 	map_manager.entity_move(unit.cur_pos,coord)
 	unit.cur_pos = coord
+
+## Move a unit down a provided Vector2 path; go_final_distance should be TRUE for Moves, and FALSE for Attacks
+func move_unit_via_path(unit:Unit, path:PackedVector2Array, go_final_distance:bool=true):
+	var start_pos:Vector2i = unit.cur_pos
+	unit.move_down_path(path, go_final_distance)
+	var end_pos:Vector2i = unit.cur_pos
+	map_manager.entity_move(start_pos, end_pos)
