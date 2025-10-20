@@ -245,3 +245,10 @@ func cleanup_layers() -> void:
 		if child is CustomTileMapLayer and child.get_used_cells().is_empty():
 			remove_child(child)
 			child.queue_free()
+
+func get_used_cells() -> Array[Vector3i]:
+	var res: Array[Vector3i] = []
+	for child: CustomTileMapLayer in get_children():
+		var used_cells: Array[Vector3i] = child.get_used_cells().map(func(a: Vector2i) -> Vector3i: return Vector3i(a.x, a.y, child.layer));
+		res.append_array(used_cells);
+	return res
