@@ -12,12 +12,9 @@ func _init(tile_map:MapManager, provided_move_pattern:Pattern2D=load("res://reso
 	tile_map_ref = tile_map
 	surface_map = tile_map_ref.map_dict_v2
 	move_pattern = provided_move_pattern
-	var temp_grid:PackedVector2Array = move_pattern.affected_tiles
-	var midx:int = move_pattern.grid_size.x / 2
-	var midy:int = move_pattern.grid_size.y / 2
-	var new_vec:Vector2i = Vector2i(midx, midy)
-	for vector in temp_grid:
-		converted_vectors.append(Vector2i(vector) - new_vec)
+	var temp_arr:PackedVector2Array = move_pattern.affected_tiles
+	for coordinate in temp_arr:
+		converted_vectors.append(Vector2i(coordinate))
 	
 func surrounding_vectors(provided_coordinate:Vector2i) -> Array[Vector2i]:
 	var return_arr:Array[Vector2i] = []
