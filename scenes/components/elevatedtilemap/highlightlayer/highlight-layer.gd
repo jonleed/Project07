@@ -10,8 +10,8 @@ func highlight_surface_cells(surface_cells: Array[Vector2i]):
         if res == null:
             continue;
         var highlight: Node2D = highlight_object_packed.instantiate()
-        highlight.global_position = res;
         add_child(highlight);
+        highlight.global_position = res;
 
 func clear_highlights():
     for node in get_children():
