@@ -85,6 +85,14 @@ func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 				# Move incrementally, not all at once, to give traps a chance to trigger for when the body is entered.
 				# Ideally we'd be emitting a signal that the traps can monitor
 
+func use_heal_action(given_heal_action:Healaction) -> void:
+	var unit_manager:Unit_Manager = self.get_parent()
+	var unit_manager_units:Array = unit_manager.units
+	for friendly_unit in unit_manager_units:
+		if Vector2(friendly_unit.cur_pos) in given_heal_action.multihit_pattern.affected_tiles:
+			friendly_unit.heal_damage(given_heal_action.heal)
+	self.heal_damage(given_heal_action.heal)
+
 func _ready() -> void:
 	# This is overriden by ally_unit.gd
 	add_to_group("Base Faction")

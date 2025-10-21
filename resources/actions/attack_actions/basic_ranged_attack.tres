@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Attackaction" load_steps=3 format=3 uid="uid://bt17xdau6netn"]
+
+[ext_resource type="Resource" uid="uid://cho7yunu5vt25" path="res://resources/range_patterns/far_range.tres" id="1_8iuhy"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="1_dl7ad"]
+
+[resource]
+script = ExtResource("1_dl7ad")
+base_dmg = 2
+range_pattern = ExtResource("1_8iuhy")
+range_dist = 5
+metadata/_custom_type_script = "uid://dhgqt46va2g45"

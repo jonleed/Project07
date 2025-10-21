@@ -64,11 +64,15 @@ func ideal_attack(target_unit:Unit) -> Attackaction:
 	var atk_actions:Array[Attackaction] = get_attack_actions()
 	var pos_atks:Array[Attackaction] = []
 	for atk_action in atk_actions:
-		var atk_tiles = atk_action.range_pattern.calculate_affected_tiles_from_center(self.cur_pos)
-		if get_parent().debugging_allowed:
-			print(target_unit.cur_pos, " ", atk_tiles)
-		if target_unit.cur_pos in atk_tiles:
-			pos_atks.append(atk_action)
+		#var atk_tiles = atk_action.range_pattern.calculate_affected_tiles_from_center(cur_pos)
+		#print(target_unit.cur_pos, " ", cur_pos)
+		#print(atk_action.range_pattern.affected_tiles)
+		#print(atk_tiles)
+		#
+		#if get_parent().debugging_allowed:
+		#	print(target_unit.cur_pos, " ", atk_tiles)
+		#if target_unit.cur_pos in atk_tiles:
+		pos_atks.append(atk_action)
 	if len(pos_atks) < 1:
 		return null
 	return pos_atks[get_parent().get_random_generator().randi_range(0, len(pos_atks)-1)]
@@ -330,25 +334,33 @@ func find_exposed_hostile() -> Array:
 	return [max_coord, max_strength, max_ratio, max_path, only_ranged, path_cost]
 	
 ##Returns [max_coord:Vector2i, max_strength:float, max_ratio:float, stored_path:Array[ int ]]
-func get_best_supported_tile(provided_target:Vector2i, provided_range:int=1) -> Array:
+func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:Attackaction, provided_range:int=1) -> Array:
 	var max_strength:float = -INF
 	var max_coord:Vector2i = Vector2i(-1234, -1234)
 	var max_ratio:float = 1.0
 	var max_path:PackedVector2Array = []
-	var path_cost:float = 0.0
-	var adj_tiles = Globals.get_bfs_empty_tiles(provided_target, provided_range, get_parent().map_manager)
-	for coordinate in adj_tiles:
-		var f_support = get_friendly_support_at_location(coordinate) + calculate_relative_strength_target(coordinate)
-		var e_support = get_hostile_threat_at_location(coordinate, false)
+	var path_cost:float = 0.0		
+	var move_pattern:Pattern2D = provided_attack_action.range_pattern
+	var coord_arr:Array[Vector2i] = []
+	for coordinate_y in range(-move_pattern.grid_size.y, move_pattern.grid_size.y + 1):
+		for coordinate_x in range(-move_pattern.grid_size.x, move_pattern.grid_size.x + 1):
+			var t_coord = move_pattern.calculate_affected_tiles_from_center(provided_target + Vector2i(coordinate_x, coordinate_y))
+			if provided_target in t_coord:
+				coord_arr.append(Vector2i(coordinate_x, coordinate_y))
+	for coordinate in coord_arr:
+		var temp_coord:Vector2i = provided_target + Vector2i(coordinate)
+		var f_support = get_friendly_support_at_location(temp_coord) + calculate_relative_strength_target(coordinate)
+		var e_support = get_hostile_threat_at_location(temp_coord, false)
 		var disparity = f_support - e_support
 		if disparity > max_strength:
-			var validation = coordinate_validated(coordinate)
+			var validation = coordinate_validated(temp_coord)
 			if validation[0]:				
+				disparity -= 0.15 * validation[1]
 				if validation[1] > move_count: # if we can't move there immediantly, deprioritize
 					disparity -= (validation[1]/move_count)
 				if disparity > max_strength:
 					max_strength = disparity
-					max_coord = coordinate
+					max_coord = temp_coord
 					max_ratio = f_support / max(e_support, 0.001)
 					max_path = validation[2]
 					path_cost = validation[1]
@@ -374,23 +386,29 @@ func threat_analysis() -> bool:
 			if returned_arr[0] != Vector2i(-1234, -1234) and returned_arr[2] > 0.5:
 				if get_parent().debugging_allowed:
 					print("Found an exposed hostile!")
-				var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
+				#print(sighted_hostiles)
+				var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
 				if get_parent().debugging_allowed:
-					print(support_arr)
-				if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
+					print(selected_attack)
+				if selected_attack != null:
+					var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos, selected_attack)
 					if get_parent().debugging_allowed:
-						print("DEBUG/Support: Moving down provided path")
-					get_parent().move_unit_via_path(self, support_arr[3], true)	
-					var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-					if get_parent().debugging_allowed:
-						print("ATK: ", selected_attack)
-					if selected_attack != null and action_count > 0:
+						print(support_arr)
+					if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
 						if get_parent().debugging_allowed:
-							print("DEBUG/ATK: Attacking")
-						# So the attack is valid, we can target the selected unit
-						course_select = true
-						action_count -= 1
-						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
+							print("DEBUG/Support: Moving down provided path")
+						get_parent().move_unit_via_path(self, support_arr[3], true)	
+						#print(sighted_hostiles.get(returned_arr[0]))
+						# var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
+						if get_parent().debugging_allowed:
+							print("ATK: ", selected_attack)
+						if action_count > 0:
+							if get_parent().debugging_allowed:
+								print("DEBUG/ATK: Attacking")
+							# So the attack is valid, we can target the selected unit
+							course_select = true
+							action_count -= 1
+							selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
 				if get_parent().debugging_allowed:
 					print("No exposed hostiles!")
@@ -443,7 +461,7 @@ func threat_analysis() -> bool:
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null and action_count > 0:
 			course_select = true
-			ideal_recovery_action.execute(self)
+			use_heal_action(ideal_recovery_action)
 			rerun_allowed = true
 	if not course_select:
 		action_count = 0
