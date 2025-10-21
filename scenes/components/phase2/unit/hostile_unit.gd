@@ -24,26 +24,6 @@ enum alert_level {
 }
 var time_since_alert_update:int = 0
 	
-func get_friendly_factions() -> Array[String]:
-	var faction_name_ref:String = cached_parent.faction_name
-	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
-		return ["Friendly", "Player Unit"]
-	elif faction_name_ref == "Traps":
-		return ["Traps"]
-	elif faction_name_ref == "Enemy":
-		return ["Enemy"]
-	return ["Enemy"]
-
-func get_enemy_unit_factions() -> Array[String]:	
-	var faction_name_ref:String = cached_parent.faction_name
-	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
-		return ["Enemy"]
-	elif faction_name_ref == "Traps":
-		return ["Friendly", "Player Unit", "Enemy"]
-	elif faction_name_ref == "Enemy":
-		return ["Player Unit", "Friendly"]
-	return ["Friendly", "Player Unit"]
-	
 func calculate_relative_strength_norm() -> float:
 	return health * 2.0 + max(ideal_melee_dpt, ideal_ranged_dpt)
 
@@ -401,9 +381,8 @@ func threat_analysis() -> bool:
 							# So the attack is valid, we can target the selected unit
 							course_select = true
 							action_count -= 1
-							var action_decoder:ActionDecoder = cached_parent.get_parent().get_parent().get_child(4)
-							action_decoder.decode_action(selected_attack, [sighted_hostiles.get(returned_arr[0])])								
-			else:
+							use_action(selected_attack, sighted_hostiles.get(returned_arr[0]))
+							
 				console_statement += "\nDEBUG/EXPO: No exposed hostiles found!"
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
 		if (not course_select and move_count > 0 and threat_diff > 0.4):
@@ -451,7 +430,7 @@ func threat_analysis() -> bool:
 		if ideal_recovery_action != null and action_count > 0:
 			console_statement += "\nDEBUG/HEAL: " + str(ideal_recovery_action)
 			course_select = true
-			use_heal_action(ideal_recovery_action)
+			use_action(ideal_recovery_action, self)
 			rerun_allowed = true
 	if not course_select:
 		console_statement += "\nDEBUG/STATE: No decision made."
