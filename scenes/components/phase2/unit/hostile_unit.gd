@@ -12,6 +12,8 @@ var relative_range:int = 5
 var ideal_melee_dpt:float = 0.0
 var ideal_ranged_dpt:float = 0.0
 var turn_breakout_counter:int = 0
+var cached_parent:NPC_Manager
+
 
 var current_alert_level:int = alert_level.GREEN_ALERT
 enum alert_level {
@@ -24,7 +26,7 @@ enum alert_level {
 var time_since_alert_update:int = 0
 	
 func get_friendly_factions() -> Array[String]:
-	var faction_name_ref:String = get_parent().faction_name
+	var faction_name_ref:String = cached_parent.faction_name
 	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
 		return ["Friendly", "Player Unit"]
 	elif faction_name_ref == "Traps":
@@ -34,7 +36,7 @@ func get_friendly_factions() -> Array[String]:
 	return ["Enemy"]
 
 func get_enemy_unit_factions() -> Array[String]:	
-	var faction_name_ref:String = get_parent().faction_name
+	var faction_name_ref:String = cached_parent.faction_name
 	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
 		return ["Enemy"]
 	elif faction_name_ref == "Traps":
@@ -69,23 +71,24 @@ func ideal_attack(target_unit:Unit) -> Attackaction:
 		#print(atk_action.range_pattern.affected_tiles)
 		#print(atk_tiles)
 		#
-		#if get_parent().debugging_allowed:
+		#if cached_parent.debugging_allowed:
 		#	print(target_unit.cur_pos, " ", atk_tiles)
 		#if target_unit.cur_pos in atk_tiles:
 		pos_atks.append(atk_action)
 	if len(pos_atks) < 1:
 		return null
-	return pos_atks[get_parent().get_random_generator().randi_range(0, len(pos_atks)-1)]
+	return pos_atks[cached_parent.get_random_generator().randi_range(0, len(pos_atks)-1)]
 	
 func ideal_recovery() -> Healaction:
 	var heal_actions:Array[Healaction] = get_restorative_actions()
 	if len(heal_actions) < 1 or health >= base_health:
 		return null
-	return heal_actions[get_parent().get_random_generator().randi_range(0, len(heal_actions)-1)]
+	return heal_actions[cached_parent.get_random_generator().randi_range(0, len(heal_actions)-1)]
 	
 	
 func execute_turn() -> void:
-	if get_parent().debugging_allowed:
+	cached_parent = get_parent()
+	if cached_parent.debugging_allowed:
 		print("RUNNING NPC TURN")
 		print(get_enemy_unit_factions())
 	move_count = move_max
@@ -121,13 +124,13 @@ func alert_lvl_update(dont_increment:bool=false) -> void:
 	else:
 		if not dont_increment:
 			time_since_alert_update += 1
-	if get_parent().debugging_allowed:
+	if cached_parent.debugging_allowed:
 		print("ALERT LEVEL: ", current_alert_level)
 		
 ##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
 func update_visible_tiles() -> void:
 	var new_vision:Dictionary[Vector2i, bool] = {}
-	var vision_arr:Array = Globals.get_bfs_tiles(cur_pos, vision_range, get_parent().map_manager)
+	var vision_arr:Array = Globals.get_bfs_tiles(cur_pos, vision_range, cached_parent.map_manager)
 	for coordinate in vision_arr:
 		new_vision[coordinate] = true
 	current_vision = new_vision
@@ -138,14 +141,14 @@ func examine_surroundings() -> void:
 	var new_sighted_hostiles:Dictionary[Vector2i, Unit] = {}
 	var cached_entity_ids:Dictionary[Unit, Vector2i] = {}
 	for faction_name_ref in get_enemy_unit_factions():
-		if faction_name_ref != get_parent().faction_name:
+		if faction_name_ref != cached_parent.faction_name:
 			var unit_arr:Array = get_tree().get_nodes_in_group(faction_name_ref)		
 			if len(unit_arr) > 0:
 				for other_unit in unit_arr:
 					if other_unit.cur_pos in current_vision:
 						new_sighted_hostiles[other_unit.cur_pos] = other_unit
 						cached_entity_ids[other_unit] = other_unit.cur_pos
-	if get_parent().debugging_allowed:
+	if cached_parent.debugging_allowed:
 		print(new_sighted_hostiles)
 
 	for coordinate in sighted_hostiles:
@@ -193,7 +196,7 @@ func select_memory_location() -> Vector2i:
 		# High (known) Hostile Threat, distance, time since that region was in sight, and general uncertainty are 'CONs'
 		weights.append(get_friendly_support_at_location(coordinate) + (flag_obj.get_counter() * 3.0 +  min(coordinate.distance_to(cur_pos), 30.0) + get_hostile_threat_at_location(coordinate, true)) * -1.0)
 		weighted_coord.append(coordinate)
-	var index = get_parent().get_parent().get_random_generator().rand_weighted(weights)
+	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
 	var selected_coordinate = weighted_coord[index]
 	return selected_coordinate
 	
@@ -238,9 +241,9 @@ func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influ
 
 ##Returns [valid:bool, path_cost:int, point_path:Array[ int ]]
 func coordinate_validated(coordinate:Vector2i) -> Array:
-	var pathfinder:Pathfinder = get_parent().get_pathfinder()
+	var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
-	if get_parent().debugging_allowed:
+	if cached_parent.debugging_allowed:
 		print(returned_path)
 	if len(returned_path) == 0:
 		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
@@ -270,7 +273,7 @@ func find_rally_point() -> Array:
 		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
 			if friendly_unit == self:
 				continue
-			var adjacent_tiles = Globals.get_bfs_empty_tiles(friendly_unit.cur_pos, 2, get_parent().map_manager)
+			var adjacent_tiles = Globals.get_bfs_empty_tiles(friendly_unit.cur_pos, 2, cached_parent.map_manager)
 			for tile in adjacent_tiles:
 				if tile not in weighted_coords:
 					var validation_distance = coordinate_validated(tile)
@@ -281,7 +284,7 @@ func find_rally_point() -> Array:
 						weights.append(weight)
 	if len(weights) < 1:
 		return [Vector2i(-1234, -1234), PackedVector2Array([Vector2i(-1234, -1234)])]
-	var index = get_parent().get_parent().get_random_generator().rand_weighted(weights)
+	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
 	var weight_keys = weighted_coords.keys()
 	var weight_values = weighted_coords.values()
 	return [weight_keys[index], weight_values[index][1]] 
@@ -292,7 +295,7 @@ func find_retreat_point() -> Array:
 	var max_score:float = -INF
 	var max_coord:Vector2i = Vector2i(-1234, -1234)
 	var max_path:PackedVector2Array = []
-	var possible_move_tiles = Globals.get_bfs_empty_tiles(cur_pos, move_count, get_parent().map_manager)
+	var possible_move_tiles = Globals.get_bfs_empty_tiles(cur_pos, move_count, cached_parent.map_manager)
 	for coordinate in possible_move_tiles:
 		var validation_distance = coordinate_validated(coordinate)
 		if validation_distance[0]: # Check if the tile is reachable
@@ -314,7 +317,7 @@ func find_exposed_hostile() -> Array:
 	var path_cost:float = 0.0
 	var only_ranged:bool = false
 	for coordinate in sighted_hostiles:
-		var adj_tiles = Globals.get_bfs_empty_tiles(coordinate, 1, get_parent().map_manager)
+		var adj_tiles = Globals.get_bfs_empty_tiles(coordinate, 1, cached_parent.map_manager)
 		var num_empty_adj = len(adj_tiles)
 		if num_empty_adj <= 0 and relative_range <= 1:
 			# print("No empty tiles adjacent to ", coordinate)
@@ -369,104 +372,93 @@ func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:At
 func threat_analysis() -> bool:
 	var course_select:bool = false
 	var rerun_allowed:bool = false
-	
-	if get_parent().debugging_allowed:
-		print("DEBUG/MV: ", move_count)
-		print("DEBUG/ACT: ", action_count)
+	var console_statement:String = ""
+	console_statement += "\nDEBUG/MV: " + str(move_count)
+	console_statement += "\nDEBUG/ACT: " + str(action_count)
 	if alert_level.RED_ALERT:
-		if get_parent().debugging_allowed:
-			print("Entering -> Red Alert")
+		console_statement += "\nDEBUG/STATE: -> -> Entering Red Alert"
 		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
-		if get_parent().debugging_allowed:
-			print("DEBUG/THREAT: ", threat_diff)
+		
+		console_statement += "\nDEBUG/THREAT: " + str(threat_diff)
 		if threat_diff > 0.6: # Charge - We can take em- 
 			var returned_arr:Array = find_exposed_hostile()
-			if get_parent().debugging_allowed:
-				print("DEBUG/EXPO: ",returned_arr)
+			console_statement += "\nDEBUG/EXPO: " + str(returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234) and returned_arr[2] > 0.5:
-				if get_parent().debugging_allowed:
-					print("Found an exposed hostile!")
+				console_statement += "\nDEBUG/EXPO: Found an exposed hostile!"
 				#print(sighted_hostiles)
 				var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-				if get_parent().debugging_allowed:
-					print(selected_attack)
+				console_statement += "\nDEBUG/SELECTED ATTACK: " + str(selected_attack)
 				if selected_attack != null:
 					var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos, selected_attack)
-					if get_parent().debugging_allowed:
-						print(support_arr)
+					console_statement += "\nDEBUG/SUPPORT: " + str(support_arr)
 					if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
-						if get_parent().debugging_allowed:
-							print("DEBUG/Support: Moving down provided path")
-						get_parent().move_unit_via_path(self, support_arr[3], true)	
+						console_statement += "\nDEBUG/SUPPORT: Moving down provided path"
+						cached_parent.move_unit_via_path(self, support_arr[3], true)	
 						#print(sighted_hostiles.get(returned_arr[0]))
 						# var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-						if get_parent().debugging_allowed:
-							print("ATK: ", selected_attack)
 						if action_count > 0:
-							if get_parent().debugging_allowed:
-								print("DEBUG/ATK: Attacking")
+							console_statement += "\nDEBUG/ATK: Has actions, Attacking"
 							# So the attack is valid, we can target the selected unit
 							course_select = true
 							action_count -= 1
 							selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
-				if get_parent().debugging_allowed:
-					print("No exposed hostiles!")
+				console_statement += "\nDEBUG/EXPO: No exposed hostiles found!"
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
 		if (not course_select and move_count > 0 and threat_diff > 0.4):
-			if get_parent().debugging_allowed:
-				print("-> -> Entering Rally")
+			console_statement += "\nDEBUG/STATE: -> -> Entering Rally"
 			var returned_arr:Array = find_rally_point()
-			if get_parent().debugging_allowed:
-				print("DEBUG/RALLY: ",returned_arr)
+			console_statement += "\nDEBUG/RALLY: " + str(returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				get_parent().move_unit_via_path(self, returned_arr[1], true)
+				cached_parent.move_unit_via_path(self, returned_arr[1], true)
 				rerun_allowed = true
 		if not course_select and move_count > 0:
-			if get_parent().debugging_allowed:
-				print("-> -> Entering Retreat")
+			console_statement += "\nDEBUG/STATE: -> -> Entering Retreat"
 			var returned_arr:Array = find_retreat_point()
-			if get_parent().debugging_allowed:
-				print("DEBUG/RETREAT: ",returned_arr)
+			console_statement += "\nDEBUG/RETREAT: " + str(returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				get_parent().move_unit_via_path(self, returned_arr[1], true)
+				cached_parent.move_unit_via_path(self, returned_arr[1], true)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
-		if get_parent().debugging_allowed:
-			print("Entering -> Orange Alert")
+		console_statement += "\nDEBUG/STATE: -> -> Entering Orange Alert"
 		if len(remembered_sightings) > 0:
+			console_statement += "\nDEBUG/STATE: -> -> Entering Search"
 			var selected_sighting:Vector2i = select_memory_location()
 			if selected_sighting != Vector2i(-1234, -1234):
+				console_statement += "\nDEBUG/SEARCH: " + str(selected_sighting)
 				course_select = true
-				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
+				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
-		if get_parent().debugging_allowed:
-			print("Entering -> Yellow Alert")
+		console_statement += "\nDEBUG/STATE: -> -> Entering Yellow Alert"
 		if len(audio_cues) > 0:
+			console_statement += "\nDEBUG/STATE: -> -> Entering Investigation"
 			var selected_sighting:Vector2i = select_investigation_location()
 			if selected_sighting != Vector2i(-1234, -1234):
+				console_statement += "\nDEBUG/INVESTIGATION: " + str(selected_sighting)
 				course_select = true
-				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
+				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
-		if get_parent().debugging_allowed:
-			print("Entering -> Green Alert")
+		console_statement += "\nDEBUG/STATE: -> -> Entering Green Alert"
 		pass
 	if not course_select and current_alert_level >= alert_level.BLUE_ALERT and action_count > 0:
-		if get_parent().debugging_allowed:
-			print("Entering -> Blue Alert")
+		console_statement += "\nDEBUG/STATE: -> -> Entering Blue Alert"
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null and action_count > 0:
+			console_statement += "\nDEBUG/HEAL: " + str(ideal_recovery_action)
 			course_select = true
 			use_heal_action(ideal_recovery_action)
 			rerun_allowed = true
 	if not course_select:
+		console_statement += "\nDEBUG/STATE: No decision made."
 		action_count = 0
 		move_count = 0
 		rerun_allowed = false
 		# Because if it's false by this point, then no action has been chosen (because they may be invalid), so end turn.
 	turn_breakout_counter += 1
+	if cached_parent.debugging_allowed:
+		print(console_statement)
 	return rerun_allowed
