@@ -61,14 +61,17 @@ func calculate_heading(target:Vector2i) -> Vector2i:
 	return (target - cur_pos)	
 	
 func ideal_attack(target_unit:Unit) -> Attackaction:
-	print("ACTIONS: ", action_array)
-	var atk_actions:Array[Attackaction] = []
-	for action in action_array:
-		if action.is_class("Attackaction"):
-			atk_actions.append(action)
-	if len(atk_actions) < 1:
+	var atk_actions:Array[Attackaction] = get_attack_actions()
+	var pos_atks:Array[Attackaction] = []
+	for atk_action in atk_actions:
+		var atk_tiles = atk_action.range_pattern.calculate_affected_tiles_from_center(self.cur_pos)
+		print(target_unit.cur_pos, " ", atk_tiles)
+		if target_unit.cur_pos in atk_tiles:
+			pos_atks.append(atk_action)
+	if len(pos_atks) < 1:
 		return null
-	return atk_actions[get_parent().get_random_generator().randi_range(0, len(atk_actions)-1)]
+	return pos_atks[get_parent().get_random_generator().randi_range(0, len(pos_atks)-1)]
+	
 func ideal_recovery() -> Healaction:
 	var heal_actions:Array[Healaction] = get_restorative_actions()
 	if len(heal_actions) < 1 or health >= base_health:

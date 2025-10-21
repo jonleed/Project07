@@ -48,6 +48,12 @@ func load_unit_res(unit_res:UnitResource = null):
 	if anim_frames.get_animation_names().has("Idle"):
 		anim_sprite.animation = "Idle"
 	
+func get_attack_actions() -> Array[Attackaction]:
+	var attack_action_arr:Array[Attackaction] = []
+	for action in action_array:
+		if action is Attackaction:
+			attack_action_arr.append(action)
+	return attack_action_arr
 ## Move actions should set go_final to true; ATK actions should set go_final to false (as the final point is the tile the enemy unit is on)
 ## Do not call manually- call the UnitManager's move_unit_via_path() in order to also adjust map_manager
 func move_down_path(path_arr:PackedVector2Array, go_final:bool):

@@ -21,3 +21,10 @@ const GRIDMINIMUM:int = 1
 func debug():
 	print("GRID SIZE : %s x %s"%[grid_size.x,grid_size.y])
 	print("Entries: \n"+str(affected_tiles))
+
+func calculate_affected_tiles_from_center(coordinate:Vector2i) -> Array[Vector2i]:
+	var converted_vectors:Array[Vector2i] = []
+	var temp_grid:PackedVector2Array = affected_tiles
+	for vector in temp_grid:
+		converted_vectors.append(Vector2i(vector) + coordinate)
+	return converted_vectors
