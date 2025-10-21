@@ -19,6 +19,8 @@ var move_count:int = move_max
 ##this variable isnt required, only useful if the unit spawns on the first
 @export var u_res:UnitResource = null
 
+var cached_parent:Unit_Manager
+
 # Checks if unit has actions remaining
 func can_act() -> bool:
 	return action_count > 1
@@ -88,11 +90,13 @@ func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 func use_heal_action(given_heal_action:Healaction) -> void:
 	var unit_manager:Unit_Manager = self.get_parent()
 	var unit_manager_units:Array = unit_manager.units
+	var units_to_affect:Array[Entity] = []
 	for friendly_unit in unit_manager_units:
 		if Vector2(friendly_unit.cur_pos) in given_heal_action.multihit_pattern.affected_tiles:
-			friendly_unit.heal_damage(given_heal_action.heal)
-	self.heal_damage(given_heal_action.heal)
-
+			units_to_affect.append(friendly_unit)
+	cached_parent.action_decoder.decode_action(given_heal_action, units_to_affect)
+	
+	
 func _ready() -> void:
 	# This is overriden by ally_unit.gd
 	add_to_group("Base Faction")

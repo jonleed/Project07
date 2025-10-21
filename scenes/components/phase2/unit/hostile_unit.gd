@@ -12,7 +12,6 @@ var relative_range:int = 5
 var ideal_melee_dpt:float = 0.0
 var ideal_ranged_dpt:float = 0.0
 var turn_breakout_counter:int = 0
-var cached_parent:NPC_Manager
 
 
 var current_alert_level:int = alert_level.GREEN_ALERT
@@ -152,9 +151,10 @@ func examine_surroundings() -> void:
 		print(new_sighted_hostiles)
 
 	for coordinate in sighted_hostiles:
-		var entry_unit:Unit = sighted_hostiles.get(coordinate)
-		if entry_unit not in cached_entity_ids: # Which means not in current_vision as well
-			remembered_sightings[coordinate] = Flag.new(entry_unit, -1) # Set counter to one here as they'll be incremented in the next loop
+		if sighted_hostiles.get(coordinate) != null:
+			var entry_unit:Unit = sighted_hostiles.get(coordinate)
+			if entry_unit not in cached_entity_ids: # Which means not in current_vision as well
+				remembered_sightings[coordinate] = Flag.new(entry_unit, -1) # Set counter to one here as they'll be incremented in the next loop
 	sighted_hostiles = new_sighted_hostiles
 	
 	var deletion_coords:Array[Vector2i] = []
@@ -401,7 +401,8 @@ func threat_analysis() -> bool:
 							# So the attack is valid, we can target the selected unit
 							course_select = true
 							action_count -= 1
-							selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
+							var action_decoder:ActionDecoder = cached_parent.get_parent().get_parent().get_child(4)
+							action_decoder.decode_action(selected_attack, [sighted_hostiles.get(returned_arr[0])])								
 			else:
 				console_statement += "\nDEBUG/EXPO: No exposed hostiles found!"
 		# Cannot do elif chains as we need a fallback if a prior option didn't work

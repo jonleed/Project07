@@ -61,6 +61,7 @@ func create_unit_from_res(res:UnitResource)->Unit:
 	un.load_unit_res(res)
 	un.ready_entity()
 	un.add_to_group("Unit")
+	un.health_changed.connect(unit_health_updated)
 	return un
 
 # Add a unit to this unit manager
@@ -69,6 +70,7 @@ func add_unit(unit: Unit,coord:Vector2i) -> void:
 		if map_manager.spawn_entity(unit,coord):
 			units.append(unit)
 			add_child(unit)
+			unit.health_changed.connect(unit_health_updated)
 
 # Remove a unit from this unit manager
 func remove_unit(unit: Unit) -> void:
@@ -94,6 +96,10 @@ func get_unused_units() -> Array:
 # Returns Unit's vector2i position
 func get_unit_position(unit: Unit)-> Vector2i:
 	return unit.cur_pos
+
+func unit_health_updated(given_entity:Entity) -> void:
+	if given_entity.health <= 0:
+		remove_unit(given_entity)
 
 ## Move a unit directly to a specific tile (don't bother finding the path to move down, has no safeties for if it exceeds move_count)
 func move_unit(unit:Unit,coord:Vector2i, teleport:bool=false):

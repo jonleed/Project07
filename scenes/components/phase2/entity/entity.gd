@@ -31,18 +31,6 @@ func ready_entity():
 		if anim_frames.get_animation_names().has("Idle"):
 			anim_sprite.animation = "Idle"
 
-func take_damage(damage_amount:float) -> void:
-	health -= damage_amount
-	# Emit 'audio' signal (Malevolent)
-	if health <= 0:
-		print("DESTROYED: ", self)
-		# Destroyed
-		pass
-		
-func heal_damage(health_amount:float) -> void:
-	health += health_amount
-	health = min(health, base_health)
-	# Emit 'audio' signal (Benign)
 
 ##this current position represents the tile coordinate the entity is on
 var cur_pos:Vector2i = Vector2i.ZERO
