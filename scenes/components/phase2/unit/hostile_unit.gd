@@ -11,6 +11,7 @@ var vision_range:int = 20
 var relative_range:int = 5
 var ideal_melee_dpt:float = 0.0
 var ideal_ranged_dpt:float = 0.0
+var turn_breakout_counter:int = 0
 
 var current_alert_level:int = alert_level.GREEN_ALERT
 enum alert_level {
@@ -81,11 +82,18 @@ func execute_turn() -> void:
 	move_count = move_max
 	action_count = action_max	
 	examine_surroundings()
-	threat_analysis()
-	alert_lvl_update()
+	var in_progress:bool = true
+	var prior_pos = cur_pos
+	turn_breakout_counter = 0
+	while in_progress and turn_breakout_counter < 4:
+		in_progress = threat_analysis()
+		if prior_pos != cur_pos:
+			examine_surroundings()			
+		alert_lvl_update(true)
+	alert_lvl_update(false)
 	
 ##Updates the alert_level of the unit based upon any hostiles it can see, followed by last-known hostiles, then investigating uncertain audio cues, then patrolling, then restorative actions if 'safe'
-func alert_lvl_update() -> void:
+func alert_lvl_update(dont_increment:bool=false) -> void:
 	if len(sighted_hostiles) > 0:
 		current_alert_level = alert_level.RED_ALERT
 		time_since_alert_update = 0
@@ -102,8 +110,8 @@ func alert_lvl_update() -> void:
 		time_since_alert_update = 0
 		current_alert_level = alert_level.GREEN_ALERT
 	else:
-		time_since_alert_update += 1
-	print(current_alert_level)
+		if not dont_increment:
+			time_since_alert_update += 1
 		
 ##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
 func update_visible_tiles() -> void:
@@ -355,7 +363,6 @@ func threat_analysis() -> bool:
 					if selected_attack != null and action_count > 0:
 						# So the attack is valid, we can target the selected unit
 						course_select = true
-						rerun_allowed = true
 						action_count -= 1
 						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
@@ -366,35 +373,31 @@ func threat_analysis() -> bool:
 			var returned_arr:Array = find_rally_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				if move_count > 0:
-					rerun_allowed = true
 				get_parent().move_unit_via_path(self, returned_arr[1], true)
+				rerun_allowed = true
 		if not course_select and move_count > 0:
 			print("-> -> Entering Retreat")
 			var returned_arr:Array = find_retreat_point()
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
-				if move_count > 0:
-					rerun_allowed = true
 				get_parent().move_unit_via_path(self, returned_arr[1], true)
+				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
 		print("Entering -> Orange Alert")
 		if len(remembered_sightings) > 0:
 			var selected_sighting:Vector2i = select_memory_location()
 			if selected_sighting != Vector2i(-1234, -1234):
 				course_select = true
-				if move_count > 0:
-					rerun_allowed = true
 				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
+				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
 		print("Entering -> Yellow Alert")
 		if len(audio_cues) > 0:
 			var selected_sighting:Vector2i = select_investigation_location()
 			if selected_sighting != Vector2i(-1234, -1234):
 				course_select = true
-				if move_count > 0:
-					rerun_allowed = true
 				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
+				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
 		print("Entering -> Green Alert")
 		pass
@@ -405,4 +408,11 @@ func threat_analysis() -> bool:
 			course_select = true
 			ideal_recovery_action.execute()
 	
-	return course_select
+			rerun_allowed = true
+	if not course_select:
+		action_count = 0
+		move_count = 0
+		rerun_allowed = false
+		# Because if it's false by this point, then no action has been chosen (because they may be invalid), so end turn.
+	turn_breakout_counter += 1
+	return rerun_allowed
