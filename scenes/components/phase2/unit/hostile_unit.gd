@@ -355,9 +355,9 @@ func threat_analysis() -> bool:
 		print("Entering -> Red Alert")
 		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
 		print(threat_diff)
-		if threat_diff > 2: # Charge - We can take em- 
+		if threat_diff > 0.6: # Charge - We can take em- 
 			var returned_arr:Array = find_exposed_hostile()
-			if returned_arr[0] != Vector2i(-1234, -1234):
+			if returned_arr[0] != Vector2i(-1234, -1234) and returned_arr[2] > 0.5:
 				print("Found an exposed hostile!")
 				var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
 				if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
