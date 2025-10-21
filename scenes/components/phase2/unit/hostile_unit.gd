@@ -65,7 +65,8 @@ func ideal_attack(target_unit:Unit) -> Attackaction:
 	var pos_atks:Array[Attackaction] = []
 	for atk_action in atk_actions:
 		var atk_tiles = atk_action.range_pattern.calculate_affected_tiles_from_center(self.cur_pos)
-		print(target_unit.cur_pos, " ", atk_tiles)
+		if get_parent().debugging_allowed:
+			print(target_unit.cur_pos, " ", atk_tiles)
 		if target_unit.cur_pos in atk_tiles:
 			pos_atks.append(atk_action)
 	if len(pos_atks) < 1:
@@ -80,8 +81,9 @@ func ideal_recovery() -> Healaction:
 	
 	
 func execute_turn() -> void:
-	print("RUNNING NPC TURN")
-	print(get_enemy_unit_factions())
+	if get_parent().debugging_allowed:
+		print("RUNNING NPC TURN")
+		print(get_enemy_unit_factions())
 	move_count = move_max
 	action_count = action_max	
 	examine_surroundings()
@@ -115,6 +117,8 @@ func alert_lvl_update(dont_increment:bool=false) -> void:
 	else:
 		if not dont_increment:
 			time_since_alert_update += 1
+	if get_parent().debugging_allowed:
+		print("ALERT LEVEL: ", current_alert_level)
 		
 ##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
 func update_visible_tiles() -> void:
@@ -137,7 +141,8 @@ func examine_surroundings() -> void:
 					if other_unit.cur_pos in current_vision:
 						new_sighted_hostiles[other_unit.cur_pos] = other_unit
 						cached_entity_ids[other_unit] = other_unit.cur_pos
-	print(new_sighted_hostiles)
+	if get_parent().debugging_allowed:
+		print(new_sighted_hostiles)
 
 	for coordinate in sighted_hostiles:
 		var entry_unit:Unit = sighted_hostiles.get(coordinate)
@@ -231,6 +236,8 @@ func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influ
 func coordinate_validated(coordinate:Vector2i) -> Array:
 	var pathfinder:Pathfinder = get_parent().get_pathfinder()
 	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
+	if get_parent().debugging_allowed:
+		print(returned_path)
 	if len(returned_path) == 0:
 		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
 		return [true, 0, []]
@@ -345,48 +352,72 @@ func get_best_supported_tile(provided_target:Vector2i, provided_range:int=1) -> 
 					max_ratio = f_support / max(e_support, 0.001)
 					max_path = validation[2]
 					path_cost = validation[1]
-	print("DEBUG/Support: ", max_coord, max_strength, max_ratio, max_path, path_cost)		
 	return [max_coord, max_strength, max_ratio, max_path, path_cost]
 		
 func threat_analysis() -> bool:
 	var course_select:bool = false
 	var rerun_allowed:bool = false
+	
+	if get_parent().debugging_allowed:
+		print("DEBUG/MV: ", move_count)
+		print("DEBUG/ACT: ", action_count)
 	if alert_level.RED_ALERT:
-		print("Entering -> Red Alert")
+		if get_parent().debugging_allowed:
+			print("Entering -> Red Alert")
 		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
-		print(threat_diff)
+		if get_parent().debugging_allowed:
+			print("DEBUG/THREAT: ", threat_diff)
 		if threat_diff > 0.6: # Charge - We can take em- 
 			var returned_arr:Array = find_exposed_hostile()
+			if get_parent().debugging_allowed:
+				print("DEBUG/EXPO: ",returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234) and returned_arr[2] > 0.5:
-				print("Found an exposed hostile!")
+				if get_parent().debugging_allowed:
+					print("Found an exposed hostile!")
 				var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos)
+				if get_parent().debugging_allowed:
+					print(support_arr)
 				if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
+					if get_parent().debugging_allowed:
+						print("DEBUG/Support: Moving down provided path")
 					get_parent().move_unit_via_path(self, support_arr[3], true)	
 					var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
+					if get_parent().debugging_allowed:
+						print("ATK: ", selected_attack)
 					if selected_attack != null and action_count > 0:
+						if get_parent().debugging_allowed:
+							print("DEBUG/ATK: Attacking")
 						# So the attack is valid, we can target the selected unit
 						course_select = true
 						action_count -= 1
 						selected_attack.executeAttack(self, sighted_hostiles.get(returned_arr[0]))									
 			else:
-				print("No exposed hostiles!")
+				if get_parent().debugging_allowed:
+					print("No exposed hostiles!")
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
 		if (not course_select and move_count > 0 and threat_diff > 0.4):
-			print("-> -> Entering Rally")
+			if get_parent().debugging_allowed:
+				print("-> -> Entering Rally")
 			var returned_arr:Array = find_rally_point()
+			if get_parent().debugging_allowed:
+				print("DEBUG/RALLY: ",returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
 				get_parent().move_unit_via_path(self, returned_arr[1], true)
 				rerun_allowed = true
 		if not course_select and move_count > 0:
-			print("-> -> Entering Retreat")
+			if get_parent().debugging_allowed:
+				print("-> -> Entering Retreat")
 			var returned_arr:Array = find_retreat_point()
+			if get_parent().debugging_allowed:
+				print("DEBUG/RETREAT: ",returned_arr)
 			if returned_arr[0] != Vector2i(-1234, -1234):
 				course_select = true
 				get_parent().move_unit_via_path(self, returned_arr[1], true)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
-		print("Entering -> Orange Alert")
+		if get_parent().debugging_allowed:
+			print("Entering -> Orange Alert")
 		if len(remembered_sightings) > 0:
 			var selected_sighting:Vector2i = select_memory_location()
 			if selected_sighting != Vector2i(-1234, -1234):
@@ -394,7 +425,8 @@ func threat_analysis() -> bool:
 				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
-		print("Entering -> Yellow Alert")
+		if get_parent().debugging_allowed:
+			print("Entering -> Yellow Alert")
 		if len(audio_cues) > 0:
 			var selected_sighting:Vector2i = select_investigation_location()
 			if selected_sighting != Vector2i(-1234, -1234):
@@ -402,10 +434,12 @@ func threat_analysis() -> bool:
 				get_parent().move_unit_via_path(self, get_parent().get_parent()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
-		print("Entering -> Green Alert")
+		if get_parent().debugging_allowed:
+			print("Entering -> Green Alert")
 		pass
 	if not course_select and current_alert_level >= alert_level.BLUE_ALERT and action_count > 0:
-		print("Entering -> Blue Alert")
+		if get_parent().debugging_allowed:
+			print("Entering -> Blue Alert")
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null and action_count > 0:
 			course_select = true

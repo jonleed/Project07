@@ -1,6 +1,7 @@
 extends Unit_Manager
 class_name NPC_Manager
 
+var debugging_allowed:bool = false
 var pathfinder:Pathfinder
 func _ready():
 	get_units()
@@ -9,10 +10,11 @@ func _ready():
 	pathfinder = Pathfinder.new(get_parent().get_parent().get_child(0))
 	pathfinder._rebuild_connections()
 	faction_name = "Hostile Faction"
-	print(pathfinder)
+	# print(pathfinder)
 
 func _step_turn():
 	var unused_units = get_unused_units()
+	# print("HOSTILE: ", unused_units, " ", units, " ", get_children())
 	for unit in unused_units:
 		unit.execute_turn()
 	unused_units = get_unused_units()

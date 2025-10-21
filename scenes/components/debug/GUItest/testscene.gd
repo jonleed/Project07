@@ -28,7 +28,6 @@ func _ready() -> void:
 			await get_tree().process_frame
 			temp_vec.x+=2
 		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
-		print($MapManager.map_dict)
 		num_generator = RandomNumberGenerator.new()
 		num_generator.seed = hash("EnemyTestScene")
 		var hostile_unit:Hostile_Unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))

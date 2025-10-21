@@ -29,7 +29,7 @@ func get_units() -> void:
 			units.append(child)
 	#also check the group
 	reset_unit_turns() # Problematic if get_units() is run mid-turn
-	print("Getting Units", units)
+	print("Getting Units: ", units)
 
 # Player control phase, waits for cursor input
 func _step_turn() -> void:

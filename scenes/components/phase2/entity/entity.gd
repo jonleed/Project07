@@ -35,6 +35,7 @@ func take_damage(damage_amount:float) -> void:
 	health -= damage_amount
 	# Emit 'audio' signal (Malevolent)
 	if health <= 0:
+		print("DESTROYED: ", self)
 		# Destroyed
 		pass
 		
