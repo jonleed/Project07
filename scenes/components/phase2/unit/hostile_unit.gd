@@ -409,8 +409,7 @@ func threat_analysis() -> bool:
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null and action_count > 0:
 			course_select = true
-			ideal_recovery_action.execute()
-	
+			ideal_recovery_action.execute(self)
 			rerun_allowed = true
 	if not course_select:
 		action_count = 0
