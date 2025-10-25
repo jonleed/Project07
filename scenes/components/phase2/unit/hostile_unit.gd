@@ -316,6 +316,7 @@ func find_retreat_point() -> Array:
 	return [max_coord, max_path]
 
 ##Returns [max_coord:Vector2i, max_strength:float, max_ratio:float, max_path:Array[ int ], only_ranged:bool, path_cost:float]
+var cached_attack_action:Attackaction = null
 func find_exposed_hostile() -> Array:
 	var max_strength:float = -INF
 	var max_ratio:float = 1.0
@@ -329,18 +330,29 @@ func find_exposed_hostile() -> Array:
 		if num_empty_adj <= 0 and relative_range <= 1:
 			# print("No empty tiles adjacent to ", coordinate)
 			continue
-		var f_support = get_friendly_support_at_location(coordinate) + calculate_relative_strength_target(coordinate)
-		var e_support = get_hostile_threat_at_location(coordinate, false)
-		var disparity = f_support - e_support
-		if disparity > max_strength:
-			var validation = coordinate_validated(coordinate)
-			if validation[1] != INF:
-				max_strength = disparity
-				max_coord = coordinate
-				max_ratio = f_support / max(e_support, 0.001)
-				max_path = validation[2]
-				only_ranged = not validation[0]
-				path_cost = validation[1]
+		
+		# Fetch best attack specific to this enemy:
+		cached_attack_action = ideal_attack(sighted_hostiles.get(coordinate))
+		var support_arr:Array = get_best_supported_tile(coordinate, cached_attack_action)
+		if support_arr[0] != Vector2i(-1234, -1234):
+			# Only consider enemies wherein we have a Friendly to Enemy Ratio of 0.5; Then check to see if we've got better support here than the 'best' enemy to attack
+			if support_arr[2] > 0.5:
+				if support_arr[1] > max_strength:
+					max_coord = coordinate
+					max_strength = support_arr[1]
+					max_ratio = support_arr[2]
+					max_path = support_arr[3]
+					if num_empty_adj <= 0:
+						only_ranged = true
+					else:
+						only_ranged = false
+					path_cost = support_arr[4]
+				# else:
+				# 	print("There are better options than hitting "+str(coordinate)+" ("+str(max_coord)+")")
+			# else:
+			# 	print("Enemy Threat level "+support_arr[2]+" is too high at this supporting tile")
+		# else:
+		#	print("There's no way for us to target ", coordinate)
 	return [max_coord, max_strength, max_ratio, max_path, only_ranged, path_cost]
 
 ### SELECT DESTINATION
@@ -388,25 +400,20 @@ func threat_analysis() -> bool:
 		if threat_diff > 0.6: # Charge - We can take em- 
 			var returned_arr:Array = find_exposed_hostile()
 			console_statement += "\nDEBUG/EXPO: " + str(returned_arr)
-			if returned_arr[0] != Vector2i(-1234, -1234) and returned_arr[2] > 0.5:
+			if returned_arr[0] != Vector2i(-1234, -1234):
 				console_statement += "\nDEBUG/EXPO: Found an exposed hostile!"
-				#print(sighted_hostiles)
-				var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-				console_statement += "\nDEBUG/SELECTED ATTACK: " + str(selected_attack)
-				if selected_attack != null:
-					var support_arr = get_best_supported_tile(sighted_hostiles.get(returned_arr[0]).cur_pos, selected_attack)
-					console_statement += "\nDEBUG/SUPPORT: " + str(support_arr)
-					if support_arr[0] != Vector2i(-1234, -1234) and support_arr[2] > 0.5:
-						console_statement += "\nDEBUG/SUPPORT: Moving down provided path"
-						cached_parent.move_unit_via_path(self, support_arr[3], true)	
-						#print(sighted_hostiles.get(returned_arr[0]))
-						# var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-						if action_count > 0:
-							console_statement += "\nDEBUG/ATK: Has actions, Attacking"
-							# So the attack is valid, we can target the selected unit
-							course_select = true
-							action_count -= 1
-							use_action(selected_attack, sighted_hostiles.get(returned_arr[0]))
+				console_statement += "\nDEBUG/SELECTED ATTACK: " + str(cached_attack_action)
+				console_statement += "\nDEBUG/SUPPORT: " + str(returned_arr)
+				console_statement += "\nDEBUG/SUPPORT: Moving down provided path"
+				cached_parent.move_unit_via_path(self, returned_arr[3], true)	
+				#print(sighted_hostiles.get(returned_arr[0]))
+				# var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
+				if action_count > 0:
+					console_statement += "\nDEBUG/ATK: Has actions, Attacking"
+					# So the attack is valid, we can target the selected unit
+					course_select = true
+					action_count -= 1
+					use_action(cached_attack_action, sighted_hostiles.get(returned_arr[0]))
 							
 				console_statement += "\nDEBUG/EXPO: No exposed hostiles found!"
 		# Cannot do elif chains as we need a fallback if a prior option didn't work
@@ -480,6 +487,7 @@ func execute_turn() -> void:
 	var prior_pos = cur_pos
 	turn_breakout_counter = 0
 	while in_progress and turn_breakout_counter < 4:
+		cached_attack_action = null
 		in_progress = threat_analysis()
 		if prior_pos != cur_pos:
 			examine_surroundings()			
