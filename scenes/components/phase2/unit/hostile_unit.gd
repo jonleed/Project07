@@ -14,13 +14,13 @@ var ideal_ranged_dpt:float = 0.0
 var turn_breakout_counter:int = 0
 
 
-var current_alert_level:int = alert_level.GREEN_ALERT
+var current_alert_level:int = alert_level.PATROL_AREA
 enum alert_level {
-	BLUE_ALERT, # Recover
-	GREEN_ALERT, # Situation normal
-	YELLOW_ALERT, # Heard something suspiscious
-	ORANGE_ALERT, # Recently saw a hostile
-	RED_ALERT # Hostile in view
+	AREA_SECURE, # Recover
+	PATROL_AREA, # Situation normal
+	INVESTIGATE_AUDIO_CUE, # Heard something suspiscious
+	REMEMBERED_HOSTILE, # Recently saw a hostile
+	HOSTILE_IN_SIGHT # Hostile in view
 }
 var time_since_alert_update:int = 0
 
@@ -354,20 +354,20 @@ func find_exposed_hostile() -> Array:
 ##Updates the alert_level of the unit based upon any hostiles it can see, followed by last-known hostiles, then investigating uncertain audio cues, then patrolling, then restorative actions if 'safe'
 func alert_lvl_update(dont_increment:bool=false) -> void:
 	if len(sighted_hostiles) > 0:
-		current_alert_level = alert_level.RED_ALERT
+		current_alert_level = alert_level.HOSTILE_IN_SIGHT
 		time_since_alert_update = 0
 	elif len(remembered_sightings) > 0:
-		current_alert_level = alert_level.ORANGE_ALERT
+		current_alert_level = alert_level.REMEMBERED_HOSTILE
 		time_since_alert_update = 0
 	elif len(audio_cues) > 0:
-		current_alert_level = alert_level.YELLOW_ALERT
+		current_alert_level = alert_level.INVESTIGATE_AUDIO_CUE
 		time_since_alert_update = 0
 	elif time_since_alert_update > 3 and health < base_health:
-		current_alert_level = alert_level.BLUE_ALERT
+		current_alert_level = alert_level.AREA_SECURE
 		time_since_alert_update = 0
-	elif current_alert_level == alert_level.BLUE_ALERT and health >= base_health:
+	elif current_alert_level == alert_level.AREA_SECURE and health >= base_health:
 		time_since_alert_update = 0
-		current_alert_level = alert_level.GREEN_ALERT
+		current_alert_level = alert_level.PATROL_AREA
 	else:
 		if not dont_increment:
 			time_since_alert_update += 1
@@ -380,7 +380,7 @@ func threat_analysis() -> bool:
 	var console_statement:String = ""
 	console_statement += "\nDEBUG/MV: " + str(move_count)
 	console_statement += "\nDEBUG/ACT: " + str(action_count)
-	if alert_level.RED_ALERT:
+	if alert_level.HOSTILE_IN_SIGHT:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Red Alert"
 		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
 		
@@ -426,7 +426,7 @@ func threat_analysis() -> bool:
 				course_select = true
 				cached_parent.move_unit_via_path(self, returned_arr[1], true)
 				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.ORANGE_ALERT and move_count > 0:
+	if not course_select and current_alert_level >= alert_level.REMEMBERED_HOSTILE and move_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Orange Alert"
 		if len(remembered_sightings) > 0:
 			console_statement += "\nDEBUG/STATE: -> -> Entering Search"
@@ -436,7 +436,7 @@ func threat_analysis() -> bool:
 				course_select = true
 				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.YELLOW_ALERT and move_count > 0:
+	if not course_select and current_alert_level >= alert_level.INVESTIGATE_AUDIO_CUE and move_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Yellow Alert"
 		if len(audio_cues) > 0:
 			console_statement += "\nDEBUG/STATE: -> -> Entering Investigation"
@@ -446,10 +446,10 @@ func threat_analysis() -> bool:
 				course_select = true
 				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
 				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.GREEN_ALERT and move_count > 0:
+	if not course_select and current_alert_level >= alert_level.PATROL_AREA and move_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Green Alert"
 		pass
-	if not course_select and current_alert_level >= alert_level.BLUE_ALERT and action_count > 0:
+	if not course_select and current_alert_level >= alert_level.AREA_SECURE and action_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Blue Alert"
 		var ideal_recovery_action:Healaction = ideal_recovery()
 		if ideal_recovery_action != null and action_count > 0:
