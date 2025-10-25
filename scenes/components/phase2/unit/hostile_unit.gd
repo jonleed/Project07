@@ -23,6 +23,10 @@ enum alert_level {
 	RED_ALERT # Hostile in view
 }
 var time_since_alert_update:int = 0
+
+
+### ------------------------------------------------------------
+### STRENGTH CALCULATIONS
 	
 func calculate_relative_strength_norm() -> float:
 	return health * 2.0 + max(ideal_melee_dpt, ideal_ranged_dpt)
@@ -38,9 +42,41 @@ func calculate_relative_strength_target(target:Vector2i) -> float:
 		calculated_strength += max(ideal_melee_dpt, ideal_ranged_dpt)	
 	return calculated_strength
 	
-func calculate_heading(target:Vector2i) -> Vector2i:
-	return (target - cur_pos)	
+# We cap the friendly_support and hostile_threat addition at -10.0 as leaving it uncapped means we effectively split the map between the two locations with the greatest (localised) concentration of friendly vs hostile units on the entire map (as in you're 'support' could be heavily penalized by a units all the way on the other side of the map, even if you really should be 'safe' in a particular area
+# (We'll use this for determining rally points (running from the greatest known cluster of enemies))
+##Calculates the percieved strength of allied units nearby based off of the health and distance of nearby ally units to the designated tile
+func get_friendly_support_at_location(target:Vector2i, influence_cap:float=-10) -> float:
+	var friendly_support:float = 0.0
+	for faction_name_ref in get_friendly_factions():
+		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
+			if friendly_unit == self:
+				continue
+			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
+			var dist_to_friendly:float = friendly_unit_pos.distance_to(target)
+			var calculated_strength:float = friendly_unit.calculate_relative_strength_target(target)
+			friendly_support += max(calculated_strength - pow(dist_to_friendly, 1.1), influence_cap)
+	return friendly_support
+
+##Calculates the percieved threat of a tile based off of the health and distance of nearby enemy units to the designated tile
+func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influence_cap:float=-10) -> float:
+	var hostile_threat:float = 0.0
+	for hostile_coordinate:Vector2i in sighted_hostiles:
+		var hostile_unit:Unit = sighted_hostiles.get(hostile_coordinate)
+		var dist_to_hostile:float = hostile_coordinate.distance_to(target)
+		var calculated_strength:float = hostile_unit.calculate_relative_strength_target(target)
+		hostile_threat += max(calculated_strength - pow(dist_to_hostile, 1.1), influence_cap)
+	if uncertain:
+		hostile_threat += base_health * 2.0 # Assume peer-level threat on tile
+	return hostile_threat
 	
+### STRENGTH CALCULATIONS
+### ------------------------------------------------------------
+
+	
+
+### ------------------------------------------------------------
+### IDEAL ACTION SELECTOR
+
 func ideal_attack(target_unit:Unit) -> Attackaction:
 	var atk_actions:Array[Attackaction] = get_attack_actions()
 	var pos_atks:Array[Attackaction] = []
@@ -64,48 +100,15 @@ func ideal_recovery() -> Healaction:
 		return null
 	return heal_actions[cached_parent.get_random_generator().randi_range(0, len(heal_actions)-1)]
 	
-	
-func execute_turn() -> void:
-	cached_parent = get_parent()
-	if cached_parent.debugging_allowed:
-		print("RUNNING NPC TURN")
-		print(get_enemy_unit_factions())
-	move_count = move_max
-	action_count = action_max	
-	examine_surroundings()
-	var in_progress:bool = true
-	var prior_pos = cur_pos
-	turn_breakout_counter = 0
-	while in_progress and turn_breakout_counter < 4:
-		in_progress = threat_analysis()
-		if prior_pos != cur_pos:
-			examine_surroundings()			
-		alert_lvl_update(true)
-	alert_lvl_update(false)
-	
-##Updates the alert_level of the unit based upon any hostiles it can see, followed by last-known hostiles, then investigating uncertain audio cues, then patrolling, then restorative actions if 'safe'
-func alert_lvl_update(dont_increment:bool=false) -> void:
-	if len(sighted_hostiles) > 0:
-		current_alert_level = alert_level.RED_ALERT
-		time_since_alert_update = 0
-	elif len(remembered_sightings) > 0:
-		current_alert_level = alert_level.ORANGE_ALERT
-		time_since_alert_update = 0
-	elif len(audio_cues) > 0:
-		current_alert_level = alert_level.YELLOW_ALERT
-		time_since_alert_update = 0
-	elif time_since_alert_update > 3 and health < base_health:
-		current_alert_level = alert_level.BLUE_ALERT
-		time_since_alert_update = 0
-	elif current_alert_level == alert_level.BLUE_ALERT and health >= base_health:
-		time_since_alert_update = 0
-		current_alert_level = alert_level.GREEN_ALERT
-	else:
-		if not dont_increment:
-			time_since_alert_update += 1
-	if cached_parent.debugging_allowed:
-		print("ALERT LEVEL: ", current_alert_level)
-		
+
+### IDEAL ACTION SELECTOR
+### ------------------------------------------------------------
+
+
+
+### ------------------------------------------------------------
+### VISIBILITY UPDATES
+
 ##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
 func update_visible_tiles() -> void:
 	var new_vision:Dictionary[Vector2i, bool] = {}
@@ -166,58 +169,16 @@ func examine_surroundings() -> void:
 	for flag_obj in added_Flags:
 		remembered_sightings[flag_obj.get_last_known_pos()] = flag_obj
 
-##Determines via randomized weights which last-known-enemy the unit should investigate
-func select_memory_location() -> Vector2i:
-	var weighted_coord = []
-	var weights = []
-	for coordinate in remembered_sightings:
-		var flag_obj:Flag = remembered_sightings.get(coordinate)
-		# High Friendly Support is a 'PRO' for investigating an area
-		# High (known) Hostile Threat, distance, time since that region was in sight, and general uncertainty are 'CONs'
-		weights.append(get_friendly_support_at_location(coordinate) + (flag_obj.get_counter() * 3.0 +  min(coordinate.distance_to(cur_pos), 30.0) + get_hostile_threat_at_location(coordinate, true)) * -1.0)
-		weighted_coord.append(coordinate)
-	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
-	var selected_coordinate = weighted_coord[index]
-	return selected_coordinate
-	
-func select_investigation_location() -> Vector2i:
-	# Not implemented yet
-	for coordinate in audio_cues:
-		pass
-	return Vector2i(-1234, -1234)
-		
-func select_patrol_point() -> Vector2i:
-	# Not implemented yet
-	
-	return Vector2i(-1234, -1234)
-		
-# We cap the friendly_support and hostile_threat addition at -10.0 as leaving it uncapped means we effectively split the map between the two locations with the greatest (localised) concentration of friendly vs hostile units on the entire map (as in you're 'support' could be heavily penalized by a units all the way on the other side of the map, even if you really should be 'safe' in a particular area
-# (We'll use this for determining rally points (running from the greatest known cluster of enemies))
-##Calculates the percieved strength of allied units nearby based off of the health and distance of nearby ally units to the designated tile
-func get_friendly_support_at_location(target:Vector2i, influence_cap:float=-10) -> float:
-	var friendly_support:float = 0.0
-	for faction_name_ref in get_friendly_factions():
-		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
-			if friendly_unit == self:
-				continue
-			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
-			var dist_to_friendly:float = friendly_unit_pos.distance_to(target)
-			var calculated_strength:float = friendly_unit.calculate_relative_strength_target(target)
-			friendly_support += max(calculated_strength - pow(dist_to_friendly, 1.1), influence_cap)
-	return friendly_support
+### VISIBILITY UPDATES
+### ------------------------------------------------------------
 
-##Calculates the percieved threat of a tile based off of the health and distance of nearby enemy units to the designated tile
-func get_hostile_threat_at_location(target:Vector2i, uncertain:bool=false, influence_cap:float=-10) -> float:
-	var hostile_threat:float = 0.0
-	for hostile_coordinate:Vector2i in sighted_hostiles:
-		var hostile_unit:Unit = sighted_hostiles.get(hostile_coordinate)
-		var dist_to_hostile:float = hostile_coordinate.distance_to(target)
-		var calculated_strength:float = hostile_unit.calculate_relative_strength_target(target)
-		hostile_threat += max(calculated_strength - pow(dist_to_hostile, 1.1), influence_cap)
-	if uncertain:
-		hostile_threat += base_health * 2.0 # Assume peer-level threat on tile
-	return hostile_threat
-	
+
+
+### ------------------------------------------------------------
+### DESTINATION HELPERS
+
+func calculate_heading(target:Vector2i) -> Vector2i:
+	return (target - cur_pos)	
 
 ##Returns [valid:bool, path_cost:int, point_path:Array[ int ]]
 func coordinate_validated(coordinate:Vector2i) -> Array:
@@ -243,6 +204,72 @@ func coordinate_validated(coordinate:Vector2i) -> Array:
 		else:
 			var path_cost = pathfinder.calculate_path_cost(returned_path)
 			return [true, path_cost, returned_path]
+
+##Returns [max_coord:Vector2i, max_strength:float, max_ratio:float, stored_path:Array[ int ]]
+func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:Attackaction, provided_range:int=1) -> Array:
+	var max_strength:float = -INF
+	var max_coord:Vector2i = Vector2i(-1234, -1234)
+	var max_ratio:float = 1.0
+	var max_path:PackedVector2Array = []
+	var path_cost:float = 0.0		
+	var move_pattern:Pattern2D = provided_attack_action.range_pattern
+	var coord_arr:Array[Vector2i] = []
+	for coordinate_y in range(-move_pattern.grid_size.y, move_pattern.grid_size.y + 1):
+		for coordinate_x in range(-move_pattern.grid_size.x, move_pattern.grid_size.x + 1):
+			var t_coord = move_pattern.calculate_affected_tiles_from_center(provided_target + Vector2i(coordinate_x, coordinate_y))
+			if provided_target in t_coord:
+				coord_arr.append(Vector2i(coordinate_x, coordinate_y))
+	for coordinate in coord_arr:
+		var temp_coord:Vector2i = provided_target + Vector2i(coordinate)
+		var f_support = get_friendly_support_at_location(temp_coord) + calculate_relative_strength_target(coordinate)
+		var e_support = get_hostile_threat_at_location(temp_coord, false)
+		var disparity = f_support - e_support
+		if disparity > max_strength:
+			var validation = coordinate_validated(temp_coord)
+			if validation[0]:				
+				disparity -= 0.15 * validation[1]
+				if validation[1] > move_count: # if we can't move there immediantly, deprioritize
+					disparity -= (validation[1]/move_count)
+				if disparity > max_strength:
+					max_strength = disparity
+					max_coord = temp_coord
+					max_ratio = f_support / max(e_support, 0.001)
+					max_path = validation[2]
+					path_cost = validation[1]
+	return [max_coord, max_strength, max_ratio, max_path, path_cost]
+
+### DESTINATION HELPERS
+### ------------------------------------------------------------
+
+
+
+### ------------------------------------------------------------
+### SELECT DESTINATION
+
+##Determines via randomized weights which last-known-enemy the unit should investigate
+func select_memory_location() -> Vector2i:
+	var weighted_coord = []
+	var weights = []
+	for coordinate in remembered_sightings:
+		var flag_obj:Flag = remembered_sightings.get(coordinate)
+		# High Friendly Support is a 'PRO' for investigating an area
+		# High (known) Hostile Threat, distance, time since that region was in sight, and general uncertainty are 'CONs'
+		weights.append(get_friendly_support_at_location(coordinate) + (flag_obj.get_counter() * 3.0 +  min(coordinate.distance_to(cur_pos), 30.0) + get_hostile_threat_at_location(coordinate, true)) * -1.0)
+		weighted_coord.append(coordinate)
+	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
+	var selected_coordinate = weighted_coord[index]
+	return selected_coordinate
+	
+func select_investigation_location() -> Vector2i:
+	# Not implemented yet
+	for coordinate in audio_cues:
+		pass
+	return Vector2i(-1234, -1234)
+		
+func select_patrol_point() -> Vector2i:
+	# Not implemented yet
+	
+	return Vector2i(-1234, -1234)
 	
 ##Calculates the 'optimal' rally-point (Vector2i) for a NPC unit to fall back to (greatest localised concentration of friendly units)
 ##; Returns [ designated_point:Vector2i, point_path:Array[ int ] ]
@@ -315,39 +342,37 @@ func find_exposed_hostile() -> Array:
 				only_ranged = not validation[0]
 				path_cost = validation[1]
 	return [max_coord, max_strength, max_ratio, max_path, only_ranged, path_cost]
+
+### SELECT DESTINATION
+### ------------------------------------------------------------
+
+
+
+### ------------------------------------------------------------
+### DECISION TREE
 	
-##Returns [max_coord:Vector2i, max_strength:float, max_ratio:float, stored_path:Array[ int ]]
-func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:Attackaction, provided_range:int=1) -> Array:
-	var max_strength:float = -INF
-	var max_coord:Vector2i = Vector2i(-1234, -1234)
-	var max_ratio:float = 1.0
-	var max_path:PackedVector2Array = []
-	var path_cost:float = 0.0		
-	var move_pattern:Pattern2D = provided_attack_action.range_pattern
-	var coord_arr:Array[Vector2i] = []
-	for coordinate_y in range(-move_pattern.grid_size.y, move_pattern.grid_size.y + 1):
-		for coordinate_x in range(-move_pattern.grid_size.x, move_pattern.grid_size.x + 1):
-			var t_coord = move_pattern.calculate_affected_tiles_from_center(provided_target + Vector2i(coordinate_x, coordinate_y))
-			if provided_target in t_coord:
-				coord_arr.append(Vector2i(coordinate_x, coordinate_y))
-	for coordinate in coord_arr:
-		var temp_coord:Vector2i = provided_target + Vector2i(coordinate)
-		var f_support = get_friendly_support_at_location(temp_coord) + calculate_relative_strength_target(coordinate)
-		var e_support = get_hostile_threat_at_location(temp_coord, false)
-		var disparity = f_support - e_support
-		if disparity > max_strength:
-			var validation = coordinate_validated(temp_coord)
-			if validation[0]:				
-				disparity -= 0.15 * validation[1]
-				if validation[1] > move_count: # if we can't move there immediantly, deprioritize
-					disparity -= (validation[1]/move_count)
-				if disparity > max_strength:
-					max_strength = disparity
-					max_coord = temp_coord
-					max_ratio = f_support / max(e_support, 0.001)
-					max_path = validation[2]
-					path_cost = validation[1]
-	return [max_coord, max_strength, max_ratio, max_path, path_cost]
+##Updates the alert_level of the unit based upon any hostiles it can see, followed by last-known hostiles, then investigating uncertain audio cues, then patrolling, then restorative actions if 'safe'
+func alert_lvl_update(dont_increment:bool=false) -> void:
+	if len(sighted_hostiles) > 0:
+		current_alert_level = alert_level.RED_ALERT
+		time_since_alert_update = 0
+	elif len(remembered_sightings) > 0:
+		current_alert_level = alert_level.ORANGE_ALERT
+		time_since_alert_update = 0
+	elif len(audio_cues) > 0:
+		current_alert_level = alert_level.YELLOW_ALERT
+		time_since_alert_update = 0
+	elif time_since_alert_update > 3 and health < base_health:
+		current_alert_level = alert_level.BLUE_ALERT
+		time_since_alert_update = 0
+	elif current_alert_level == alert_level.BLUE_ALERT and health >= base_health:
+		time_since_alert_update = 0
+		current_alert_level = alert_level.GREEN_ALERT
+	else:
+		if not dont_increment:
+			time_since_alert_update += 1
+	if cached_parent.debugging_allowed:
+		print("ALERT LEVEL: ", current_alert_level)
 		
 func threat_analysis() -> bool:
 	var course_select:bool = false
@@ -442,3 +467,24 @@ func threat_analysis() -> bool:
 	if cached_parent.debugging_allowed:
 		print(console_statement)
 	return rerun_allowed
+	
+func execute_turn() -> void:
+	cached_parent = get_parent()
+	if cached_parent.debugging_allowed:
+		print("RUNNING NPC TURN")
+		print(get_enemy_unit_factions())
+	move_count = move_max
+	action_count = action_max	
+	examine_surroundings()
+	var in_progress:bool = true
+	var prior_pos = cur_pos
+	turn_breakout_counter = 0
+	while in_progress and turn_breakout_counter < 4:
+		in_progress = threat_analysis()
+		if prior_pos != cur_pos:
+			examine_surroundings()			
+		alert_lvl_update(true)
+	alert_lvl_update(false)
+	
+### DECISION TREE
+### ------------------------------------------------------------
