@@ -131,7 +131,7 @@ func examine_surroundings() -> void:
 						new_sighted_hostiles[other_unit.cur_pos] = other_unit
 						cached_entity_ids[other_unit] = other_unit.cur_pos
 	if cached_parent.debugging_allowed:
-		print(new_sighted_hostiles)
+		print("DEBUG/SIGHTED: ",new_sighted_hostiles)
 
 	for coordinate in sighted_hostiles:
 		if sighted_hostiles.get(coordinate) != null:
@@ -184,8 +184,8 @@ func calculate_heading(target:Vector2i) -> Vector2i:
 func coordinate_validated(coordinate:Vector2i) -> Array:
 	var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
-	if cached_parent.debugging_allowed:
-		print(returned_path)
+	# if cached_parent.debugging_allowed:
+		# print("DEBUG/PATH: (", coordinate, ") ", returned_path)
 	if len(returned_path) == 0:
 		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
 		return [true, 0, []]
@@ -247,6 +247,7 @@ func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:At
 ### SELECT DESTINATION
 
 ##Determines via randomized weights which last-known-enemy the unit should investigate
+func select_memory_location() -> Array:
 	var weighted_coord = []
 	var weights = []
 	var path_arr = []
@@ -266,19 +267,36 @@ func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:At
 		var selected_coordinate = weighted_coord[index]
 		return [selected_coordinate, path_arr[index]]
 	
-func select_investigation_location() -> Vector2i:
+func select_investigation_location() -> Array:
 	# Not implemented yet
 	for coordinate in audio_cues:
 		pass
-	return Vector2i(-1234, -1234)
+	return [Vector2i(-1234, -1234), []]
 		
-func select_patrol_point() -> Vector2i:
-	# Not implemented yet
-	
-	return Vector2i(-1234, -1234)
+var cached_patrol_location_data:Array = [Vector2i(-1234, -1234), []]
+func select_patrol_point() -> void:
+	# Just select a random coordinate that's x2 movement range right now
+	var random_gen:RandomNumberGenerator = cached_parent.get_parent().get_random_generator()
+	var attempts:int = 0
+	while attempts < 10:
+		var ran_x = random_gen.randi_range(-10, 10)
+		var ran_y = random_gen.randi_range(-10, 10)
+		var assembled_vector:Vector2i = Vector2i(ran_x, ran_y)
+		if assembled_vector != Vector2i(0, 0):
+			assembled_vector +=  cur_pos
+			if assembled_vector in cached_parent.map_manager.map_dict_v2:
+				var validation_arr = coordinate_validated(assembled_vector)
+				if validation_arr[0]: 
+					cached_patrol_location_data = [assembled_vector, validation_arr[2]]
+					print("Assigned: ",cached_patrol_location_data)
+					return
+			else:
+				OS.crash("ERROR? " + str(assembled_vector) + " not in cached_parent.map_manager.map_dict_v2\nDict: " + str(cached_parent.map_manager.map_dict_v2))
+		attempts += 1
+	return
 	
 ##Calculates the 'optimal' rally-point (Vector2i) for a NPC unit to fall back to (greatest localised concentration of friendly units)
-##; Returns [ designated_point:Vector2i, point_path:Array[ int ] ]
+##; Returns [ designated_point:Vector2i, point_path:PackedVector2Array]
 func find_rally_point() -> Array:
 	var weighted_coords:Dictionary[Vector2i, Array] = {}
 	var weights = []
@@ -300,7 +318,7 @@ func find_rally_point() -> Array:
 	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
 	var weight_keys = weighted_coords.keys()
 	var weight_values = weighted_coords.values()
-	return [weight_keys[index], weight_values[index][1]] 
+	return [weight_keys[index], weight_values.get(index)[1]] 
 
 
 ##Functions similarly to rally point, but only tiles within movement distance of the current unit are viable candidates instead of units adjacent to allies
@@ -374,23 +392,31 @@ func alert_lvl_update(dont_increment:bool=false) -> void:
 	if len(sighted_hostiles) > 0:
 		current_alert_level = alert_level.HOSTILE_IN_SIGHT
 		time_since_alert_update = 0
-	elif len(remembered_sightings) > 0:
+		return
+		
+	if len(remembered_sightings) > 0:
 		current_alert_level = alert_level.REMEMBERED_HOSTILE
 		time_since_alert_update = 0
-	elif len(audio_cues) > 0:
+		return
+		
+	if len(audio_cues) > 0:
 		current_alert_level = alert_level.INVESTIGATE_AUDIO_CUE
 		time_since_alert_update = 0
-	elif time_since_alert_update > 3 and health < base_health:
+		return
+		
+	if not dont_increment:
+		time_since_alert_update += 1
+		
+	if time_since_alert_update > 4 and health < base_health:
 		current_alert_level = alert_level.AREA_SECURE
 		time_since_alert_update = 0
-	elif current_alert_level == alert_level.AREA_SECURE and health >= base_health:
-		time_since_alert_update = 0
+		return 
+
+	if current_alert_level != alert_level.PATROL_AREA:
 		current_alert_level = alert_level.PATROL_AREA
-	else:
-		if not dont_increment:
-			time_since_alert_update += 1
-	if cached_parent.debugging_allowed:
-		print("ALERT LEVEL: ", current_alert_level)
+		time_since_alert_update = 0
+		return
+	
 		
 func threat_analysis() -> bool:
 	var course_select:bool = false
@@ -398,7 +424,7 @@ func threat_analysis() -> bool:
 	var console_statement:String = ""
 	console_statement += "\nDEBUG/MV: " + str(move_count)
 	console_statement += "\nDEBUG/ACT: " + str(action_count)
-	if alert_level.HOSTILE_IN_SIGHT:
+	if current_alert_level == alert_level.HOSTILE_IN_SIGHT:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Red Alert"
 		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
 		
@@ -453,15 +479,37 @@ func threat_analysis() -> bool:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Yellow Alert"
 		if len(audio_cues) > 0:
 			console_statement += "\nDEBUG/STATE: -> -> Entering Investigation"
-			var selected_sighting:Vector2i = select_investigation_location()
-			if selected_sighting != Vector2i(-1234, -1234):
-				console_statement += "\nDEBUG/INVESTIGATION: " + str(selected_sighting)
+			var selection:Array = select_investigation_location()
+			if selection[0] != Vector2i(-1234, -1234):
+				console_statement += "\nDEBUG/INVESTIGATION: " + str(selection[0])
 				course_select = true
-				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
+				cached_parent.move_unit_via_path(self, selection[1], false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.PATROL_AREA and move_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Green Alert"
-		pass
+		if cached_patrol_location_data[0] == Vector2i(-1234, -1234) or cur_pos == cached_patrol_location_data[0]:
+			print("\nDEBUG/PATROL: Setting Patrol Location")
+			select_patrol_point()
+			
+		if cached_patrol_location_data[0] != Vector2i(-1234, -1234):
+			console_statement += "\nDEBUG/PATROL: " + str(cur_pos) + " -> "+ str(cached_patrol_location_data[0])
+			cached_parent.move_unit_via_path(self, cached_patrol_location_data[1], true)
+			var ignore_index = -1
+			for index in range(len(cached_patrol_location_data[1])):
+				if Vector2i(cached_patrol_location_data[1][index]) == cur_pos:
+					ignore_index = index
+					break
+			var new_path = []
+			for index in range(len(cached_patrol_location_data[1])):
+				if index >= ignore_index:
+					new_path.append(cached_patrol_location_data[1][index])
+			cached_patrol_location_data[1] = new_path
+			console_statement += "\nDEBUG/PATROL: Updated Path: " + str(cached_patrol_location_data[1])
+			
+			console_statement += "\nDEBUG/PATROL: Now at " + str(cur_pos) + " with " + str(move_count) + " moves left" 
+			course_select = true
+			rerun_allowed = true
+			
 	if not course_select and current_alert_level >= alert_level.AREA_SECURE and action_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Blue Alert"
 		var ideal_recovery_action:Healaction = ideal_recovery()
@@ -476,7 +524,6 @@ func threat_analysis() -> bool:
 		move_count = 0
 		rerun_allowed = false
 		# Because if it's false by this point, then no action has been chosen (because they may be invalid), so end turn.
-	turn_breakout_counter += 1
 	if cached_parent.debugging_allowed:
 		print(console_statement)
 	return rerun_allowed
@@ -489,16 +536,23 @@ func execute_turn() -> void:
 	move_count = move_max
 	action_count = action_max	
 	examine_surroundings()
+	print("SIGHTINGS: ", sighted_hostiles)
+	alert_lvl_update(false)
+	if cached_parent.debugging_allowed:
+		print("ALERT LEVEL: ", current_alert_level)
 	var in_progress:bool = true
 	var prior_pos = cur_pos
 	turn_breakout_counter = 0
 	while in_progress and turn_breakout_counter < 4:
 		cached_attack_action = null
+		cached_focus_unit = null
+		cached_support_action = null
 		in_progress = threat_analysis()
 		if prior_pos != cur_pos:
-			examine_surroundings()			
+			examine_surroundings()
+		print("RUNNING TINC: ", turn_breakout_counter, " ", len(sighted_hostiles), " ", time_since_alert_update)		
+		turn_breakout_counter += 1	
 		alert_lvl_update(true)
-	alert_lvl_update(false)
 	
 ### DECISION TREE
 ### ------------------------------------------------------------
