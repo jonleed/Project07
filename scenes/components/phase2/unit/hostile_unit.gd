@@ -247,18 +247,24 @@ func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:At
 ### SELECT DESTINATION
 
 ##Determines via randomized weights which last-known-enemy the unit should investigate
-func select_memory_location() -> Vector2i:
 	var weighted_coord = []
 	var weights = []
+	var path_arr = []
 	for coordinate in remembered_sightings:
-		var flag_obj:Flag = remembered_sightings.get(coordinate)
-		# High Friendly Support is a 'PRO' for investigating an area
-		# High (known) Hostile Threat, distance, time since that region was in sight, and general uncertainty are 'CONs'
-		weights.append(get_friendly_support_at_location(coordinate) + (flag_obj.get_counter() * 3.0 +  min(coordinate.distance_to(cur_pos), 30.0) + get_hostile_threat_at_location(coordinate, true)) * -1.0)
-		weighted_coord.append(coordinate)
-	var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
-	var selected_coordinate = weighted_coord[index]
-	return selected_coordinate
+		var valid_arr:Array = coordinate_validated(coordinate)
+		if valid_arr[0]:
+			var flag_obj:Flag = remembered_sightings.get(coordinate)
+			# High Friendly Support is a 'PRO' for investigating an area
+			# High (known) Hostile Threat, distance, time since that region was in sight, and general uncertainty are 'CONs'
+			weights.append(get_friendly_support_at_location(coordinate) + (flag_obj.get_counter() * 3.0 +  min(coordinate.distance_to(cur_pos), 30.0) + get_hostile_threat_at_location(coordinate, true)) * -1.0)
+			weighted_coord.append(coordinate)
+			path_arr.append(valid_arr[2])		
+	if len(weighted_coord) < 1:
+		return [Vector2i(-1234, -1234), []]
+	else:
+		var index = cached_parent.get_parent().get_random_generator().rand_weighted(weights)
+		var selected_coordinate = weighted_coord[index]
+		return [selected_coordinate, path_arr[index]]
 	
 func select_investigation_location() -> Vector2i:
 	# Not implemented yet
@@ -437,11 +443,11 @@ func threat_analysis() -> bool:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Orange Alert"
 		if len(remembered_sightings) > 0:
 			console_statement += "\nDEBUG/STATE: -> -> Entering Search"
-			var selected_sighting:Vector2i = select_memory_location()
-			if selected_sighting != Vector2i(-1234, -1234):
-				console_statement += "\nDEBUG/SEARCH: " + str(selected_sighting)
+			var selection:Array = select_memory_location()
+			if selection[0] != Vector2i(-1234, -1234):
+				console_statement += "\nDEBUG/SEARCH: " + str(selection[0])
 				course_select = true
-				cached_parent.move_unit_via_path(self, cached_parent.get_pathfinder()._return_path(cur_pos, selected_sighting), false)
+				cached_parent.move_unit_via_path(self, selection[1], false)
 				rerun_allowed = true
 	if not course_select and current_alert_level >= alert_level.INVESTIGATE_AUDIO_CUE and move_count > 0:
 		console_statement += "\nDEBUG/STATE: -> -> Entering Yellow Alert"
