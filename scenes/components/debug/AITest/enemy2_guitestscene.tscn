@@ -43,15 +43,17 @@ autostart = true
 script = ExtResource("5_odk2x")
 metadata/_custom_type_script = "uid://g6evar1ip8pg"
 
-[node name="Player_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("cursor", "map_manager")]
+[node name="Player_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("cursor", "map_manager", "action_decoder")]
 script = ExtResource("6_phq36")
 cursor = NodePath("../../Cursor")
 map_manager = NodePath("../../MapManager")
+action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://j80klyllg32k"
 
-[node name="Hostile_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager")]
+[node name="Hostile_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
 script = ExtResource("7_kpq0c")
 map_manager = NodePath("../../MapManager")
+action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://cqxhg00a17hk6"
 
 [node name="ActionDecoder" parent="." instance=ExtResource("7_36gdr")]
