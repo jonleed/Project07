@@ -12,6 +12,7 @@ var relative_range:int = 5
 var ideal_melee_dpt:float = 0.0
 var ideal_ranged_dpt:float = 0.0
 var turn_breakout_counter:int = 0
+var current_turn_debug_print:String = ""
 
 
 var current_alert_level:int = alert_level.PATROL_AREA
@@ -379,7 +380,303 @@ func find_exposed_hostile() -> Array:
 		#	print("There's no way for us to target ", coordinate)
 	return [max_coord, max_strength, max_ratio, max_path, only_ranged, path_cost]
 
+var cached_support_action:Healaction = null
+func find_unit_in_need() -> Array:
+	var max_strength:float = -INF
+	var max_ratio:float = 1.0
+	var max_coord:Vector2i = Vector2i(-1234, -1234)
+	var max_path:PackedVector2Array = []
+	var path_cost:float = 0.0
+	var only_ranged:bool = false
+	var selected_unit:Entity = null
+	for faction_name_ref in get_friendly_factions():
+		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
+			cached_support_action = ideal_recovery()
+			selected_unit = friendly_unit
+	return [max_coord, max_strength, max_ratio, max_path, only_ranged, path_cost, selected_unit]
+
 ### SELECT DESTINATION
+### ------------------------------------------------------------
+
+
+
+### ------------------------------------------------------------
+### STATE MACHINE HELPERS
+
+enum state_machine {
+	IDLE,
+	DONE,
+	ACTING,
+	ATTACKING,
+	SUPPORTING,
+	MOVING,
+	RUSHING,
+	RUNNING
+}
+var current_state:int = state_machine.IDLE
+
+func execute_turn() -> void:
+	cached_parent = get_parent()
+	examine_surroundings()
+	alert_lvl_update()
+	move_count = move_max
+	action_count = action_max	
+	current_turn_debug_print = ""
+	current_state = state_machine.IDLE
+	var mandatory_stop:int = 20
+	var incrementer:int = 0
+	while (current_state != state_machine.DONE and incrementer < mandatory_stop):
+		var prior_pos:Vector2i = cur_pos
+		process_active_state()
+		incrementer += 1
+		if prior_pos != cur_pos:
+			examine_surroundings()
+			alert_lvl_update(false)
+	if cached_parent.debugging_allowed:
+		print(current_turn_debug_print)
+		
+
+func process_active_state() -> void:
+	current_turn_debug_print += "\nDEBUG/ST-M: Processing State (" + get_string_name_of_state(current_state) + ")"
+	match current_state:
+		state_machine.IDLE:
+			state_machine_idle()
+		state_machine.DONE:
+			state_machine_done()
+		state_machine.ACTING:
+			state_machine_acting()
+		state_machine.ATTACKING:
+			state_machine_attacking()
+		state_machine.SUPPORTING:
+			state_machine_supporting()
+		state_machine.MOVING:
+			state_machine_moving()
+		state_machine.RUSHING:
+			state_machine_rushing()
+		state_machine.RUNNING:
+			state_machine_running()
+
+func get_string_name_of_state(provided_state:int) -> String:
+	match provided_state:
+		state_machine.IDLE:
+			return "IDLE"
+		state_machine.DONE:
+			return "DONE"
+		state_machine.ACTING:
+			return "ACTING"
+		state_machine.ATTACKING:
+			return "ATTACKING"
+		state_machine.SUPPORTING:
+			return "SUPPORTING"
+		state_machine.MOVING:
+			return "MOVING"
+		state_machine.RUSHING:
+			return "RUSHING"
+		state_machine.RUNNING:
+			return "RUNNING"
+	
+	# if you reach here, that means it's an invalid state.
+	return "INVALID-STATE-OF-("+ str(provided_state) + ")-PROVIDED"
+	
+func get_string_name_of_alert(provided_alert:int) -> String:
+	match provided_alert:
+		alert_level.HOSTILE_IN_SIGHT:
+			return "HOSTILE_IN_SIGHT"
+		alert_level.REMEMBERED_HOSTILE:
+			return "REMEMBERED_HOSTILE"
+		alert_level.INVESTIGATE_AUDIO_CUE:
+			return "INVESTIGATE_AUDTIO_CUE"
+		alert_level.PATROL_AREA:
+			return "PATROL_AREA"
+		alert_level.AREA_SECURE:
+			return "AREA_SECURE"
+	
+	# if you reach here, that means it's an invalid alert.
+	return "INVALID-ALERT-OF-("+ str(provided_alert) + ")-PROVIDED"
+
+func change_state(new_state:int) -> void:
+	current_turn_debug_print += "\nDEBUG/ST-M: Transistioning from "+get_string_name_of_state(current_state)+" to "+get_string_name_of_state(new_state)
+	current_state = new_state
+
+### STATE MACHINE HELPERS
+### ------------------------------------------------------------
+
+
+
+### ------------------------------------------------------------
+### STATE MACHINE
+
+func state_machine_idle() -> void:
+	current_turn_debug_print += "\nDEBUG/IDLE: with MOVE: "+str(move_count)+ ", ACTIONS: " +str(action_count) +", ALERT: " + get_string_name_of_alert(current_alert_level) + ", on COORD: " + str(cur_pos)
+	
+	# PRIORITY 1 -> ENGAGE HOSTILES
+	if len(sighted_hostiles) > 0:
+		current_alert_level = alert_level.HOSTILE_IN_SIGHT
+		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
+		current_turn_debug_print += "\nDEBUG/IDLE/THREAT: " + str(threat_diff)
+		# Odds are in our favour
+		if threat_diff > 0.6 and action_count > 0:
+			change_state(state_machine.ACTING)
+			return
+		# Not great odds, we should regroup with nearby allies
+		elif threat_diff > 0.4 and move_count > 0:
+			change_state(state_machine.RUSHING)
+			return
+		# Run, run run away the enemy is insurmountable
+		elif move_count > 0:
+			change_state(state_machine.RUNNING)
+			return
+		
+	# PRIORITY 2 -> SEARCH FOR HOSTILES
+	if len(remembered_sightings) > 0 and move_count > 0:
+		current_alert_level = alert_level.REMEMBERED_HOSTILE
+		change_state(state_machine.MOVING)
+		return
+	
+	# PRIORITY 3 -> INVESTIGATE AUDIO CUES
+	if len(audio_cues) > 0 and move_count > 0:
+		current_alert_level = alert_level.INVESTIGATE_AUDIO_CUE
+		change_state(state_machine.MOVING)
+		return
+		
+	# PRIORITY 4 -> RECOVERY ACTIONS
+	if action_count > 0:
+		current_alert_level = alert_level.AREA_SECURE
+		var ideal_recovery_action:Healaction =  ideal_recovery()
+		if ideal_recovery_action != null:
+			change_state(state_machine.ACTING)
+			return
+	
+	# PRIORITY 5 -> PATROLLING
+	if move_count > 0:
+		current_alert_level = alert_level.PATROL_AREA
+		change_state(state_machine.MOVING)
+		return
+	
+	change_state(state_machine.DONE)
+	return
+	
+func state_machine_done() -> void:
+	pass
+	
+var cached_movement_path:PackedVector2Array = []
+var cached_focus_unit:Entity = null
+func state_machine_acting() -> void:
+	# Gets triggered by Desire to Heal and Desire to Attack
+	current_turn_debug_print += "\nDEBUG/ACTING/ALERT_LEVEL: " + str(current_alert_level)
+	if current_alert_level == alert_level.HOSTILE_IN_SIGHT or current_alert_level == alert_level.AREA_SECURE:
+		var data_arr = []
+		if current_alert_level == alert_level.HOSTILE_IN_SIGHT:
+			data_arr = find_exposed_hostile()
+		else:
+			data_arr = find_unit_in_need()
+		if data_arr[0] != Vector2i(-1234, -1234):
+			if current_alert_level == alert_level.HOSTILE_IN_SIGHT:
+				current_turn_debug_print += "\nDEBUG/ACTING/EXPOSED_HOSTILE: " + str(data_arr[0])
+				current_turn_debug_print += "\nDEBUG/ACTING/SELECTED_ATTACK: " + str(cached_attack_action)
+				cached_focus_unit = sighted_hostiles.get(data_arr[0])
+			else:
+				current_turn_debug_print += "\nDEBUG/ACTING/UNIT_IN_AID: " + str(data_arr[0])
+				current_turn_debug_print += "\nDEBUG/ACTING/SELECTED_ACTION: " + str(cached_support_action)
+				cached_focus_unit = data_arr[6]
+			cached_movement_path = data_arr[3]
+			change_state(state_machine.MOVING)
+			return
+		#else:
+			# A Vector2i of <-1234, -1234> can only be attained if:
+			# - There are no adjacent tiles to the enemy, AND we only have melee attacks (Patterns with a grid size of 3x3)
+			# - The location does not exist
+		
+	change_state(state_machine.IDLE)
+	return
+	
+
+func state_machine_attacking() -> void:
+	use_action(cached_attack_action, cached_focus_unit, true)
+	change_state(state_machine.IDLE)
+	return
+	
+func state_machine_supporting() -> void:
+	use_action(cached_support_action, cached_focus_unit, true)
+	change_state(state_machine.IDLE)
+	return
+	
+func state_machine_moving() -> void:
+	if move_count <= 0:
+		change_state(state_machine.DONE)
+		return
+	
+	if current_alert_level == alert_level.HOSTILE_IN_SIGHT or current_alert_level == alert_level.AREA_SECURE:
+		current_turn_debug_print += "\nDEBUG/MOVING: " +str(cur_pos) + " -> " + str(cached_movement_path[-1]) + " using path: " + str(cached_movement_path)
+		cached_parent.move_unit_via_path(self, cached_movement_path, true)
+		current_turn_debug_print += "\nDEBUG/MOVING: Reached " + str(cur_pos) + " with " + str(move_count) + " moves left"
+		if cur_pos == Vector2i(cached_movement_path[-1]):		
+			current_turn_debug_print += "\nDEBUG/MOVING: At Action Location"
+			if current_alert_level == alert_level.HOSTILE_IN_SIGHT:
+				change_state(state_machine.ATTACKING)
+				return
+			if current_alert_level == alert_level.AREA_SECURE:
+				change_state(state_machine.SUPPORTING)
+				return
+		else:
+			change_state(state_machine.DONE)
+			return
+	elif current_alert_level == alert_level.REMEMBERED_HOSTILE:
+		var selection:Array = select_memory_location()
+		if selection[0] != Vector2i(-1234, -1234):
+			cached_parent.move_unit_via_path(self, selection[1], true)
+	elif current_alert_level == alert_level.INVESTIGATE_AUDIO_CUE:
+		var selection:Array = select_investigation_location()
+		if selection[0] != Vector2i(-1234, -1234):
+			cached_parent.move_unit_via_path(self, selection[1], true)
+	elif current_alert_level == alert_level.PATROL_AREA:
+		if cached_patrol_location_data[0] == Vector2i(-1234, -1234) or cur_pos == cached_patrol_location_data[0]:
+			select_patrol_point()
+			
+		if cached_patrol_location_data[0] != Vector2i(-1234, -1234):
+			cached_parent.move_unit_via_path(self, cached_patrol_location_data[1], true)
+			
+			# Cull the tiles we've gone through from the path (as move_unit_via_path needs a path from cur_pos to destination (cur_pos, tile3, destination), not (tile1, tile2, cur_pos, tile3, destination) etc.
+			var ignore_index = -1
+			for index in range(len(cached_patrol_location_data[1])):
+				if Vector2i(cached_patrol_location_data[1][index]) == cur_pos:
+					ignore_index = index
+					break
+			var new_path = []
+			for index in range(len(cached_patrol_location_data[1])):
+				if index >= ignore_index:
+					new_path.append(cached_patrol_location_data[1][index])
+			cached_patrol_location_data[1] = new_path
+		else:
+			# Nothing will have changed, so going back to IDLE would just get us in loop
+			change_state(state_machine.DONE)
+			return
+		
+	change_state(state_machine.IDLE)
+	return	
+
+func state_machine_rushing() -> void:
+	var data_arr:Array = find_rally_point()
+	if data_arr[0] != Vector2i(-1234, -1234):
+		cached_parent.move_unit_via_path(self, data_arr[1], true)
+		change_state(state_machine.IDLE)
+		return	
+	
+	# Only way to get <-1234, -1234> is if we can't get to allies, so do the next best thing and gain distance from enemies; Can't default to IDLE as nothing has changed, so we'd get stuck in a loop
+	change_state(state_machine.RUNNING)
+	
+func state_machine_running() -> void:
+	var data_arr:Array = find_retreat_point()
+	if data_arr[0] != Vector2i(-1234, -1234):
+		cached_parent.move_unit_via_path(self, data_arr[1], true)
+		change_state(state_machine.IDLE)
+		return	
+		
+	# Only way to get <-1234, -1234> is if it's impossible to move (out of movement or all tiles nearby are blocked)
+	# Hypothetically, we could switch to ACTING as the only way to get to RUNNING is from HOSTILE_IN_SIGHT (which would trigger ACTING in IDLE unless overwhelming odds), but find_exposed_hostiles purposefully excludes low-odd hostiles, so we would be stuck in a loop unless exceptions are added.
+	change_state(state_machine.DONE)
+		
+### STATE MACHINE
 ### ------------------------------------------------------------
 
 
@@ -417,142 +714,6 @@ func alert_lvl_update(dont_increment:bool=false) -> void:
 		time_since_alert_update = 0
 		return
 	
-		
-func threat_analysis() -> bool:
-	var course_select:bool = false
-	var rerun_allowed:bool = false
-	var console_statement:String = ""
-	console_statement += "\nDEBUG/MV: " + str(move_count)
-	console_statement += "\nDEBUG/ACT: " + str(action_count)
-	if current_alert_level == alert_level.HOSTILE_IN_SIGHT:
-		console_statement += "\nDEBUG/STATE: -> -> Entering Red Alert"
-		var threat_diff = (calculate_relative_strength_target(cur_pos) + get_friendly_support_at_location(cur_pos)) / max(get_hostile_threat_at_location(cur_pos, false), 0.001)
-		
-		console_statement += "\nDEBUG/THREAT: " + str(threat_diff)
-		if threat_diff > 0.6: # Charge - We can take em- 
-			var returned_arr:Array = find_exposed_hostile()
-			console_statement += "\nDEBUG/EXPO: " + str(returned_arr)
-			if returned_arr[0] != Vector2i(-1234, -1234):
-				console_statement += "\nDEBUG/EXPO: Found an exposed hostile!"
-				console_statement += "\nDEBUG/SELECTED ATTACK: " + str(cached_attack_action)
-				console_statement += "\nDEBUG/SUPPORT: " + str(returned_arr)
-				console_statement += "\nDEBUG/SUPPORT: Moving down provided path"
-				cached_parent.move_unit_via_path(self, returned_arr[3], true)	
-				#print(sighted_hostiles.get(returned_arr[0]))
-				# var selected_attack:Attackaction = ideal_attack(sighted_hostiles.get(returned_arr[0]))
-				if action_count > 0:
-					console_statement += "\nDEBUG/ATK: Has actions, Attacking"
-					# So the attack is valid, we can target the selected unit
-					course_select = true
-					action_count -= 1
-					use_action(cached_attack_action, sighted_hostiles.get(returned_arr[0]))
-							
-				console_statement += "\nDEBUG/EXPO: No exposed hostiles found!"
-		# Cannot do elif chains as we need a fallback if a prior option didn't work
-		if (not course_select and move_count > 0 and threat_diff > 0.4):
-			console_statement += "\nDEBUG/STATE: -> -> Entering Rally"
-			var returned_arr:Array = find_rally_point()
-			console_statement += "\nDEBUG/RALLY: " + str(returned_arr)
-			if returned_arr[0] != Vector2i(-1234, -1234):
-				course_select = true
-				cached_parent.move_unit_via_path(self, returned_arr[1], true)
-				rerun_allowed = true
-		if not course_select and move_count > 0:
-			console_statement += "\nDEBUG/STATE: -> -> Entering Retreat"
-			var returned_arr:Array = find_retreat_point()
-			console_statement += "\nDEBUG/RETREAT: " + str(returned_arr)
-			if returned_arr[0] != Vector2i(-1234, -1234):
-				course_select = true
-				cached_parent.move_unit_via_path(self, returned_arr[1], true)
-				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.REMEMBERED_HOSTILE and move_count > 0:
-		console_statement += "\nDEBUG/STATE: -> -> Entering Orange Alert"
-		if len(remembered_sightings) > 0:
-			console_statement += "\nDEBUG/STATE: -> -> Entering Search"
-			var selection:Array = select_memory_location()
-			if selection[0] != Vector2i(-1234, -1234):
-				console_statement += "\nDEBUG/SEARCH: " + str(selection[0])
-				course_select = true
-				cached_parent.move_unit_via_path(self, selection[1], false)
-				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.INVESTIGATE_AUDIO_CUE and move_count > 0:
-		console_statement += "\nDEBUG/STATE: -> -> Entering Yellow Alert"
-		if len(audio_cues) > 0:
-			console_statement += "\nDEBUG/STATE: -> -> Entering Investigation"
-			var selection:Array = select_investigation_location()
-			if selection[0] != Vector2i(-1234, -1234):
-				console_statement += "\nDEBUG/INVESTIGATION: " + str(selection[0])
-				course_select = true
-				cached_parent.move_unit_via_path(self, selection[1], false)
-				rerun_allowed = true
-	if not course_select and current_alert_level >= alert_level.PATROL_AREA and move_count > 0:
-		console_statement += "\nDEBUG/STATE: -> -> Entering Green Alert"
-		if cached_patrol_location_data[0] == Vector2i(-1234, -1234) or cur_pos == cached_patrol_location_data[0]:
-			print("\nDEBUG/PATROL: Setting Patrol Location")
-			select_patrol_point()
-			
-		if cached_patrol_location_data[0] != Vector2i(-1234, -1234):
-			console_statement += "\nDEBUG/PATROL: " + str(cur_pos) + " -> "+ str(cached_patrol_location_data[0])
-			cached_parent.move_unit_via_path(self, cached_patrol_location_data[1], true)
-			var ignore_index = -1
-			for index in range(len(cached_patrol_location_data[1])):
-				if Vector2i(cached_patrol_location_data[1][index]) == cur_pos:
-					ignore_index = index
-					break
-			var new_path = []
-			for index in range(len(cached_patrol_location_data[1])):
-				if index >= ignore_index:
-					new_path.append(cached_patrol_location_data[1][index])
-			cached_patrol_location_data[1] = new_path
-			console_statement += "\nDEBUG/PATROL: Updated Path: " + str(cached_patrol_location_data[1])
-			
-			console_statement += "\nDEBUG/PATROL: Now at " + str(cur_pos) + " with " + str(move_count) + " moves left" 
-			course_select = true
-			rerun_allowed = true
-			
-	if not course_select and current_alert_level >= alert_level.AREA_SECURE and action_count > 0:
-		console_statement += "\nDEBUG/STATE: -> -> Entering Blue Alert"
-		var ideal_recovery_action:Healaction = ideal_recovery()
-		if ideal_recovery_action != null and action_count > 0:
-			console_statement += "\nDEBUG/HEAL: " + str(ideal_recovery_action)
-			course_select = true
-			use_action(ideal_recovery_action, self)
-			rerun_allowed = true
-	if not course_select:
-		console_statement += "\nDEBUG/STATE: No decision made."
-		action_count = 0
-		move_count = 0
-		rerun_allowed = false
-		# Because if it's false by this point, then no action has been chosen (because they may be invalid), so end turn.
-	if cached_parent.debugging_allowed:
-		print(console_statement)
-	return rerun_allowed
-	
-func execute_turn() -> void:
-	cached_parent = get_parent()
-	if cached_parent.debugging_allowed:
-		print("RUNNING NPC TURN")
-		print(get_enemy_unit_factions())
-	move_count = move_max
-	action_count = action_max	
-	examine_surroundings()
-	print("SIGHTINGS: ", sighted_hostiles)
-	alert_lvl_update(false)
-	if cached_parent.debugging_allowed:
-		print("ALERT LEVEL: ", current_alert_level)
-	var in_progress:bool = true
-	var prior_pos = cur_pos
-	turn_breakout_counter = 0
-	while in_progress and turn_breakout_counter < 4:
-		cached_attack_action = null
-		cached_focus_unit = null
-		cached_support_action = null
-		in_progress = threat_analysis()
-		if prior_pos != cur_pos:
-			examine_surroundings()
-		print("RUNNING TINC: ", turn_breakout_counter, " ", len(sighted_hostiles), " ", time_since_alert_update)		
-		turn_breakout_counter += 1	
-		alert_lvl_update(true)
 	
 ### DECISION TREE
 ### ------------------------------------------------------------

@@ -127,13 +127,15 @@ func get_multihit_targets(given_action:Action, focus:Entity, include_friendly:bo
 	return units_to_affect
 	
 ## For Heal/Attack Actions
-func use_action(given_action:Action, focus:Entity) -> void:
+func use_action(given_action:Action, focus:Entity, consume_action:bool=true) -> void:
 	var include_F:bool = false
 	var include_H:bool = false
 	if given_action is Healaction:
 		include_F = true
 	elif given_action is Attackaction:
 		include_H = true
+	if consume_action:
+		action_count -= 1
 	var units_to_affect:Array[Entity] = get_multihit_targets(given_action, focus, include_F, include_H)
 	cached_parent.action_decoder.decode_action(given_action, units_to_affect)
 	
