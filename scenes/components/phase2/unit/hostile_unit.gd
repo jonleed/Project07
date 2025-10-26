@@ -2,7 +2,7 @@ extends Unit
 class_name Hostile_Unit
 
 var current_vision:Dictionary[Vector2i, bool]
-var sighted_hostiles:Dictionary[Vector2i, Unit]
+var sighted_hostiles:Dictionary[Vector2i, Entity]
 var remembered_sightings:Dictionary[Vector2i, Flag]
 var audio_cues:Dictionary[Vector2i, int]
 
@@ -110,65 +110,134 @@ func ideal_recovery() -> Healaction:
 ### ------------------------------------------------------------
 ### VISIBILITY UPDATES
 
-##Uses BFS and vision_range from cur_pos to determine what tiles are visible to this unit
+## Visibility Updater that:
+## [br] - Uses BFS to get all tiles within 'vision_range'
+## [br] - Assigns all tiles in vision_range from cur_pos to a Dictionary for easy O(1) lookups
+## [br] - Updates current_vision to now use that Dictionary
 func update_visible_tiles() -> void:
-	var new_vision:Dictionary[Vector2i, bool] = {}
-	var vision_arr:Array = Globals.get_bfs_tiles(cur_pos, vision_range, cached_parent.map_manager)
-	for coordinate in vision_arr:
-		new_vision[coordinate] = true
-	current_vision = new_vision
-	
-##Updates current_vision, sighted_hostiles, and remembered_sightings
-func examine_surroundings() -> void:
-	update_visible_tiles()
-	var new_sighted_hostiles:Dictionary[Vector2i, Unit] = {}
-	var cached_entity_ids:Dictionary[Unit, Vector2i] = {}
-	for faction_name_ref in get_enemy_unit_factions():
-		if faction_name_ref != cached_parent.faction_name:
-			var unit_arr:Array = get_tree().get_nodes_in_group(faction_name_ref)		
-			if len(unit_arr) > 0:
-				for other_unit in unit_arr:
-					if other_unit.cur_pos in current_vision:
-						new_sighted_hostiles[other_unit.cur_pos] = other_unit
-						cached_entity_ids[other_unit] = other_unit.cur_pos
-	if cached_parent.debugging_allowed:
-		print("DEBUG/SIGHTED: ",new_sighted_hostiles)
+	var currently_visible_tiles:Dictionary[Vector2i, bool] = {}
+	var tiles_in_vision:Array = Globals.get_bfs_tiles(cur_pos, vision_range, cached_parent.map_manager)
 
-	for coordinate in sighted_hostiles:
-		if sighted_hostiles.get(coordinate) != null:
-			var entry_unit:Unit = sighted_hostiles.get(coordinate)
-			if entry_unit not in cached_entity_ids: # Which means not in current_vision as well
-				remembered_sightings[coordinate] = Flag.new(entry_unit, -1) # Set counter to one here as they'll be incremented in the next loop
-	sighted_hostiles = new_sighted_hostiles
+	# We place the coordinates into a dictionary instead of just using the Array so that way we can do O(1) dictionary lookups for if we can see a tile, instead of O(n) lookups to see if it's in the Array
+	for coordinate in tiles_in_vision:
+		currently_visible_tiles[coordinate] = true
+	current_vision = currently_visible_tiles
+
+## Enemy Unit Visibility Updater that:
+## [br] - Increments through all enemy factions
+## [br] - - (Skips our faction)
+## [br] - - Increment through all units of that faction
+## [br] - - - Check if that unit is in vision
+## [br] - - - - Adds that unit to a Dictionary[Entity, Vector2i] and a Dictionary[Vector2i, Entity]
+## [br] - Returns a Dictionary[Vector2i, Entity] whilst updating the Dictionary[Entity, Vector2i] fed as a parameter
+func update_visible_hostiles(cache_for_enemy_units:Dictionary[Entity, Vector2i]) -> Dictionary[Vector2i, Entity]:
+	var enemies_in_sight:Dictionary[Vector2i, Entity] = {}
 	
-	var deletion_coords:Array[Vector2i] = []
-	var added_Flags:Array[Flag] = []	
+	# Check each enemy faction
+	for enemy_faction_name in get_enemy_unit_factions():
+		# Skip our own faction, just in case it somehow ended up in enemy factions
+		if enemy_faction_name == cached_parent.faction_name:
+			continue
+
+		# Fetch all units belonging to this enemy faction	
+		var unit_arr:Array = get_tree().get_nodes_in_group(enemy_faction_name)		
+		for enemy_unit in unit_arr:
+			# We can see this enemy unit, record its posistion
+			if enemy_unit.cur_pos in current_vision:
+				enemies_in_sight[enemy_unit.cur_pos] = enemy_unit
+				cache_for_enemy_units[enemy_unit] = enemy_unit.cur_pos
+
+	return enemies_in_sight
+
+## Memory Flag Placer Fucnction that:
+## [br] - Checks last known coordinates of all previously visible hostiles
+## [br] - (Skips if the unit no longer exists)
+## [br] - And plants a memory flag if the unit at that coordinate cannot currently be seen (it moved out of vision)
+func place_memory_flags_for_lost_targets(enemies_currently_visible: Dictionary[Entity, Vector2i]) -> void:
+	for last_known_position_coordinate in sighted_hostiles:
+		var enemy_unit:Entity = sighted_hostiles.get(last_known_position_coordinate)
+
+		# Skip if the enemy unit perished (such as if we no longer see it because we took it out this turn)
+		if enemy_unit == null:
+			continue
+
+		# We know the enemy still exists but we can't see it, so plant a flag on its last known location
+		if enemy_unit not in enemies_currently_visible:
+			remembered_sightings[last_known_position_coordinate] = Flag.new(enemy_unit, -1) # We set the counter to -1 as it'll be incremented immediantly after by update_memory_flags to 0
+
+## Visibility Helper function used solely by update_memory_flags()
+## [br] - Returns a true/false regarding if the given Entity is visible
+func is_enemy_unit_visible(provided_unit: Entity) -> bool:
+	return provided_unit.cur_pos in current_vision
+
+## Memory Flag Management Function that:
+## [br] - Culls memory flags if a unit no longer exists, or is visible
+## [br] - Plants a new memory flag if we see the enemy's last known coordinate, but not the enemy
+## [br] - Cull memory flags if they've been active for more than a few turns
+func update_memory_flags() -> void:
+	var flags_to_remove:Array[Vector2i] = []
+	var flags_to_add:Array[Flag] = []
+
 	for coordinate in remembered_sightings:
-		var flag_obj:Flag = remembered_sightings.get(coordinate)
-		var tracking_unit:Unit = flag_obj.get_tracking_unit()
-		if tracking_unit == null or tracking_unit in cached_entity_ids:
+		var memory_flag:Flag = remembered_sightings.get(coordinate)
+		var tracked_enemy:Entity = memory_flag.get_tracking_unit()
+
+		# CASE 1: Unit no longer exists, or we can see it
+		if tracked_enemy == null or is_enemy_unit_visible(tracked_enemy):
 			# Either the unit no longer exists, or we can see it, meaning we don't need a flag
-			deletion_coords.append(coordinate)
-			flag_obj.destroy_flag()
-		elif coordinate in current_vision:
-			# We can see the tile the unit was last seen on, and don't see it.
-			var flag_mode:bool = flag_obj.get_mode()
-			if not flag_mode:	
-				# This is the first-time we've seen the tile it was meant to be on, and it wasn't there; Plant a flag nearby
-				added_Flags.append(Flag.new(tracking_unit, flag_obj.get_counter(), true, coordinate + calculate_heading(coordinate)))
+			flags_to_remove.append(coordinate)
+			memory_flag.destroy_flag()
+			continue
+
+		# CASE 2: We can see the tile the unit was last seen on, and don't see it.
+		if coordinate in current_vision:
+			var is_second_time_out_of_sight:bool = memory_flag.get_mode()
+			# This is the first-time we've seen the tile it was meant to be on, and it wasn't there; Plant a flag nearby
+			if not is_second_time_out_of_sight:	
+				# Assume the enemy unit is trying to gain as much distance as possible, and plant a flag in that direction
+				var estimated_coordinate:Vector2i = coordinate + calculate_heading(coordinate)
+				flags_to_add.append(Flag.new(tracked_enemy, memory_flag.get_counter(), true, estimated_coordinate))
 			# Delete all references to the original flag
-			deletion_coords.append(coordinate)
-			flag_obj.destroy_flag()
-		else:
-			var ret_deletion_flag:bool = flag_obj.increment_counter()
-			# Remove the flag if the flag_obj tells us to (via increment_counter which returns true if the counter exceeds 3 turns)
-			if ret_deletion_flag:
-				deletion_coords.append(coordinate)
-				flag_obj.destroy_flag()					
-	for coordinate in deletion_coords:
+			flags_to_remove.append(coordinate)
+			memory_flag.destroy_flag()
+			continue
+
+		# CASE 3: Remove the flag if the flag_obj tells us to (via increment_counter which returns true if the counter exceeds 3 turns)
+		var flag_expired:bool = memory_flag.increment_counter()
+		if flag_expired:
+			flags_to_remove.append(coordinate)
+			memory_flag.destroy_flag()
+
+	# Erase all flags slated for removal
+	for coordinate in flags_to_remove:
 		remembered_sightings.erase(coordinate)
-	for flag_obj in added_Flags:
-		remembered_sightings[flag_obj.get_last_known_pos()] = flag_obj
+
+	# Add new flags
+	for memory_flag in flags_to_add:
+		remembered_sightings[memory_flag.get_last_known_pos()] = memory_flag
+
+## Main vision-processing function that:
+## [br] - Updates visible tiles
+## [br] - Updates dictionary of visible enemy units
+## [br] - Plants memory flags on last known coordinates of no longer visible hostile units
+## [br] - Increment all memory flags
+func examine_surroundings() -> void:
+	# STEP 1: Update current_vision for the tiles we can see this turn
+	update_visible_tiles()
+	
+	# STEP 2: Update the Dictionary of enemy units we can see this turn
+	var enemies_visible_this_turn_Vec_Unit:Dictionary[Vector2i, Entity] = {}
+	var enemies_visible_this_turn_Unit_Vec:Dictionary[Entity, Vector2i] = {}
+	enemies_visible_this_turn_Vec_Unit = update_visible_hostiles(enemies_visible_this_turn_Unit_Vec)
+	if cached_parent.debugging_allowed:
+		current_turn_debug_print += "\nDEBUG/SIGHTED: " + str(enemies_visible_this_turn_Vec_Unit)
+	sighted_hostiles = enemies_visible_this_turn_Vec_Unit
+	
+	# STEP 3: Plant Memory Flags on the last known coordinates of enemy units we can no longer see
+	place_memory_flags_for_lost_targets(enemies_visible_this_turn_Unit_Vec)
+	
+	# STEP 4: Increment all Memory Flags, cull Memory Flags that have been active for several turns
+	update_memory_flags()
 
 ### VISIBILITY UPDATES
 ### ------------------------------------------------------------
