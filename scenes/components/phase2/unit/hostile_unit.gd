@@ -247,66 +247,122 @@ func examine_surroundings() -> void:
 ### ------------------------------------------------------------
 ### DESTINATION HELPERS
 
+## Destination Helper function used solely by update_memory_flags()
+## [br] DESCRIPTION:
+## [br] - Simply finds the slope/difference between the provided coordinate and cur_pos (which can then be added to the provided_coordinate to get the 'worse-case' scenario coordinate (the coordinate/direction the tracked unit would go in to gain as much distance as possible)
+## [br] - - WARNING: This approach is flawed, and it assumes there are no walls and that all tiles have the same cost to traverse 
+## [br] 
+## [br] PARAMETERS:
+## [br] - target:Vector2i
+## [br]
+## [br] RETURNS:
+## [br] - Vector2i
 func calculate_heading(target:Vector2i) -> Vector2i:
 	return (target - cur_pos)	
 
-##Returns [valid:bool, path_cost:int, point_path:Array[ int ]]
+## Used extensively for determining if a location is reachable, and if so, the path and movement cost to get there.
+## [br]
+## [br] PARAMETERS:
+## [br] - coordinate:Vector2i
+## [br]
+## [br] RETURNS: Array[bool, int, PackedVector2Array]
+## [br] - If not output[0]: path or location doesn't exist
+## [br] - If output[0] and output[1] == 0: already at location
+## [br] - If output[0] and output[1] != 0: not there yet, but we can get there
 func coordinate_validated(coordinate:Vector2i) -> Array:
+	# First, make sure we aren't already at our destination
+	if cur_pos == coordinate:
+		return [true, 0, []]
+
+	coordinate_validated(coordinate)
 	var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 	var returned_path:PackedVector2Array = pathfinder._return_path(cur_pos, coordinate)
-	# if cached_parent.debugging_allowed:
-		# print("DEBUG/PATH: (", coordinate, ") ", returned_path)
-	if len(returned_path) == 0:
-		# We got either got just cur_pos or an empty path- not sure what the 'failure' state for get_point_path() is.
-		return [true, 0, []]
-	else:
-		var parsed:Vector2i = returned_path[-1]
-		# We don't know what the point returned is
-		if parsed == Vector2i(-1234, -1234):
-			return [false, INF]
-		# We couldn't get to the tile in question (we came short)
-		elif parsed != coordinate:
-			var path_cost = pathfinder.calculate_path_cost(returned_path)
-			if parsed.distance_to(coordinate) <= relative_range:
-				return [false, path_cost, returned_path]
-			else:
-				return [false, INF, returned_path]
-		else:
-			var path_cost = pathfinder.calculate_path_cost(returned_path)
-			return [true, path_cost, returned_path]
+	
+	# Secondly, make sure a path even exists to the desired coordinate, and that the coordinate provided exists
+	if len(returned_path) == 0 or coordinate == Vector2i(-1234, -1234):
+		return [false, INF, []]
+	
+	var path_cost = pathfinder.calculate_path_cost(returned_path)
 
-##Returns [max_coord:Vector2i, max_strength:float, max_ratio:float, stored_path:Array[ int ]]
-func get_best_supported_tile(provided_target:Vector2i, provided_attack_action:Attackaction, provided_range:int=1) -> Array:
-	var max_strength:float = -INF
-	var max_coord:Vector2i = Vector2i(-1234, -1234)
-	var max_ratio:float = 1.0
-	var max_path:PackedVector2Array = []
-	var path_cost:float = 0.0		
-	var move_pattern:Pattern2D = provided_attack_action.range_pattern
-	var coord_arr:Array[Vector2i] = []
-	for coordinate_y in range(-move_pattern.grid_size.y, move_pattern.grid_size.y + 1):
-		for coordinate_x in range(-move_pattern.grid_size.x, move_pattern.grid_size.x + 1):
-			var t_coord = move_pattern.calculate_affected_tiles_from_center(provided_target + Vector2i(coordinate_x, coordinate_y))
-			if provided_target in t_coord:
-				coord_arr.append(Vector2i(coordinate_x, coordinate_y))
-	for coordinate in coord_arr:
-		var temp_coord:Vector2i = provided_target + Vector2i(coordinate)
-		var f_support = get_friendly_support_at_location(temp_coord) + calculate_relative_strength_target(coordinate)
-		var e_support = get_hostile_threat_at_location(temp_coord, false)
-		var disparity = f_support - e_support
-		if disparity > max_strength:
-			var validation = coordinate_validated(temp_coord)
-			if validation[0]:				
-				disparity -= 0.15 * validation[1]
-				if validation[1] > move_count: # if we can't move there immediantly, deprioritize
-					disparity -= (validation[1]/move_count)
-				if disparity > max_strength:
-					max_strength = disparity
-					max_coord = temp_coord
-					max_ratio = f_support / max(e_support, 0.001)
-					max_path = validation[2]
-					path_cost = validation[1]
-	return [max_coord, max_strength, max_ratio, max_path, path_cost]
+	# Returns -> Yes we can move directly there, the cost in movement to get there, and the Vector2 path to that location
+	return [true, path_cost, returned_path]
+
+## Best Supporting Tile:
+## [br] DESCRIPTION:
+## [br] - Used extensively to determine the optimal tile to move to
+## [br] - Given a provided action, increment through all tiles that could hypothetically affect the provided_coordinate
+## [br] - - Use 'calculate_affected_tiles_from_center' to put together map coordinates the pattern can affect at that location
+## [br] - - See if provided_coordinate falls within that list of affected coordinates, if so, add it to the list of potential coordinates to consider
+## [br] - Iterate through all potential coordinates
+## [br] - - Calculate the strenght disparity at that coordinate, modified by movement cost to get there, and also by if we can get there this turn or not
+## [br] - - If this has the best strength disparity, update the storage variables to use that coordinate
+## [br] - Return the storage variables in an array: [DesiredCoordinate:Vector2i, StrengthDisparity:Float, StrengthDisparityRatio:Float, PathToCoordinate:PackedVector2Array, MovementCost:Float]
+## [br]
+## [br] PARAMETERS:
+## [br] - provided_coordinate:Vector2i
+## [br] - provided_action:Action
+## [br]
+## [br] RETURNS:
+## [br] - Array[Vector2i, float, float, PackedVector2Array, float]
+## [br] - - If output[0] == Vector2i(-1234, -1234) or output[1] == -INF -> No valid support tile
+func get_best_supported_tile(provided_coordinate:Vector2i, provided_action:Action) -> Array:
+	# Variable initialization	
+	var best_strength_disparity:float = -INF
+	var best_disparity_coordinate:Vector2i = Vector2i(-1234, -1234)
+	var best_strength_disparity_ratio:float = 1.0
+	var path_to_best_disparity_coordinate:PackedVector2Array = []
+	var path_cost_for_best_disparity_coordinate:float = 0.0		
+	var used_pattern:Pattern2D = provided_action.range_pattern
+	var possible_coordinates:Array[Vector2i] = []
+
+	# First, simulate being at a location wherein provided_coordinate falls within the pattern's grid 
+	for coordinate_y in range(-used_pattern.grid_size.y, used_pattern.grid_size.y + 1):
+		for coordinate_x in range(-used_pattern.grid_size.x, used_pattern.grid_size.x + 1):
+			# Converts the pattern offsets in the pattern to an actual map coordinate
+			var converted_coordinate = provided_coordinate + Vector2i(coordinate_x, coordinate_y)
+
+			# Secondly, see if the provided_coordinate is within the list of tiles affected from that location
+			var coordinates_affected_by_pattern = used_pattern.calculate_affected_tiles_from_center(converted_coordinate)
+			if provided_coordinate in coordinates_affected_by_pattern:
+				# Thirdly, compile all pattern offsets wherein we can hit provided_coordinate with the pattern
+				possible_coordinates.append(converted_coordinate)
+
+	# Iterate through all coordinates wherein it is possible to affect provided_coordinate
+	for coordinate in possible_coordinates:		
+		# Calculate the disparity in strength between us and the enemy
+		var friendly_support = get_friendly_support_at_location(coordinate) + calculate_relative_strength_target(coordinate)
+		var enemy_threat = get_hostile_threat_at_location(coordinate, false)
+		var strength_disparity = friendly_support - enemy_threat
+
+		# Find the coordinate wherein we have the best strength disparsity
+		if strength_disparity > best_strength_disparity:
+
+			# Call upon coordinate_validated to ensure it's actually possible to reach that location; Don't consider coordinates we can't reach 
+			var validation = coordinate_validated(coordinate)
+
+			# Deconstruct the data returned by coordinate_validated for legibility
+			var can_reach_location:bool = validation[0]
+			var movement_cost_to_coordinate:float = validation[1]
+			var path_to_coordinate:PackedVector2Array = validation[2]
+
+			if can_reach_location:				
+				# Weight disparity slightly negatively by the movement cost to get there
+				strength_disparity -= 0.15 * movement_cost_to_coordinate
+
+				# If we can't get to the desired tile immediantly this turn, deprioritize it by the amount of turns it takes to get there
+				if movement_cost_to_coordinate > move_count:
+					# Since we're dividing, using max to prevent divide-by-zero errors
+					strength_disparity -= (movement_cost_to_coordinate/max(move_count, 0.001))
+
+				# Now, if the finalized disparity is higher than the current maximum, update the storage variables with the new information
+				if strength_disparity > best_strength_disparity:
+					best_strength_disparity = strength_disparity
+					best_disparity_coordinate = coordinate
+					# Since we're dividing, using max to prevent divide-by-zero errors
+					best_strength_disparity_ratio = friendly_support / max(enemy_threat, 0.001)
+					path_to_best_disparity_coordinate = path_to_coordinate
+					path_cost_for_best_disparity_coordinate = movement_cost_to_coordinate
+	return [best_disparity_coordinate, best_strength_disparity, best_strength_disparity_ratio, path_to_best_disparity_coordinate, path_cost_for_best_disparity_coordinate]
 
 ### DESTINATION HELPERS
 ### ------------------------------------------------------------
