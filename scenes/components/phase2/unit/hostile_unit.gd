@@ -450,11 +450,11 @@ func coordinate_scorer(coordinate:Vector2i, best_coordinate_score:float, best_st
 			# If we can't get to the desired tile immediantly this turn, deprioritize it by the amount of turns it takes to get there
 			if movement_cost_to_coordinate > move_count:
 				# Since we're dividing, using max to prevent divide-by-zero errors
-				coordinate_score -= (movement_cost_to_coordinate/max(move_count, 0.001))
+				coordinate_score -= int(movement_cost_to_coordinate/max(move_max, 0.001))
 
 		if unpredictable:
 			unpredictable_potential_coordinates.append(coordinate)
-			unpredictable_coordinate_weights.append(best_coordinate_score)
+			unpredictable_coordinate_weights.append(coordinate_score)
 			unpredictable_stored_paths.append(path_to_coordinate)
 
 		# Now, if the finalized disparity is higher than the current maximum, update the storage variables with the new information
@@ -494,12 +494,12 @@ func choose_unpredictable_location(best_coordinate_package_array:Array, unpredic
 ## [br] - provided_coordinate:Vector2i
 ## [br] - provided_action:Action
 ## [br]
-## [br] RETURNS: Array[Vector2i, float, PackedVector2Array]
-## [br] - [Coordinate, StrengthDisparityRatio, PathToCoordinate]
+## [br] RETURNS: Array[Vector2i, float, float, PackedVector2Array]
+## [br] - [Coordinate, CoordinateScore, StrengthDisparityRatio, PathToCoordinate]
 ## [br] - - If output[0] == INVALID_COORDINATE or output[1] == -INF -> No valid support tile
 func get_best_supported_tile(provided_coordinate:Vector2i, provided_action:Action) -> Array:
 	# Variable initialization	
-	var best_strength_disparity:float = -INF
+	var best_coordinate_score:float = -INF
 	var best_coordinate_package_array:Array = [INVALID_COORDINATE, [INVALID_COORDINATE, INVALID_COORDINATE]]
 	var best_disparity_coordinate:Vector2i = INVALID_COORDINATE
 	var best_strength_disparity_ratio:float = -INF
@@ -522,15 +522,15 @@ func get_best_supported_tile(provided_coordinate:Vector2i, provided_action:Actio
 
 	# Iterate through all coordinates wherein it is possible to affect provided_coordinate
 	for coordinate in possible_coordinates:
-		var returned_array:Array = coordinate_scorer(coordinate, best_strength_disparity, best_strength_disparity_ratio, path_cost_for_best_disparity_coordinate, best_coordinate_package_array, function_mode.SUPPORT)
+		var returned_array:Array = coordinate_scorer(coordinate, best_coordinate_score, best_strength_disparity_ratio, path_cost_for_best_disparity_coordinate, best_coordinate_package_array, function_mode.SUPPORT)
 		
-		best_strength_disparity = returned_array[0]
+		best_coordinate_score = returned_array[0]
 		best_strength_disparity_ratio = returned_array[1]
 		path_cost_for_best_disparity_coordinate = returned_array[2]
 		best_disparity_coordinate = best_coordinate_package_array[0]
 		path_to_best_disparity_coordinate = best_coordinate_package_array[1]
 					
-	return [best_disparity_coordinate, best_strength_disparity_ratio, path_to_best_disparity_coordinate]
+	return [best_disparity_coordinate, best_coordinate_score, best_strength_disparity_ratio, path_to_best_disparity_coordinate]
 
 ### DESTINATION HELPERS
 ### ------------------------------------------------------------
@@ -751,12 +751,12 @@ func find_exposed_hostile() -> Array:
 		# Check to make sure the tile is reachable (and that there were no other errors)
 		if support_arr[0] != INVALID_COORDINATE:
 			# Only consider enemies we'd be willing to attack when in the ACTING State
-			if support_arr[1] > FALL_BACK_TO_REGROUP_THRESHOLD:
+			if support_arr[2] > FALL_BACK_TO_REGROUP_THRESHOLD:
 				# Update the information for 'most-exposed' enemy if we have a better strength disparity ratio for this unit
 				if support_arr[1] > best_strength_disparity:
 					exposed_enemy_coord = coordinate
 					best_strength_disparity = support_arr[1]
-					path_to_attack_location = support_arr[2]
+					path_to_attack_location = support_arr[3]
 					cached_attack_action = temporary_attack_action_cache
 				# else:
 				# 	current_turn_debug_print += "\nDEBUG/ACTING/EXPO: We've already found a better enemy to attack than the one at " + str(coordinate)
