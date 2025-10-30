@@ -4,7 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cvtvormou4elu" path="res://resources/animations/Drunken Master.tres" id="2_5fivb"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_w5yi2"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_884dk"]
-[ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/ui/portraits/drunkenmaster.png" id="4_3m1c4"]
+[ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/portraits/drunkenmaster.png" id="4_3m1c4"]
 
 [resource]
 script = ExtResource("2_w5yi2")

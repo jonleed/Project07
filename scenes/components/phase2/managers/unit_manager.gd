@@ -6,6 +6,7 @@ extends Node
 signal faction_turn_complete()
 
 var faction_name: String = "Base Faction"
+var banner_text: String = "Unit Manager Start"
 var units: Array[Unit] = []
 var used_units: Array = []
 var is_active: bool = false 

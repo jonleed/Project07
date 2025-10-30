@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bki1ukwh76bte"]
 
 [ext_resource type="Script" uid="uid://cjaogfjniqo0k" path="res://scenes/components/phase1/unitdisplay/unit_display.gd" id="1_bgyif"]
-[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/ui/portraits/knight.png" id="2_m4phi"]
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/portraits/knight.png" id="2_m4phi"]
 
 [node name="Unit Display" type="PanelContainer" node_paths=PackedStringArray("unit_label", "unit_texture", "rich_text", "unit_button")]
 custom_minimum_size = Vector2(200, 400)

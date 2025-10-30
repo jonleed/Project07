@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_swm1y"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_f2ci8"]
 [ext_resource type="SpriteFrames" uid="uid://cihmenfvo43ax" path="res://resources/animations/Candle Witch.tres" id="3_suwkm"]
-[ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/ui/portraits/candlewitch.png" id="4_suwkm"]
+[ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/portraits/candlewitch.png" id="4_suwkm"]
 
 [sub_resource type="Resource" id="Resource_2as78"]
 script = ExtResource("2_swm1y")

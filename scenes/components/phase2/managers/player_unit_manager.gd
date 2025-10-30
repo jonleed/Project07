@@ -13,6 +13,7 @@ var selected_unit: Unit = null
 
 func _ready():
 	faction_name = "Player"
+	banner_text = "Player Start"
 	cursor.unit_selected.connect(_on_unit_selected)
 	cursor.deselected.connect(_on_unit_deselected)
 	get_units()

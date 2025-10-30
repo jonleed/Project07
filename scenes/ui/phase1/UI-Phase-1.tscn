@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bcfxa6mta7eek"]
 
-[ext_resource type="Script" uid="uid://btb07xpvnl0bd" path="res://scenes/ui/phase1/ui-phase-1.gd" id="1_ho0fg"]
+[ext_resource type="Script" uid="uid://c666g8lo54w1i" path="res://scenes/ui/phase1/ui-phase-1.gd" id="1_ho0fg"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_n6c17"]
 [ext_resource type="Resource" uid="uid://bc1k5rj4fsjdg" path="res://resources/units/simple_knight.tres" id="3_6im2j"]
 [ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/Drunken Master.tres" id="4_rrfk7"]
@@ -17,6 +17,7 @@ party_count = NodePath("Control/PanelContainer/VBoxContainer/Party Count")
 proceed_button = NodePath("Control/PanelContainer/VBoxContainer/Proceed to Phase 2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -39,17 +40,19 @@ grow_vertical = 2
 
 [node name="Unit Holder" type="ScrollContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 999.0
-offset_bottom = -245.0
-grow_vertical = 2
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 103.0
+offset_right = -83.0
+offset_bottom = 415.0
+grow_horizontal = 2
 horizontal_scroll_mode = 2
 vertical_scroll_mode = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/Unit Holder"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 20
 metadata/_edit_lock_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="Control"]

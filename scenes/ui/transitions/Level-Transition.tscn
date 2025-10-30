@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://csqismggl73vi"]
+
+[ext_resource type="Script" uid="uid://bkrjdhl3k2e38" path="res://scenes/ui/transitions/dotted_line.gd" id="1_6hwgw"]
+
+[node name="LevelTransition" type="Node2D"]
+
+[node name="Dotted Line" type="Node2D" parent="." node_paths=PackedStringArray("start_point", "end_point", "red_square")]
+script = ExtResource("1_6hwgw")
+start_point = NodePath("../Start")
+end_point = NodePath("../End")
+red_square = NodePath("Red Square")
+
+[node name="Red Square" type="ColorRect" parent="Dotted Line"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0, 0, 1)
+
+[node name="Start" type="Node2D" parent="."]
+position = Vector2(123, 457)
+
+[node name="End" type="Node2D" parent="."]
+position = Vector2(1000, 310)

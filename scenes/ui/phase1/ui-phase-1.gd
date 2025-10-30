@@ -1,5 +1,8 @@
 extends Node
 
+@export var map_manager: MapManager
+signal unit_display_update(unit_array: Array)
+
 var unit_array:Array = []
 ##this should not change over the course of phase 1
 @export_subgroup("Preloads")
@@ -28,6 +31,8 @@ func remove_unit(res:UnitResource):
 	unit_array.erase(res)
 	disable_unit_display(res,false)
 	update_proceed_button()
+	
+	emit_signal("unit_display_update", unit_array) # Updates Phase 1 Unit Display
 
 func display_unit(res:UnitResource):
 	#instantiate unit display
@@ -58,6 +63,8 @@ func choose_unit(res:UnitResource):
 	label_cont.add_child(remove_but)
 	cur_party.add_child(label_cont)
 	add_unit(res)
+	
+	emit_signal("unit_display_update", unit_array) # Updates Phase 1 Unit Display
 
 func remove_party_label(res:UnitResource):
 	var party_label = cur_party.get_child(unit_array.find(res))

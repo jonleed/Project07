@@ -1,7 +1,7 @@
 class_name Turn_Manager
 extends Node
 
-signal turn_banner_update(faction_name: String)
+signal turn_banner_update(text: String)
 
 var unit_managers: Array[Unit_Manager] = []
 var cur_turn_index: int = 0
@@ -15,7 +15,7 @@ func _ready():
 	
 	# Start first turn if exists at least one manager
 	if unit_managers.size() > 0:
-		start_faction_turn()
+		call_deferred("start_faction_turn")
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
@@ -30,7 +30,7 @@ func start_faction_turn() -> void:
 		return
 	
 	# Sends signal to TurnBannerGUI
-	emit_signal("turn_banner_update", current_manager.faction_name)
+	emit_signal("turn_banner_update", current_manager.banner_text)
 	
 	print("New Manager Turn Start")
 	current_manager.start_turn() 
