@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://b18istpat370g"]
 
-[ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/UI-Phase-2.gd" id="1_0ti8f"]
+[ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_0ti8f"]
 [ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_628vg"]
 [ext_resource type="Texture2D" uid="uid://dqhcyyw52y2ab" path="res://assets/ui/healthicon.png" id="3_0ti8f"]
 [ext_resource type="Texture2D" uid="uid://d27m8p4dvpydi" path="res://assets/ui/classlabel.png" id="3_335d7"]

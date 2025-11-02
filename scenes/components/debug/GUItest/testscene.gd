@@ -26,6 +26,7 @@ func _ready() -> void:
 			$Turn_Manager/Player_Unit_Manager.move_unit(unit,temp_vec)
 			await get_tree().process_frame
 			temp_vec.x+=2
+		await get_tree().process_frame
 		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		print($MapManager.map_dict)
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")

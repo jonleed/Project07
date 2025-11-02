@@ -49,8 +49,11 @@ func add_to_action_container(action:Action):
 	var action_but_instance=action_but_packed.instantiate()
 	action_but_instance.load_action(action)
 	actions_box.add_child(action_but_instance)
-	#connect action_but_instance signal
-	action_but_instance.action_pressed.connect() #this signal emits with an Action variable
+	#connect action_but_instance signala
+	if action_but_instance.has_method("action_pressed"):
+		action_but_instance.action_pressed.connect() #this signal emits with an Action variable
+	else:
+		print("Action button instance missing signal")
 
 func clear_action_container():
 	for child in actions_box.get_children():
