@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=9 format=3 uid="uid://bc1k5rj4fsjdg"]
+
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_vors4"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_76oo3"]
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_o1d5v"]
+[ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="3_81c7v"]
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="4_q1kv2"]
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/portraits/knight.png" id="5_81c7v"]
+
+[sub_resource type="Resource" id="Resource_wdlco"]
+script = ExtResource("2_76oo3")
+base_dmg = 10
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+
+[sub_resource type="Resource" id="Resource_pil5w"]
+script = ExtResource("4_q1kv2")
+affected_tiles = PackedVector2Array(0, 0)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_o1d5v")
+action_array = Array[ExtResource("1_vors4")]([SubResource("Resource_wdlco")])
+icon_sprite = ExtResource("5_81c7v")
+unit_name = "Knight"
+unit_desc = "[color=RED]Trapped[/color] within this porcelain body, the Knight yearns for the castle as it may hold the key to his liberation of his prison."
+entity_shape = SubResource("Resource_pil5w")
+anim_frames = ExtResource("3_81c7v")
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"

@@ -9,3 +9,7 @@ func _on_quit_pressed() -> void:
 	Globals.play_ui_sound("Cancel")
 	await Globals.sound_finished
 	get_tree().quit()
+
+
+func _on_open_logs_pressed() -> void:
+	Logs.open_saved_file()

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkc3adf4mya06"]
+
+[ext_resource type="Script" uid="uid://eyowdp8e6dvu" path="res://scenes/components/phase2/unit/ally_unit.gd" id="1_ywkuo"]
+
+[node name="PlayerUnit" type="Node2D"]
+script = ExtResource("1_ywkuo")
+metadata/_custom_type_script = "uid://eyowdp8e6dvu"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -11)
+scale = Vector2(0.75, 0.75)
+animation = &""

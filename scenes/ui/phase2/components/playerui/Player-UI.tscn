@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt1rj7u5e2w42"]
+
+[ext_resource type="Script" uid="uid://nn5tkuv0h1y5" path="res://scenes/ui/phase2/components/playerui/player_ui.gd" id="1_pgygr"]
+[ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_qctl4"]
+[ext_resource type="PackedScene" uid="uid://c17ynvsipwods" path="res://scenes/ui/phase2/components/playerui/UnitIcon.tscn" id="3_0gkso"]
+
+[node name="PlayerUi" type="Control" node_paths=PackedStringArray("actions_box", "units_box")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pgygr")
+actions_box = NodePath("Actions Container/VBoxContainer")
+units_box = NodePath("Unit Container/HBoxContainer")
+action_but_packed = ExtResource("2_qctl4")
+unit_icon_packed = ExtResource("3_0gkso")
+
+[node name="Actions Container" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Actions Container"]
+layout_mode = 2
+
+[node name="General Container" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -125.0
+offset_top = -88.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="General Container"]
+layout_mode = 2
+alignment = 1
+
+[node name="Undo" type="Button" parent="General Container/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Redo" type="Button" parent="General Container/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="End Turn" type="Button" parent="General Container/VBoxContainer"]
+layout_mode = 2
+text = "End Turn"
+
+[node name="Unit Container" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Unit Container"]
+layout_mode = 2

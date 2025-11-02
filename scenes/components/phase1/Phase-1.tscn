@@ -1,6 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhfcrtofn1euu"]
+[gd_scene load_steps=5 format=4 uid="uid://36b4vt4sqcjb"]
 
-[ext_resource type="Script" uid="uid://bm46dc1ena0um" path="res://scenes/components/phase1/phase-1.gd" id="1_vdkx3"]
+[ext_resource type="Script" uid="uid://4ieaw4y4n0lk" path="res://scenes/components/phase1/phase-1.gd" id="1_vdkx3"]
+[ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_gftt1"]
+[ext_resource type="PackedScene" uid="uid://bcfxa6mta7eek" path="res://scenes/ui/phase1/UI-Phase-1.tscn" id="2_oik4e"]
+[ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="3_crfkh"]
 
-[node name="Phase-1" type="Node2D"]
+[node name="Phase-1" type="Node2D" node_paths=PackedStringArray("map_manager", "player_ui")]
 script = ExtResource("1_vdkx3")
+map_manager = NodePath("MapManager")
+player_ui = NodePath("Ui-phase-1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1154.0
+offset_bottom = 647.0
+color = Color(0, 0, 0, 1)
+
+[node name="Ui-phase-1" parent="." node_paths=PackedStringArray("map_manager") instance=ExtResource("2_oik4e")]
+map_manager = NodePath("../MapManager")
+
+[node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "select_layer")]
+position = Vector2(44, -41)
+scale = Vector2(4, 4)
+script = ExtResource("2_gftt1")
+surface_layer = NodePath("Surface")
+wall_layer = NodePath("Wall")
+select_layer = NodePath("Highlight")
+metadata/_custom_type_script = "uid://b3xe5768ajbua"
+
+[node name="Surface" type="TileMapLayer" parent="MapManager"]
+tile_map_data = PackedByteArray("AAAYAAsAAAABAAAAAAAYAAoAAAABAAAAAAAZAAoAAAABAAAAAAAaAAoAAAAAAAAAAAAaAAkAAAABAAAAAAAaAAgAAAABAAAAAAAZAAkAAAABAAAAAAAbAAgAAAABAAAAAAAbAAkAAAABAAAAAAAbAAoAAAABAAAAAAAZAAsAAAABAAAAAAAaAAsAAAABAAAAAAAbAAsAAAABAAAAAAA=")
+tile_set = ExtResource("3_crfkh")
+
+[node name="Wall" type="TileMapLayer" parent="MapManager"]
+tile_map_data = PackedByteArray("AAAZAAkAAAAKAAEAAAA=")
+tile_set = ExtResource("3_crfkh")
+
+[node name="Highlight" type="TileMapLayer" parent="MapManager"]
+visible = false
