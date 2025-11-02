@@ -1,5 +1,7 @@
 extends Control
 
+signal highlight_action_tiles(tiles: Array[Vector2i], color: Color, pattern:int)
+
 #This script controls how the player interacts with the UI
 @export_subgroup("Game Nodes")
 @export var map_manager:MapManager
@@ -39,10 +41,18 @@ func _on_toggle_inputs(enabled: bool):
 				child.disabled = not enabled
 
 ## Load all actions of the unit given
+var cur_unit_selected:Unit = null
+
+##is for when right click is pressed with cursor
+func deselect():
+	clear_action_container()
+	cur_unit_selected = null
+
 func load_unit_actions(unit:Unit):
 	clear_action_container()
 	for act in unit.action_array:
 		add_to_action_container(act)
+	cur_unit_selected = unit
 
 func add_to_action_container(action:Action):
 	#create button for action
@@ -50,8 +60,8 @@ func add_to_action_container(action:Action):
 	action_but_instance.load_action(action)
 	actions_box.add_child(action_but_instance)
 	#connect action_but_instance signala
-	if action_but_instance.has_method("action_pressed"):
-		action_but_instance.action_pressed.connect() #this signal emits with an Action variable
+	if action_but_instance.has_signal("action_pressed"):
+		action_but_instance.action_pressed.connect(highlight_selected_action) #this signal emits with an Action variable
 	else:
 		print("Action button instance missing signal")
 
@@ -59,7 +69,28 @@ func clear_action_container():
 	for child in actions_box.get_children():
 		child.queue_free()
 
-
+##this function highlights actions on the map manager
+func highlight_selected_action(act:Action):
+	print("WOPIADOPIW")
+	if not cur_unit_selected:
+		return
+	var assembled_tiles:Array[Vector2i] = []
+	if act.range_type == 0:
+		assembled_tiles = Globals.get_scaled_pattern_tiles(cur_unit_selected.cur_pos,act.range_pattern,act.range_dist,map_manager)
+	elif act.range_type == 1:
+		assembled_tiles = Globals.get_bfs_tiles(cur_unit_selected.cur_pos,act.range_dist,map_manager)
+	
+	var action_color:Color = Color.BLACK
+	
+	if act is Attackaction:
+		action_color = Color.RED
+	elif act is Healaction:
+		action_color = Color.GREEN
+	elif act is Moveaction:
+		action_color = Color.BLUE
+	
+	highlight_action_tiles.emit(assembled_tiles,action_color,1)
+	
 
 #for the undo and redo we need a stack of things we plan on doing
 #in our document we suggest that all things happen with their time as processing

@@ -26,12 +26,12 @@ func init_walls():
 			# Ensure the value is a valid enum index before adding it.
 			if type_enum_value >= 0 and type_enum_value <= 4: # Corresponds to the 5 members of TileType
 				map_dict[cell_coords] = type_enum_value
-				print("using: ",cell_coords)
+				#print("using: ",cell_coords)
 			else:
 				push_warning("Tile at %s has an invalid TileType value: %s" % [cell_coords, type_enum_value])
 		else:
 			push_warning("Wall tile at %s is missing 'TileType' custom data." % cell_coords)
-	print(map_dict)
+	#print(map_dict)
 
 enum TileType{
 	Ground,#0
@@ -126,7 +126,7 @@ func _cache_highlight_tiles():
 			if tile_data and tile_data.has_custom_data("TileType"):
 				var tile_type = tile_data.get_custom_data("TileType")
 				_highlight_atlas_coords[tile_type] = atlas_coords
-				print("Cached highlight tile: Type %s at %s" % [tile_type, atlas_coords])
+				#print("Cached highlight tile: Type %s at %s" % [tile_type, atlas_coords])
 
 ## Clears the selection layer and draws a new set of highlights.
 ## Uses a pre-cached dictionary for fast lookups of pattern tiles.
@@ -145,7 +145,7 @@ func highlight_tiles(tiles: Array[Vector2i], color: Color = Color.WHITE, pattern
 	# 3. Loop through the input coordinates and place the tile.
 	# The source ID is 0, assuming you have one tileset source.
 	for tile_pos: Vector2i in tiles:
-		print("attemptint to set : ",tile_pos)
+		#print("attemptint to set : ",tile_pos)
 		select_layer.set_cell(tile_pos, 0, atlas_coord_to_use)
 
 func _ready() -> void:

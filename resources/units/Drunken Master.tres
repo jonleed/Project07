@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=10 format=3 uid="uid://bkbee2vs6l8f1"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=11 format=3 uid="uid://bkbee2vs6l8f1"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_8hqp8"]
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_3m1c4"]
@@ -6,14 +6,21 @@
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_w5yi2"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_884dk"]
 [ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="3_gr4uv"]
+[ext_resource type="Resource" uid="uid://bcxt60sbegx3h" path="res://resources/range_patterns/debug pattern.tres" id="3_psyey"]
 [ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/portraits/drunkenmaster.png" id="4_3m1c4"]
 
 [sub_resource type="Resource" id="Resource_psyey"]
 script = ExtResource("2_3m1c4")
+range_type = 1
+range_dist = 10
+action_name = "Attack"
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [sub_resource type="Resource" id="Resource_en4qs"]
 script = ExtResource("3_gr4uv")
+range_pattern = ExtResource("3_psyey")
+range_dist = 3
+action_name = "Heal"
 metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
 
 [resource]

@@ -55,16 +55,19 @@ metadata/_custom_type_script = "uid://j80klyllg32k"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
+[node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("map_manager", "turn_manager", "player_unit_manager") instance=ExtResource("14_mqkbs")]
 visible = false
 mouse_filter = 2
+map_manager = NodePath("../../MapManager")
 turn_manager = NodePath("../../Turn_Manager")
 player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
 [connection signal="unit_selected" from="Turn_Manager/Player_Unit_Manager" to="." method="_on_cursor_entity_selected"]
 [connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]
+[connection signal="deselected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="deselect"]
 [connection signal="entity_selected" from="Cursor" to="." method="_on_cursor_entity_selected"]
 [connection signal="tile_selected" from="Cursor" to="." method="_on_cursor_tile_selected"]
 [connection signal="tile_selected" from="Cursor" to="Turn_Manager/Player_Unit_Manager" method="attempt_to_move_unit"]
 [connection signal="unit_selected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="load_unit_actions"]
+[connection signal="highlight_action_tiles" from="CanvasLayer/UI-Phase-2" to="MapManager" method="highlight_tiles"]
