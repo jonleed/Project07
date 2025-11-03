@@ -1,0 +1,24 @@
+diff a/resources/tilesets/simple isometric tiles fantasy.tres b/resources/tilesets/simple isometric tiles fantasy.tres	(rejected hunks)
+@@ -1,4 +1,6 @@
+-[gd_resource type="TileSet" load_steps=23 format=3 uid="uid://bf1vksvfrjh5h"]
++[gd_resource type="TileSet" load_steps=25 format=3 uid="uid://bf1vksvfrjh5h"]
++
++[ext_resource type="PackedScene" uid="uid://cnt7illh76qd3" path="res://spiketrap.tscn" id="1_gdowt"]
+ 
+ [sub_resource type="NavigationPolygon" id="NavigationPolygon_l4rwm"]
+ vertices = PackedVector2Array(8, 0, 0, 4, -8, 0, 0, -4)
+@@ -1915,6 +1917,9 @@ texture = SubResource("CompressedTexture2D_krbiq")
+ 0:3/0/terrain_set = 0
+ 0:3/0/terrain = 1
+ 
++[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_8cek8"]
++scenes/1/scene = ExtResource("1_gdowt")
++
+ [resource]
+ tile_shape = 1
+ tile_layout = 5
+@@ -1938,3 +1943,4 @@ sources/0 = SubResource("TileSetAtlasSource_gdowt")
+ sources/1 = SubResource("TileSetAtlasSource_1ijoo")
+ sources/3 = SubResource("TileSetAtlasSource_bs4tb")
+ sources/2 = SubResource("TileSetAtlasSource_evvlm")
++sources/4 = SubResource("TileSetScenesCollectionSource_8cek8")

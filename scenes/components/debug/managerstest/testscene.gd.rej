@@ -1,0 +1,22 @@
+diff a/scenes/components/debug/managerstest/testscene.gd b/scenes/components/debug/managerstest/testscene.gd	(rejected hunks)
+@@ -1,6 +1,11 @@
+ extends Node2D
+ 
+ @export var debug_entity:Entity
++@export var trap_manager: Trap_Manager
++@export var mine_trap_scene: PackedScene
++
++
++
+ 
+ func _update_timeout():
+ 	##connected to a timer because process function was too fast
+@@ -12,6 +17,8 @@ func _update_timeout():
+ func _ready() -> void:
+ 	attempt_entity_spawn(debug_entity,Vector2i.ZERO)
+ 	attempt_entity_move(debug_entity,Vector2.ZERO)
++	var coord = Vector2i(2, 2) # temporary hard-coded tile for testing
++	trap_manager.create_trap_from_unit(self, mine_trap_scene, coord)
+ 
+ func attempt_entity_spawn(entity:Entity,coord:Vector2i):
+ 	if $MapManager.map_dict.get(coord,null)!=null:

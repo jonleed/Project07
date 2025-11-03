@@ -1,0 +1,96 @@
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(3): Expected device instantiation or directive here.
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_vors4"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(4): Expected device instantiation or directive here.
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_76oo3"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(5): Expected device instantiation or directive here.
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_o1d5v"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(6): Expected device instantiation or directive here.
+[ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="3_81c7v"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(7): Expected device instantiation or directive here.
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="4_q1kv2"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(8): Expected device instantiation or directive here.
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/ui/portraits/knight.png" id="5_81c7v"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(10): Expected device instantiation or directive here.
+[sub_resource type="Resource" id="Resource_wdlco"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(11): Expected node name here.
+script = ExtResource("2_76oo3")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(11): Expected device instantiation or directive here.
+script = ExtResource("2_76oo3")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(12): Expected node name here.
+base_dmg = 10
+        ^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(12): Expected device instantiation or directive here.
+base_dmg = 10
+^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(13): Expected node name here.
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+                            ^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(13): Expected device instantiation or directive here.
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(15): Expected device instantiation or directive here.
+[sub_resource type="Resource" id="Resource_pil5w"]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(16): Expected node name here.
+script = ExtResource("4_q1kv2")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(16): Expected device instantiation or directive here.
+script = ExtResource("4_q1kv2")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(17): Expected node name here.
+affected_tiles = PackedVector2Array(0, 0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(17): Expected device instantiation or directive here.
+affected_tiles = PackedVector2Array(0, 0)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(18): Expected node name here.
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+                            ^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(18): Expected device instantiation or directive here.
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(20): Expected device instantiation or directive here.
+[resource]
+^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(21): Expected node name here.
+script = ExtResource("2_o1d5v")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(21): Expected device instantiation or directive here.
+script = ExtResource("2_o1d5v")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(22): Expected node name here.
+action_array = Array[ExtResource("1_vors4")]([SubResource("Resource_wdlco")])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(22): Expected device instantiation or directive here.
+action_array = Array[ExtResource("1_vors4")]([SubResource("Resource_wdlco")])
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(23): Expected node name here.
+icon_sprite = ExtResource("5_81c7v")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(23): Expected device instantiation or directive here.
+icon_sprite = ExtResource("5_81c7v")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(24): Expected 2 node names here.
+entity_shape = SubResource("Resource_pil5w")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(25): Expected node name here.
+anim_frames = ExtResource("3_81c7v")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(25): Expected device instantiation or directive here.
+anim_frames = ExtResource("3_81c7v")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(26): Expected node name here.
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"
+                            ^^^^^^^^^^^^^^^^^^^^^^^^
+Z:\home\boi\Documents\projects\GoodProject\resources\units\simple_knight.tres(26): Expected device instantiation or directive here.
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

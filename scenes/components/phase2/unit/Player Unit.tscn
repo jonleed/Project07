@@ -10,3 +10,13 @@ metadata/_custom_type_script = "uid://eyowdp8e6dvu"
 position = Vector2(0, -11)
 scale = Vector2(0.75, 0.75)
 animation = &""
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+motion_mode = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
+
+[node name="Polygon2D" type="Polygon2D" parent="CharacterBody2D/CollisionPolygon2D"]
+visible = false
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)

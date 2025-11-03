@@ -1,0 +1,15 @@
+diff a/scenes/components/phase2/entity/Debug-Entity.tscn b/scenes/components/phase2/entity/Debug-Entity.tscn	(rejected hunks)
+@@ -10,3 +10,13 @@ script = ExtResource("1_8u8vy")
+ sprite_frames = ExtResource("2_gh4wy")
+ animation = &"Idle"
+ autoplay = "Idle"
++
++[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
++motion_mode = 1
++
++[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
++position = Vector2(0, 16)
++polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
++
++[node name="Polygon2D" type="Polygon2D" parent="CharacterBody2D/CollisionPolygon2D"]
++polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)

@@ -7,7 +7,6 @@
 script = ExtResource("1_u63bx")
 
 [node name="Marker" type="Polygon2D" parent="."]
-visible = false
 color = Color(1, 0, 0, 1)
 polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 
