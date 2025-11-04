@@ -119,6 +119,7 @@ func attempt_to_move_unit(target_coord: Vector2i):
 	
 	# Tell the map_manager to update its dictionary and the unit's position
 	map_manager.entity_move(selected_unit.cur_pos, target_coord)
+	refresh_gui(selected_unit)
 	
 	# Note: Your map_manager.entity_move function already sets
 	# unit.cur_pos = new_coord, so you don't need to do it here.
