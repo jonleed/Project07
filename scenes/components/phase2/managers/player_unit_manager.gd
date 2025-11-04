@@ -92,8 +92,9 @@ func end_selected_unit_turn() -> void:
 
 func attempt_to_move_unit(coord:Vector2i):
 	if selected_unit:
-		print_rich("[color=RED]",coord,"[/color]\n",Globals.get_bfs_empty_tiles(coord,selected_unit.move_count,map_manager))
-		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(coord,selected_unit.move_count,map_manager).has(coord):
+		print_rich("[color=RED]",coord,"[/color]\n",Globals.get_bfs_empty_tiles(selected_unit.cur_pos,selected_unit.move_count,map_manager))
+		
+		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(selected_unit.cur_pos,selected_unit.move_count,map_manager).has(coord):
 			move_unit(selected_unit,coord)
 			refresh_gui(selected_unit) # Update Move Count
 

@@ -94,6 +94,11 @@ func get_unit_position(unit: Unit)-> Vector2i:
 	return unit.cur_pos
 
 func move_unit(unit:Unit,coord:Vector2i):
-	unit.move_count-= int(unit.cur_pos.distance_to(coord))
+	##the true distance or the move count on a grid is just the difference between the x values and the difference between the y values
+	var x_delta:int = abs(coord.x) - abs(unit.cur_pos.x)
+	var y_delta:int = abs(coord.y) - abs(unit.cur_pos.y)
+	var true_distance:int = abs(x_delta) + abs(y_delta)
+	print("Unit Move Count: %s\ntrue distance: %s"%[unit.move_count,true_distance])
+	unit.move_count-= int(true_distance)
 	map_manager.entity_move(unit.cur_pos,coord)
 	unit.cur_pos = coord
