@@ -90,13 +90,38 @@ func end_selected_unit_turn() -> void:
 		_on_unit_deselected()
 		print("Turn has ended")
 
-func attempt_to_move_unit(coord:Vector2i):
-	if selected_unit:
-		print_rich("[color=RED]",coord,"[/color]\n",Globals.get_bfs_empty_tiles(selected_unit.cur_pos,selected_unit.move_count,map_manager))
-		
-		if selected_unit.move_count>0 and Globals.get_bfs_empty_tiles(selected_unit.cur_pos,selected_unit.move_count,map_manager).has(coord):
-			move_unit(selected_unit,coord)
-			refresh_gui(selected_unit) # Update Move Count
+func attempt_to_move_unit(target_coord: Vector2i):
+	if not selected_unit:
+		return
+	# 1. Ask the MapManager for the path
+	var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
+
+	if path.is_empty():
+		print("No valid path found to target.")
+		return # The target is unreachable (blocked by wall, entity, or water)
+
+	# 2. Calculate the *true* distance
+	# The path includes the start point, so the cost is size - 1
+	var true_distance: int = path.size() - 1
+
+	if true_distance <= 0:
+		# This can happen if the path is empty or the unit is already there
+		return
+
+	# 3. Check if the unit has enough movement
+	if true_distance > selected_unit.move_count:
+		print("Not enough movement. Cost: %s, Has: %s" % [true_distance, selected_unit.move_count])
+		return
+
+	# 4. If everything is valid, execute the move
+	print("Unit Move Count: %s\nTrue Path Cost: %s" % [selected_unit.move_count, true_distance])
+	selected_unit.move_count -= true_distance
+	
+	# Tell the map_manager to update its dictionary and the unit's position
+	map_manager.entity_move(selected_unit.cur_pos, target_coord)
+	
+	# Note: Your map_manager.entity_move function already sets
+	# unit.cur_pos = new_coord, so you don't need to do it here.
 
 @onready var unit_packed:PackedScene = preload("res://scenes/components/phase2/unit/Player Unit.tscn")
 
