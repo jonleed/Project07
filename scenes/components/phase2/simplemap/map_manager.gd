@@ -8,6 +8,9 @@ extends Node2D
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary
 
+## A* grid for pathfinding, synced with map_dict
+var astar_grid := AStarGrid2D.new() # <-- NEW
+
 func init_walls():
 	## Go through the wall layer and fill in the spots in map_dict.
 	## This assumes your tiles in the wall layer's tileset have a custom data
@@ -75,13 +78,27 @@ func entity_move(prev_coord:Vector2i,new_coord:Vector2i):
 		map_dict.set(new_coord,entity)
 		entity.cur_pos = new_coord
 		entity.global_position = coords_to_glob(new_coord)
+		
+		# --- A* UPDATE ---
+		# The old spot is now empty, so update its solidity based on the surface
+		update_astar_solidity(prev_coord) 
+		# The new spot is occupied by an entity, so it's solid
+		astar_grid.set_point_solid(new_coord, true)
+		# --- END A* UPDATE ---
 
 func spawn_entity(entity:Entity,coord:Vector2i)->bool:
-	if map_dict.get(coord):
+	# Check if the coordinate is valid (not solid)
+	if astar_grid.is_point_solid(coord): # <-- MODIFIED check
 		printerr("Tried to spawn entity in wall or inside another entity")
 		return false
 	else:
 		map_dict.set(coord,entity)
+		
+		# --- A* UPDATE ---
+		# This spot is now occupied, so it's solid
+		astar_grid.set_point_solid(coord, true)
+		# --- END A* UPDATE ---
+		
 		return true
 
 ##patterns
@@ -151,3 +168,60 @@ func highlight_tiles(tiles: Array[Vector2i], color: Color = Color.WHITE, pattern
 func _ready() -> void:
 	init_walls()
 	_cache_highlight_tiles()
+	_initialize_astar_grid()
+
+## Initializes the AStar grid based on the current map state.
+func _initialize_astar_grid():
+	# Use the surface layer's rectangle to define the grid bounds
+	var map_bounds: Rect2i = surface_layer.get_used_rect()
+	if map_bounds.size == Vector2i.ZERO:
+		push_warning("MapManager: Surface layer has no tiles. A* grid will be empty.")
+		return
+	
+	# We expand the region by one tile in all directions to avoid "out of bounds"
+	# errors if pathfinding to the very edge.
+	astar_grid.region = map_bounds.grow(1)
+	astar_grid.cell_size = Vector2(1, 1) # Assumes 1:1 grid
+	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	astar_grid.update()
+	
+	# Iterate all cells *within the playable map boundaries*
+	for x in range(map_bounds.position.x, map_bounds.end.x):
+		for y in range(map_bounds.position.y, map_bounds.end.y):
+			var coord := Vector2i(x, y)
+			# Update solidity for each cell based on its content
+			update_astar_solidity(coord)
+
+
+func update_astar_solidity(coord: Vector2i):
+	# 1. Check if an entity or wall (from init_walls) is at the coordinate
+	if map_dict.has(coord):
+		# If it's in map_dict, it's solid (either a wall or an entity)
+		astar_grid.set_point_solid(coord, true)
+		return
+
+	# 2. If the cell is empty in map_dict, check the surface type
+	var surface_type = get_surface_tile(coord)
+	
+	match surface_type:
+		TileType.Ground, TileType.Ice, TileType.Misc:
+			# These are walkable surfaces
+			astar_grid.set_point_solid(coord, false)
+		TileType.Water, TileType.Lava, TileType.Air:
+			# These are non-walkable surfaces
+			astar_grid.set_point_solid(coord, true)
+		_:
+			# Default for any other unknown tile type (like 5/Air)
+			astar_grid.set_point_solid(coord, true)
+
+## Calculates the shortest path, respecting obstacles.
+## Returns an empty array if no path is found.
+func get_star_path(start_coord: Vector2i, end_coord: Vector2i) -> Array[Vector2i]:
+	# Check if the end point is solid. A* can't path to a solid point.
+	if astar_grid.is_point_solid(end_coord):
+		#print("Pathfinding failed: Target is solid.")
+		var empty_array:Array[Vector2i] = []
+		return empty_array # Return empty array
+		
+	# get_id_path() finds the path using grid coordinates
+	return astar_grid.get_id_path(start_coord, end_coord)

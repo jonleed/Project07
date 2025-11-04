@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=21 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_0ti8f"]
 [ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_628vg"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://c4qo2n8wvgt4c" path="res://assets/ui/turncontrolpanel.png" id="8_mfuxc"]
 [ext_resource type="Texture2D" uid="uid://7gy6uk3af70b" path="res://assets/ui/banner.png" id="9_4ycoo"]
 [ext_resource type="Script" uid="uid://c7r4yfnn13qad" path="res://scenes/ui/phase2/components/ui scripts/banner_gui.gd" id="9_5kixl"]
+[ext_resource type="Script" uid="uid://csnyah5j5dbi1" path="res://scenes/ui/phase2/components/ui scripts/movement_gui.gd" id="11_2n8q5"]
+[ext_resource type="Texture2D" uid="uid://dkeb6lwnq13mk" path="res://assets/ui/movementicon.png" id="12_sawr6"]
 [ext_resource type="PackedScene" uid="uid://evc6pglbeeqm" path="res://scenes/ui/settings/Pause-Menu.tscn" id="14_2n8q5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_73c2s"]
@@ -31,6 +33,9 @@ font_size = 26
 font_color = Color(0.89, 0.89, 0.89, 1)
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dwrl1"]
+font_size = 29
 
 [node name="UI-Phase-2" type="Control" node_paths=PackedStringArray("actions_box")]
 layout_mode = 3
@@ -541,7 +546,7 @@ layout_mode = 2
 text = "Reset 
 Turn"
 
-[node name="TurnBannerGUI" type="Control" parent="."]
+[node name="TurnBanner GUI" type="Control" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 13
@@ -558,28 +563,58 @@ scale = Vector2(1.25, 1.25)
 mouse_filter = 2
 script = ExtResource("9_5kixl")
 
-[node name="TurnBannerCenterer" type="CenterContainer" parent="TurnBannerGUI"]
+[node name="TurnBannerCenterer" type="CenterContainer" parent="TurnBanner GUI"]
 layout_mode = 0
 offset_right = 219.99997
 offset_bottom = 62.0
 use_top_left = true
 
-[node name="TurnBannerBackground" type="TextureRect" parent="TurnBannerGUI/TurnBannerCenterer"]
+[node name="TurnBannerBackground" type="TextureRect" parent="TurnBanner GUI/TurnBannerCenterer"]
 layout_mode = 2
 texture = ExtResource("9_4ycoo")
 
-[node name="TurnBannerLabel" type="Label" parent="TurnBannerGUI/TurnBannerCenterer"]
+[node name="TurnBannerLabel" type="Label" parent="TurnBanner GUI/TurnBannerCenterer"]
 layout_mode = 2
 text = "TURN START BANNER"
 horizontal_alignment = 1
+
+[node name="Movement GUI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -167.0
+offset_right = 56.0
+offset_bottom = -127.0
+grow_vertical = 0
+scale = Vector2(0.75, 0.75)
+script = ExtResource("11_2n8q5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Movement GUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Movement GUI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("12_sawr6")
+expand_mode = 2
+
+[node name="MovementLabel" type="Label" parent="Movement GUI/HBoxContainer"]
+layout_mode = 2
+text = "2"
+label_settings = SubResource("LabelSettings_dwrl1")
 
 [node name="Actions Container" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -101.0
-offset_right = 245.0
+offset_left = 16.0
+offset_top = -126.0
+offset_right = 346.0
+offset_bottom = -16.0
 grow_vertical = 0
 horizontal_scroll_mode = 0
 
