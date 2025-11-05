@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=9 format=3 uid="uid://bkbee2vs6l8f1"]
-
+[gd_resource type="Resource" script_class="UnitResource" load_steps=11 format=3 uid="uid://bkbee2vs6l8f1"]
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_8hqp8"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_3m1c4"]
 [ext_resource type="SpriteFrames" uid="uid://cvtvormou4elu" path="res://resources/animations/Drunken Master.tres" id="2_5fivb"]
 [ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_gr4uv"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_w5yi2"]
