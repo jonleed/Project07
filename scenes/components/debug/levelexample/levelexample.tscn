@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://87ikob4x4k87"]
+[gd_scene load_steps=11 format=4 uid="uid://87ikob4x4k87"]
 
 [ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="5_hpt63"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_kb0u0"]
+[ext_resource type="Script" uid="uid://cqxhg00a17hk6" path="res://scenes/components/phase2/managers/npc_unit_manager.gd" id="7_kck08"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="8_262ej"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="9_dilsu"]
 
@@ -48,6 +49,12 @@ cursor = NodePath("../../Cursor")
 map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://j80klyllg32k"
+
+[node name="NPC_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
+script = ExtResource("7_kck08")
+map_manager = NodePath("../../MapManager")
+action_decoder = NodePath("../../ActionDecoder")
+metadata/_custom_type_script = "uid://cqxhg00a17hk6"
 
 [node name="ActionDecoder" parent="." instance=ExtResource("7_kb0u0")]
 

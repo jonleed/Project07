@@ -46,5 +46,5 @@ func gameover() -> void:
 func victory() -> void:
 	emit_signal("turn_banner_update", "Survived")
 	
-func get_random_generator():
+func get_random_generator() -> RandomNumberGenerator:
 	return get_parent().get_random_generator()

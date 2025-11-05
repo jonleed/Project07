@@ -7,6 +7,7 @@ var spawn_locations: Array[Vector2] = [
 	Vector2(-5, 4),
 	Vector2(-5, 6)
 ]
+var num_generator:RandomNumberGenerator
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -26,6 +27,13 @@ func _ready() -> void:
 		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		print($MapManager.map_dict)
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
+		
+		num_generator = RandomNumberGenerator.new()
+		num_generator.seed = hash("EnemyTestScene")
+		var hostile_unit:Hostile_Unit = $Turn_Manager/NPC_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
+		$Turn_Manager/NPC_Manager.add_unit(hostile_unit,Vector2i(7, 7))
+		$Turn_Manager/NPC_Manager.move_unit(hostile_unit,Vector2i(7, 7))
+		
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 		$Cursor.deselected.emit()
 
@@ -53,3 +61,6 @@ func _on_cursor_entity_selected(entity: Entity) -> void:
 func _on_cursor_deselected() -> void:
 	selected_coords = []
 	$MapManager.highlight_tiles(selected_coords)
+
+func get_random_generator() -> RandomNumberGenerator:
+	return num_generator
