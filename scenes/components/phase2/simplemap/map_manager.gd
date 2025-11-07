@@ -6,7 +6,7 @@ extends Node2D
 
 
 ##This map will hold everything in a Vector2i
-var map_dict:Dictionary
+var map_dict:Dictionary ={}
 
 ## A* grid for pathfinding, synced with map_dict
 var astar_grid := AStarGrid2D.new() # <-- NEW
@@ -172,6 +172,7 @@ func _ready() -> void:
 
 ## Initializes the AStar grid based on the current map state.
 func _initialize_astar_grid():
+	astar_grid.clear()
 	# Use the surface layer's rectangle to define the grid bounds
 	var map_bounds: Rect2i = surface_layer.get_used_rect()
 	if map_bounds.size == Vector2i.ZERO:
