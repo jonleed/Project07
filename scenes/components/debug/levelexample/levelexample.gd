@@ -24,7 +24,6 @@ func _ready() -> void:
 			await get_tree().process_frame
 			spawn_pos.x+=2
 		await get_tree().process_frame
-		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		print($MapManager.map_dict)
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 		
@@ -33,6 +32,7 @@ func _ready() -> void:
 		var hostile_unit:Hostile_Unit = $Turn_Manager/NPC_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
 		$Turn_Manager/NPC_Manager.add_unit(hostile_unit,Vector2i(7, 7))
 		$Turn_Manager/NPC_Manager.move_unit(hostile_unit,Vector2i(7, 7))
+		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
 		
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 		$Cursor.deselected.emit()

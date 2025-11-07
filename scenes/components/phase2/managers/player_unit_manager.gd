@@ -11,6 +11,9 @@ var selected_unit: Unit = null
 #@onready var cursor = get_tree().current_scene.get_node("Cursor")
 @export var cursor:Cursor
 
+var pathfinder:Pathfinder
+
+
 func _ready():
 	faction_name = "Player"
 	banner_text = "Player Start"
@@ -20,6 +23,8 @@ func _ready():
 	if units.size() == 0:
 		print("Empty Units Array on Ready")
 		end_turn()
+	pathfinder = Pathfinder.new(map_manager, load("res://resources/range_patterns/adjacent_tiles.tres"))
+	pathfinder._rebuild_connections()
 	#refresh_gui(units[0]) #Initalize GUI
 	#call_deferred("refresh_gui", units[0])
 
@@ -94,7 +99,8 @@ func attempt_to_move_unit(target_coord: Vector2i):
 	if not selected_unit:
 		return
 	# 1. Ask the MapManager for the path
-	var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
+	#var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
+	var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
 
 	if path.is_empty():
 		print("No valid path found to target.")
