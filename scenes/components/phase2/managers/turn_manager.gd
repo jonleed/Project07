@@ -6,7 +6,7 @@ signal turn_banner_update(text: String)
 var unit_managers: Array[Unit_Manager] = []
 var cur_turn_index: int = 0
 
-func _ready():
+func start():
 	# Grabs all children to populate Managers array
 	for manager in get_children():
 		if manager.has_method("start_turn"):

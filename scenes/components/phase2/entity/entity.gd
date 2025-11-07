@@ -26,8 +26,11 @@ func ready_entity():
 	#init health
 	health = base_health
 	#init animation
-	if anim_frames:
+	if anim_sprite:
 		anim_sprite.sprite_frames = anim_frames
+	else:
+		return
+	if anim_frames:
 		if anim_frames.get_animation_names().has("Idle"):
 			anim_sprite.animation = "Idle"
 

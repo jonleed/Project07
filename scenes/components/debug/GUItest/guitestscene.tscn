@@ -1,14 +1,77 @@
-[gd_scene load_steps=10 format=4 uid="uid://cfxrrm1xwg2a2"]
+[gd_scene load_steps=19 format=4 uid="uid://cfxrrm1xwg2a2"]
 
 [ext_resource type="Script" uid="uid://2uwa5007dpor" path="res://scenes/components/debug/GUItest/testscene.gd" id="1_x5woq"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_7vq22"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="3_jk8yq"]
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_6avrs"]
+[ext_resource type="Texture2D" uid="uid://db3vpxrl3rims" path="res://assets/sprites/Map/Map Initializer 32x32.png" id="5_v2evo"]
+[ext_resource type="Script" uid="uid://bfvnl7fhm1b7m" path="res://scenes/components/phase2/managers/entity_initializer.gd" id="6_bfbo3"]
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_bgy0d"]
+[ext_resource type="Resource" uid="uid://bc1k5rj4fsjdg" path="res://resources/units/simple_knight.tres" id="8_cwtqi"]
+[ext_resource type="Script" uid="uid://ci5a1fo4lp0hk" path="res://scenes/components/phase2/managers/unit_manager.gd" id="9_5wbpc"]
+[ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/Drunken Master.tres" id="9_qnofq"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="10_gjfvi"]
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="11_5w6rj"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="12_ayot3"]
+[ext_resource type="PackedScene" uid="uid://bkc3adf4mya06" path="res://scenes/components/phase2/unit/Player Unit.tscn" id="12_cwtqi"]
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="13_hiat0"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="14_mqkbs"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bfbo3"]
+texture = ExtResource("5_v2evo")
+margins = Vector2i(1, 0)
+separation = Vector2i(1, 1)
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+0:0/0/custom_data_1 = -1
+0:0/0/custom_data_2 = -1
+1:0/0 = 0
+1:0/0/custom_data_2 = -1
+2:0/0 = 0
+2:0/0/custom_data_1 = 1
+2:0/0/custom_data_2 = -1
+3:0/0 = 0
+3:0/0/custom_data_1 = 2
+3:0/0/custom_data_2 = -1
+4:0/0 = 0
+4:0/0/custom_data_1 = 3
+4:0/0/custom_data_2 = -1
+5:0/0 = 0
+5:0/0/custom_data_1 = 4
+5:0/0/custom_data_2 = -1
+6:0/0 = 0
+6:0/0/custom_data_1 = 5
+6:0/0/custom_data_2 = -1
+7:0/0 = 0
+7:0/0/custom_data_1 = 6
+7:0/0/custom_data_2 = -1
+0:1/0 = 0
+0:1/0/custom_data_1 = 7
+0:1/0/custom_data_2 = -1
+1:1/0 = 0
+1:1/0/custom_data_1 = 8
+1:1/0/custom_data_2 = -1
+0:4/0 = 0
+0:4/0/custom_data_1 = -1
+1:4/0 = 0
+1:4/0/custom_data_1 = -1
+1:4/0/custom_data_2 = 1
+2:4/0 = 0
+2:4/0/custom_data_1 = -1
+2:4/0/custom_data_2 = 2
+
+[sub_resource type="TileSet" id="TileSet_5wbpc"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(16, 8)
+custom_data_layer_0/name = "Player Tile"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "Enemy Tile"
+custom_data_layer_1/type = 2
+custom_data_layer_2/name = "Trap Tile"
+custom_data_layer_2/type = 2
+sources/0 = SubResource("TileSetAtlasSource_bfbo3")
 
 [node name="testscene" type="Node2D"]
 script = ExtResource("1_x5woq")
@@ -25,11 +88,23 @@ tile_set = ExtResource("3_jk8yq")
 
 [node name="Wall Layer" type="TileMapLayer" parent="MapManager"]
 position = Vector2(0, -8)
-tile_map_data = PackedByteArray("AAACAPj/AAAAAAAAAAABAPj/AAAAAAAAAAABAPf/AAAAAAAAAAABAPb/AAAAAAAAAAAAAPb/AAAAAAAAAAAAAPX/AAAAAAAAAAD///X/AAAAAAAAAAACAPf/AAAAAAAAAAAAAPf/AAAAAAAAAAD///b/AAAAAAAAAAD///T/AAAAAAAAAAAAAPT/AAAAAAAAAAABAPT/AAAAAAAAAAABAPX/AAAAAAAAAAACAPX/AAAAAAAAAAACAPb/AAAAAAAAAAADAPb/AAAAAAAAAAADAPf/AAAAAAAAAAAEAPf/AAAAAAIAAAAEAPj/AAAAAAIAAAAFAPj/AAAAAAIAAAAFAPn/AAAAAAIAAAAEAPr/AAAAAAIAAAADAPr/AAAAAAIAAAADAPv/AAAAAAIAAAACAPv/AAAAAAIAAAACAPr/AAAAAAIAAAABAPr/AAAAAAIAAAAAAPr/AAAAAAIAAAAAAPn/AAAAAAAAAAD///n/AAAAAAIAAAD///j/AAAAAAAAAAD+//j/AAAAAAIAAAD+//f/AAAAAAIAAAD+//b/AAAAAAIAAAACAPn/AAAAAAIAAAD///r/AAAAAAIAAAD+//n/AAAAAAIAAAADAPj/AAAAAAAAAAADAPn/AAAAAAIAAAD///f/AAAAAAAAAAABAPP/AAAAAAAAAAABAPL/AAAAAAIAAAACAPL/AAAAAAIAAAACAPP/AAAAAAIAAAADAPP/AAAAAAIAAAADAPT/AAAAAAIAAAAEAPT/AAAAAAIAAAAEAPX/AAAAAAIAAAAEAPb/AAAAAAIAAAABAPn/AAAAAAAAAAAAAPj/AAAAAAAAAAD+//X/AAAAAAIAAAD9//X/AAAAAAIAAAD9//T/AAAAAAIAAAD8//T/AAAAAAIAAAD8//P/AAAAAAIAAAD8//L/AAAAAAIAAAD8//H/AAAAAAAAAAD8//D/AAAAAAAAAAD9//D/AAAAAAAAAAD9//H/AAAAAAAAAAD+//H/AAAAAAAAAAD+//L/AAAAAAAAAAD///L/AAAAAAAAAAD///P/AAAAAAAAAAD+//T/AAAAAAAAAAD+//P/AAAAAAAAAAD9//P/AAAAAAAAAAAAAPL/AAAAAAAAAAACAPT/AAAAAAAAAAAAAPP/AAAAAAAAAAADAPX/AAAAAAIAAAD9//L/AAAAAAAAAAAEAPn/AAAAAAIAAADw/wYAAAAAAAIAAADw/wUAAAAAAAIAAADv/wUAAAAAAAIAAADv/wQAAAAAAAIAAADv/wMAAAAAAAIAAADu/wMAAAAAAAAAAADu/wIAAAAAAAAAAADt/wIAAAAAAAAAAADt/wEAAAAAAAAAAADt/wAAAAAAAAAAAADt////AAAAAAIAAADt//7/AAAAAAIAAADs//7/AAAAAAIAAADu/wAAAAAAAAIAAADu/wEAAAAAAAAAAADu/wQAAAAAAAIAAADt/wQAAAAAAAIAAADs/wQAAAAAAAIAAADs/wMAAAAAAAIAAADr/wMAAAAAAAIAAADr/wIAAAAAAAIAAADq/wIAAAAAAAIAAADq/wEAAAAAAAAAAADq/wAAAAAAAAAAAADq////AAAAAAAAAADq//7/AAAAAAIAAADr//7/AAAAAAIAAADu////AAAAAAIAAADt/wMAAAAAAAIAAADr/wEAAAAAAAAAAADr/wAAAAAAAAAAAADr////AAAAAAAAAADs////AAAAAAAAAADs/wIAAAAAAAAAAADs/wEAAAAAAAAAAADs/wAAAAAAAAAAAAD7//v/AAAKAAgAAAD8//z/AAAKAAkAAAD6//v/AAAKAAgAAAD5//v/AAAKAAgAAAD4//v/AAAKAAgAAAD3//v/AAAKAAgAAAD2//v/AAAKAAgAAAD1//v/AAAKAAgAAAD0//z/AAAKAAkAAAD0//7/AAAKAAkAAAD0//3/AAAKAAkAAAD0////AAAKAAkAAAD0/wAAAAAKAAkAAAD0/wEAAAAKAAkAAAD1/wIAAAAKAAgAAAD3/wIAAAAKAAgAAAD2/wIAAAAKAAgAAAD4/wIAAAAKAAgAAAD5/wIAAAAKAAgAAAD6/wIAAAAKAAgAAAD7/wIAAAAKAAgAAAD8/wEAAAAKAAkAAAD3//7/AAAKAAAAAAD6/wEAAAAIAAEAAAD6//3/AAAKAAEAAAD8//X/AAAAAAIAAAD7//T/AAAAAAIAAAD7//P/AAAAAAIAAAD7//L/AAAAAAIAAAD7//H/AAAAAAIAAAA=")
 tile_set = ExtResource("3_jk8yq")
 
 [node name="Selects" type="TileMapLayer" parent="MapManager"]
 tile_set = ExtResource("4_6avrs")
+
+[node name="Entity Initializer" type="TileMapLayer" parent="MapManager" node_paths=PackedStringArray("map_manager", "turn_manager", "player_manager", "enemy_manager", "cursor")]
+scale = Vector2(0.75, 0.75)
+tile_map_data = PackedByteArray("AAD8/wkAAAAAAAAAAAD6/wkAAAAAAAAAAAD//wkAAAAAAAAAAAD6/wYAAAAAAAAAAAD//wYAAAAAAAAAAAD9/wYAAAAAAAAAAAAJAAIAAAABAAAAAAAGAPz/AAABAAAAAAAKAAsAAAABAAAAAAATAAIAAAABAAAAAAAHAPn/AAABAAAAAAAGAAQAAAACAAAAAAAOAAgAAAACAAAAAAANAP3/AAACAAAAAAAFAP//AAACAAAAAAA=")
+tile_set = SubResource("TileSet_5wbpc")
+script = ExtResource("6_bfbo3")
+map_manager = NodePath("..")
+turn_manager = NodePath("../../Turn_Manager")
+player_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
+enemy_manager = NodePath("../../Turn_Manager/Temp Enemy Manager")
+cursor = NodePath("../../Cursor")
+enemy_entities = Array[ExtResource("7_bgy0d")]([ExtResource("8_cwtqi"), ExtResource("9_qnofq"), null, null, null, null, null, null, null])
+trap_entities = [null, null, null]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
@@ -45,9 +120,16 @@ metadata/_custom_type_script = "uid://g6evar1ip8pg"
 [node name="Player_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("cursor", "map_manager", "action_decoder")]
 script = ExtResource("12_ayot3")
 cursor = NodePath("../../Cursor")
+unit_packed = ExtResource("12_cwtqi")
 map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://j80klyllg32k"
+
+[node name="Temp Enemy Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
+script = ExtResource("9_5wbpc")
+map_manager = NodePath("../../MapManager")
+action_decoder = NodePath("../../ActionDecoder")
+metadata/_custom_type_script = "uid://ci5a1fo4lp0hk"
 
 [node name="ActionDecoder" parent="." instance=ExtResource("13_hiat0")]
 
@@ -63,11 +145,10 @@ turn_manager = NodePath("../../Turn_Manager")
 player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
-[connection signal="unit_selected" from="Turn_Manager/Player_Unit_Manager" to="." method="_on_cursor_entity_selected"]
+[connection signal="unit_moved" from="Turn_Manager/Player_Unit_Manager" to="CanvasLayer/UI-Phase-2" method="draw_unit_movement"]
+[connection signal="unit_selected" from="Turn_Manager/Player_Unit_Manager" to="CanvasLayer/UI-Phase-2" method="draw_unit_movement"]
 [connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]
 [connection signal="deselected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="deselect"]
-[connection signal="entity_selected" from="Cursor" to="." method="_on_cursor_entity_selected"]
-[connection signal="tile_selected" from="Cursor" to="." method="_on_cursor_tile_selected"]
-[connection signal="tile_selected" from="Cursor" to="Turn_Manager/Player_Unit_Manager" method="attempt_to_move_unit"]
-[connection signal="unit_selected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="load_unit_actions"]
+[connection signal="tile_selected" from="Cursor" to="Turn_Manager/Player_Unit_Manager" method="player_attempt_to_move_unit"]
+[connection signal="unit_selected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="cusor_select_unit"]
 [connection signal="highlight_action_tiles" from="CanvasLayer/UI-Phase-2" to="MapManager" method="highlight_tiles"]
