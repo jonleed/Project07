@@ -10,10 +10,10 @@ class_name Attackaction
 		dmg = float(base_dmg)*dmg_mult
 var dmg : float = float(base_dmg)*dmg_mult
 
-func executeAttack(user, target):
+#func executeAttack(user, target):
 		#we gotta see how target in sight is handled(general manager for this might be best)
 		#will use placeholder for now to implement can be changed later when manager is done?
-	if(target.inView == 1 && user.action_count <=1): #if target in view allow attack
-		target.isHurt(dmg)
-		print("oof")
-	print("Nope") #no attack executed if not in view
+#	if(user.action_count <=1): #if target in view allow attack
+		#target.isHurt(dmg)
+#		print("oof")
+#	print("Nope") #no attack executed if not in view
