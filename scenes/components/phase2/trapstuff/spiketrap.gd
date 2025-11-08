@@ -6,6 +6,12 @@ class_name SpikeTrap
 
 func _ready() -> void:
 	trigger_area.body_entered.connect(_on_body_entered)
+	if action_decoder == null:
+		var manager = get_tree().get_first_node_in_group("TrapManager")
+		print("[SpikeTrap] Found TrapManager:", manager)
+		if manager:
+			action_decoder = manager.action_decoder
+			print("[SpikeTrap] Assigned decoder:", action_decoder)
 	
 func _on_body_entered(body: Node) -> void:
 	print("boom", body.name)
@@ -17,5 +23,8 @@ func _on_body_entered(body: Node) -> void:
 	on_activate(body)
 
 func on_activate(body: Node = null) -> void:
-	if attack_action:
-		attack_action.executeAttack(self, body)
+	var decoder = get_tree().get_root().find_child("ActionDecoder", true, false)
+	if action_count <1:
+		var parent_entity = body.get_parent()
+		#decoder.decode_action(attack_action, [parent_entity])
+		decoder.decode_action(attack_action, [parent_entity] as Array[Entity])

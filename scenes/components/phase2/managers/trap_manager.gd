@@ -5,6 +5,22 @@ extends Node
 var traps: Array[Trap] = []
 var is_functional: bool = true
 @onready var trap_scene:Trap = $Trap
+@export var action_decoder: ActionDecoder
+
+func _ready() -> void:
+	await get_tree().process_frame
+	for trap in get_tree().get_nodes_in_group("Trap"):
+		trap.connect("trap_ready", Callable(self, "_on_trap_ready"))
+	# If no decoder manually set, find global one
+	if action_decoder != null:
+		var decoders = get_tree().get_nodes_in_group("Trap")
+		for node in decoders:
+			if node is ActionDecoder:
+				action_decoder = node
+				print("[Trap_Manager] Found global ActionDecoder:", action_decoder)
+				break
+	if action_decoder == null:
+		push_warning("[Trap_Manager] No ActionDecoder found in global group 'Trap'!")
 
 func get_traps() -> void:
 	traps.clear()
@@ -18,7 +34,7 @@ func add_trap(trap: Trap, coord: Vector2i) -> void:
 	if map_manager.spawn_entity(trap, coord):
 		traps.append(trap)
 		add_child(trap)
-
+		trap.action_decoder = action_decoder
 		trap.connect("activation", Callable(self, "_on_trap_activated"))
 		trap.connect("destroyed", Callable(self, "_on_trap_destroyed"))
 		trap.connect("dismantled", Callable(self, "_on_trap_dismantled"))
@@ -27,7 +43,12 @@ func _on_trap_activated(trap: Trap) -> void:
 	print("Trap activated:", trap.name)
 
 func _on_trap_destroyed(trap: Trap) -> void:
-	remove_trap(trap)
+	traps.erase(trap)
+	var pos = trap.grid_pos
+	if map_manager.trap_dict.has(pos):
+		map_manager.trap_dict.erase(pos)
+		map_manager.astar.set_point_solid(pos, false) # still walkable
+		trap.queue_free()
 
 #func _on_trap_dismantled(trap: Trap) -> void:
 
@@ -49,8 +70,3 @@ func create_trap_from_res(res:Trap)->Trap:
 	trapper.ready_entity()
 	trapper.add_to_group("Trap")
 	return trapper
-
-func create_trap_from_unit(unit: Node, trap_scene: PackedScene, coord: Vector2i) -> void:
-	var new_trap: Trap = trap_scene.instantiate()
-	add_trap(new_trap, coord)
-	print(unit.name, "created a new trap at", coord)
