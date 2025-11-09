@@ -46,13 +46,27 @@ var cur_unit_selected:Unit = null
 ##is for when right click is pressed with cursor
 func deselect():
 	clear_action_container()
+	var selected_coords:Array[Vector2i] = []
+	map_manager.highlight_tiles(selected_coords)
 	cur_unit_selected = null
 
+func cusor_select_unit(unit:Unit):
+	draw_unit_movement(unit)
+	load_unit_actions(unit)
+	cur_unit_selected = unit
+
 func load_unit_actions(unit:Unit):
+	if not unit is PlayerUnit:
+		return
 	clear_action_container()
 	for act in unit.action_array:
 		add_to_action_container(act)
-	cur_unit_selected = unit
+
+func draw_unit_movement(unit:Unit):
+	if not unit is PlayerUnit:
+		return
+	var bfs_tiles = Globals.get_bfs_empty_tiles(unit.cur_pos,unit.move_count,map_manager)
+	map_manager.highlight_tiles(bfs_tiles,Color.BLUE,3)
 
 func add_to_action_container(action:Action):
 	#create button for action

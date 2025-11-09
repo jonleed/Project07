@@ -5,16 +5,16 @@ extends Unit_Manager
 
 signal unit_selected(unit:Unit)
 signal unit_deselected 
+signal unit_moved(unit:Unit)
 signal update_unit_display(arr:Array) # Updates UnitGUI to current Party
 
 var selected_unit: Unit = null
 #@onready var cursor = get_tree().current_scene.get_node("Cursor")
 @export var cursor:Cursor
 
-var pathfinder:Pathfinder
+# var pathfinder:Pathfinder
 
-
-func _ready():
+func start():
 	faction_name = "Player"
 	banner_text = "Player Start"
 	cursor.unit_selected.connect(_on_unit_selected)
@@ -23,8 +23,10 @@ func _ready():
 	if units.size() == 0:
 		print("Empty Units Array on Ready")
 		end_turn()
-	pathfinder = Pathfinder.new(map_manager, load("res://resources/range_patterns/adjacent_tiles.tres"))
-	pathfinder._rebuild_connections()
+	# Pathfinder can be substituted in if desired for move pattern based movement; 
+	#pathfinder = Pathfinder.new(map_manager, load("res://resources/range_patterns/adjacent_tiles.tres"))
+	#pathfinder._rebuild_connections()
+	
 	#refresh_gui(units[0]) #Initalize GUI
 	#call_deferred("refresh_gui", units[0])
 
@@ -95,12 +97,14 @@ func end_selected_unit_turn() -> void:
 		_on_unit_deselected()
 		print("Turn has ended")
 
-func attempt_to_move_unit(target_coord: Vector2i):
+func player_attempt_to_move_unit(target_coord: Vector2i):
 	if not selected_unit:
 		return
 	# 1. Ask the MapManager for the path
-	#var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
-	var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
+	var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
+	
+	# Pathfinder can be substituted in if desired for move-pattern based movement
+	# var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
 
 	if path.is_empty():
 		print("No valid path found to target.")
@@ -129,8 +133,9 @@ func attempt_to_move_unit(target_coord: Vector2i):
 	
 	# Note: Your map_manager.entity_move function already sets
 	# unit.cur_pos = new_coord, so you don't need to do it here.
+	unit_moved.emit(selected_unit)
 
-@onready var unit_packed:PackedScene = preload("res://scenes/components/phase2/unit/Player Unit.tscn")
+@export var unit_packed:PackedScene
 
 func create_unit_from_res(res:UnitResource)->PlayerUnit:
 	var un :PlayerUnit = unit_packed.instantiate()

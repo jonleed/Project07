@@ -2,7 +2,6 @@
 extends Node2D
 
 @export var debug_entity:Entity
-var num_generator:RandomNumberGenerator
 
 func _update_timeout():
 	##connected to a timer because process function was too fast
@@ -18,25 +17,18 @@ func _ready() -> void:
 		$"CanvasLayer/UI-Phase-2".visible = true
 		#attempt_entity_spawn(debug_entity,Vector2i.ZERO)
 		#attempt_entity_move(debug_entity,Vector2.ZERO)
-		var temp_vec:Vector2i = Vector2i.ONE
-		var unit:PlayerUnit
-		for res in Globals.party_units:
-			print_rich("[color=Red]",res,"->",temp_vec)
-			unit = $Turn_Manager/Player_Unit_Manager.create_unit_from_res(res)
-			$Turn_Manager/Player_Unit_Manager.add_unit(unit,Vector2i.ZERO)
-			$Turn_Manager/Player_Unit_Manager.move_unit(unit,temp_vec)
-			await get_tree().process_frame
-			temp_vec.x+=2
-		await get_tree().process_frame
-		$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
-		num_generator = RandomNumberGenerator.new()
-		num_generator.seed = hash("EnemyTestScene")
-		var hostile_unit:Hostile_Unit = $Turn_Manager/Hostile_Unit_Manager.create_unit_from_res(load("res://resources/units/The Clown.tres"))
-		
-		
-		$Turn_Manager/Hostile_Unit_Manager.add_unit(hostile_unit,Vector2i(7, 7))
-		$Turn_Manager/Hostile_Unit_Manager.move_unit(hostile_unit,Vector2i(7, 7))
-		
+		#var temp_vec:Vector2i = Vector2i.ONE
+		#var unit:Unit
+		#for res in Globals.party_units:
+			#print_rich("[color=Red]",res,"->",temp_vec)
+			#unit = $Turn_Manager/Player_Unit_Manager.create_unit_from_res(res)
+			#$Turn_Manager/Player_Unit_Manager.add_unit(unit,Vector2i.ZERO)
+			#$Turn_Manager/Player_Unit_Manager.move_unit(unit,temp_vec)
+			#await get_tree().process_frame
+			#temp_vec.x+=2
+		#await get_tree().process_frame
+		#$Turn_Manager/Player_Unit_Manager.refresh_gui(unit)
+		#print($MapManager.map_dict)
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 		$Cursor.deselected.emit()
@@ -95,6 +87,3 @@ func _on_cursor_entity_selected(entity: Entity) -> void:
 func _on_cursor_deselected() -> void:
 	selected_coords = []
 	$MapManager.highlight_tiles(selected_coords)
-
-func get_random_generator() -> RandomNumberGenerator:
-	return num_generator

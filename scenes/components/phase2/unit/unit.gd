@@ -46,9 +46,7 @@ func load_unit_res(unit_res:UnitResource = null):
 	immortal = unit_res.immortal
 	entity_shape = unit_res.entity_shape
 	anim_frames = unit_res.anim_frames
-	anim_sprite.sprite_frames = anim_frames
-	if anim_frames.get_animation_names().has("Idle"):
-		anim_sprite.animation = "Idle"
+	
 	
 func get_move_actions() -> Array[Moveaction]:
 	var move_action_arr:Array[Moveaction] = []
