@@ -38,23 +38,17 @@ func _rebuild_connections():
 			if vector in identifier_map:
 				connect_points(coord_id, identifier_map.get(vector))
 	
-func parse_point(provided_point:int) -> Vector2i:
-	if not has_point(provided_point):
-		return Vector2i(-1234, -1234)
-	else:
-		return Vector2i(get_point_position(provided_point))
-	
 func _return_path(provided_coordinate:Vector2i, provided_target:Vector2i):
-	var point_id:int = -1
-	var target_id:int = -1
+	var point_id:int = -INF
+	var target_id:int = -INF
 	if provided_coordinate in identifier_map:
 		point_id = identifier_map.get(provided_coordinate)
-	else:
-		point_id = get_closest_point(Vector2(provided_coordinate.x, provided_coordinate.y))
 	if provided_target in identifier_map:
 		target_id = identifier_map.get(provided_target)
-	else:
-		target_id = get_closest_point(Vector2(provided_target.x, provided_target.y))
+		
+	if point_id == -INF or target_id == -INF or point_id == null or target_id == null:
+		return [Vector2(-INF, -INF)]
+	
 	return get_point_path(point_id, target_id)
 	
 func calculate_path_cost(provided_path:PackedVector2Array):
@@ -64,6 +58,6 @@ func calculate_path_cost(provided_path:PackedVector2Array):
 		if cround in identifier_map:
 			total_cost += get_point_weight_scale(identifier_map.get(cround))
 		else:
-			total_cost += get_point_weight_scale(get_closest_point(cround))
+			return INF
 	return total_cost
 		
