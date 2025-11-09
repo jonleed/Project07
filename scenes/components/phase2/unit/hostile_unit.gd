@@ -286,7 +286,7 @@ func running_state() -> void:
 		movement_failed = true
 		return
 	
-	var pathfinder:Pathfinder = cached_parent.get_pathfinder(get_move_actions()[0])
+	var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 	var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, retreat_coordinate)
 	if path_to_take[0] == Vector2(-INF, -INF):
 		movement_failed = true
