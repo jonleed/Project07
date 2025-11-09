@@ -197,9 +197,14 @@ func _initialize_astar_grid():
 func update_astar_solidity(coord: Vector2i):
 	# 1. Check if an entity or wall (from init_walls) is at the coordinate
 	if map_dict.has(coord):
-		# If it's in map_dict, it's solid (either a wall or an entity)
-		astar_grid.set_point_solid(coord, true)
-		return
+		var value = map_dict[coord]
+		#allows traps to be walked
+		if value is Trap:
+			astar_grid.set_point_solid(coord, false) # trap = walkable
+		else:
+			# If it's in map_dict, it's solid (either a wall or an entity)
+			astar_grid.set_point_solid(coord, true)
+			return
 
 	# 2. If the cell is empty in map_dict, check the surface type
 	var surface_type = get_surface_tile(coord)

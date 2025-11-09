@@ -30,7 +30,6 @@ region = Rect2(96.47766, 17.195316, 14.843414, 7.6337585)
 script = ExtResource("3_fhyst")
 attack_action = SubResource("Resource_lq020")
 action_array = Array[ExtResource("3_waqd0")]([null])
-metadata/_custom_type_script = "uid://b47tb48svaqfh"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -0.5)

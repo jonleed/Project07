@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://87ikob4x4k87"]
+[gd_scene load_steps=21 format=4 uid="uid://87ikob4x4k87"]
 
 [ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
@@ -6,7 +6,7 @@
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_7lr0t"]
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="5_hpt63"]
 [ext_resource type="Texture2D" uid="uid://db3vpxrl3rims" path="res://assets/sprites/Map/Map Initializer 32x32.png" id="5_urvil"]
-[ext_resource type="Script" path="res://scenes/components/phase2/managers/entity_initializer.gd" id="6_pa45f"]
+[ext_resource type="Script" uid="uid://bfvnl7fhm1b7m" path="res://scenes/components/phase2/managers/entity_initializer.gd" id="6_pa45f"]
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_kb0u0"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_w5nbb"]
@@ -14,8 +14,10 @@
 [ext_resource type="Resource" uid="uid://bc1k5rj4fsjdg" path="res://resources/units/simple_knight.tres" id="8_tm18g"]
 [ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/Drunken Master.tres" id="9_ccsti"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="9_dilsu"]
+[ext_resource type="PackedScene" uid="uid://cnt7illh76qd3" path="res://scenes/components/phase2/trapstuff/spiketrap.tscn" id="10_ccsti"]
 [ext_resource type="Script" uid="uid://ci5a1fo4lp0hk" path="res://scenes/components/phase2/managers/unit_manager.gd" id="12_pa45f"]
 [ext_resource type="PackedScene" uid="uid://bkc3adf4mya06" path="res://scenes/components/phase2/unit/Player Unit.tscn" id="12_w5nbb"]
+[ext_resource type="Script" uid="uid://drj8oexjt8k2u" path="res://scenes/components/phase2/managers/trap_manager.gd" id="17_tm18g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r6ms3"]
 texture = ExtResource("5_urvil")
@@ -94,18 +96,19 @@ tile_set = ExtResource("3_bs1i3")
 [node name="Selects" type="TileMapLayer" parent="MapManager"]
 tile_set = ExtResource("4_7lr0t")
 
-[node name="Entity Initializer" type="TileMapLayer" parent="MapManager" node_paths=PackedStringArray("map_manager", "turn_manager", "player_manager", "enemy_manager", "cursor")]
+[node name="Entity Initializer" type="TileMapLayer" parent="MapManager" node_paths=PackedStringArray("map_manager", "trap_manager", "turn_manager", "player_manager", "enemy_manager", "cursor")]
 scale = Vector2(0.75, 0.75)
-tile_map_data = PackedByteArray("AAD4/wMAAAAAAAAAAAD8/wMAAAAAAAAAAAAFAAAAAAABAAAAAAAGAAUAAAABAAAAAAAHAP3/AAABAAAAAAD7/wcAAAAAAAAAAAD4/wYAAAAAAAAAAAD9/wYAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAD4/wMAAAAAAAAAAAD8/wMAAAAAAAAAAAAFAAAAAAABAAAAAAAGAAUAAAABAAAAAAAHAP3/AAABAAAAAAD7/wcAAAAAAAAAAAD4/wYAAAAAAAAAAAD9/wYAAAAAAAAAAAACAAYAAAAAAAQAAAA=")
 tile_set = SubResource("TileSet_8o8fv")
 script = ExtResource("6_pa45f")
 map_manager = NodePath("..")
+trap_manager = NodePath("../../Turn_Manager/Trap_Manager")
 turn_manager = NodePath("../../Turn_Manager")
 player_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 enemy_manager = NodePath("../../Turn_Manager/Unit_Manager")
 cursor = NodePath("../../Cursor")
 enemy_entities = Array[ExtResource("7_w5nbb")]([ExtResource("8_tm18g"), ExtResource("9_ccsti"), null, null, null, null, null, null, null])
-trap_entities = [null, null, null]
+trap_scenes = Array[PackedScene]([ExtResource("10_ccsti")])
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
@@ -131,6 +134,12 @@ script = ExtResource("12_pa45f")
 map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://ci5a1fo4lp0hk"
+
+[node name="Trap_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
+script = ExtResource("17_tm18g")
+map_manager = NodePath("../../MapManager")
+action_decoder = NodePath("../../ActionDecoder")
+metadata/_custom_type_script = "uid://drj8oexjt8k2u"
 
 [node name="ActionDecoder" parent="." node_paths=PackedStringArray("map_manager") instance=ExtResource("7_kb0u0")]
 map_manager = NodePath("../MapManager")

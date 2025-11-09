@@ -9,6 +9,8 @@ var action_count:int = action_max
 @onready var action_decoder = get_tree().get_first_node_in_group("ActionDecoder")
 @export_subgroup("Base Trap Values")
 @export var vision_dist: int = 5
+@export var map_manager: MapManager
+
 
 signal activation(trap: Trap)
 signal destroyed(trap: Trap)
@@ -19,6 +21,10 @@ var is_functional: bool = true
 signal trap_ready(trap: Trap, global_pos: Vector2)
 
 func _ready() -> void:
+	var manager = get_tree().get_first_node_in_group("TrapManager")
+
+	if manager:
+		manager.add_trap(self, map_manager.get_tile_from_pos(global_position))
 	ready_entity()
 	add_to_group("Trap")
 	connect("health_changed", Callable(self, "_on_health_changed"))

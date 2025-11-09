@@ -4,7 +4,6 @@ extends Node
 @export var map_manager: MapManager
 var traps: Array[Trap] = []
 var is_functional: bool = true
-@onready var trap_scene:Trap = $Trap
 @export var action_decoder: ActionDecoder
 
 func _ready() -> void:
@@ -13,7 +12,7 @@ func _ready() -> void:
 		trap.connect("trap_ready", Callable(self, "_on_trap_ready"))
 	# If no decoder manually set, find global one
 	if action_decoder != null:
-		var decoders = get_tree().get_nodes_in_group("Trap")
+		var decoders = get_tree().get_nodes_in_group("ActionDecoder")
 		for node in decoders:
 			if node is ActionDecoder:
 				action_decoder = node
@@ -61,12 +60,9 @@ func remove_trap(trap: Trap) -> void:
 			trap.queue_free()
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
-func create_trap_from_res(res:Trap)->Trap:
-	var trapper :Trap = trap_scene.instantiate()
+func create_trap_from_res(res:PackedScene) -> Trap:
+	var trapper:Trap = res.instantiate()
 	add_child(trapper)
-
-	trapper.t_res = res
-	trapper.load_unit_res(res)
-	trapper.ready_entity()
 	trapper.add_to_group("Trap")
+	trapper.action_decoder = action_decoder
 	return trapper

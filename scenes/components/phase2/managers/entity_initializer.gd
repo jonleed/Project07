@@ -12,7 +12,7 @@ class_name EntityInitializer
 @export_subgroup("ENTITIES")
 #@export var player_entities:Array[UnitResource]
 @export var enemy_entities:Array[UnitResource]
-@export var trap_entities:Array
+@export var trap_scenes: Array[PackedScene] = []  # <— drag any number of trap scenes here in the inspector
 
 #the tiles that can spawn the player units
 var player_tiles:Array[Vector2i] =[]
@@ -26,6 +26,7 @@ func _ready() -> void:
 	get_tiles()
 	init_player_units()
 	init_enemy_units()
+	init_traps()
 	turn_manager.start()
 	player_manager.start()
 	enemy_manager.start()
@@ -107,4 +108,23 @@ func init_enemy_units():
 
 func init_traps():
 	for tile:Vector2i in trap_tiles:
-		pass
+		# find which trap resource to spawn
+		var trap_index:int = trap_tiles[tile]
+		if trap_index < 0 or trap_index >= trap_scenes.size():
+			printerr("Invalid trap index at tile: ", tile)
+			continue
+		
+		var trap_res:PackedScene = trap_scenes[trap_index]
+		if trap_res == null:
+			printerr("Trap resource at index ", trap_index, " is null.")
+			continue
+		
+		# instance and position the trap
+		var trap_instance:Node2D = trap_res.instantiate()
+		trap_manager.add_child(trap_instance)
+		trap_instance.position = map_manager.coords_to_glob(tile)
+		# add trap to map dictionary (so tiles know they are occupied)
+		
+		print("Spawned trap at ", tile)
+		
+		await get_tree().process_frame
