@@ -6,7 +6,7 @@ class_name EntityInitializer
 @export var trap_manager:Node
 @export var turn_manager: Turn_Manager
 @export var player_manager : Player_Unit_Manager
-@export var enemy_manager: Unit_Manager
+@export var enemy_manager: NPC_Manager
 @export var cursor:Cursor
 
 @export_subgroup("ENTITIES")

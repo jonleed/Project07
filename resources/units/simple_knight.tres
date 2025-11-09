@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_pgwuu"]
 [ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_j3dxb"]
 [ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="4_q1kv2"]
-[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/portraits/knight.png" id="5_81c7v"]
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/ui/portraits/knight.png" id="5_81c7v"]
 
 [sub_resource type="Resource" id="Resource_pil5w"]
 script = ExtResource("4_q1kv2")
