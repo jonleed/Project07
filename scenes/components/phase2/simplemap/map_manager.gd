@@ -7,7 +7,7 @@ extends Node2D
 
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary
-var map_dict_v2:Dictionary
+var map_dict_all_non_wall_tiles:Dictionary
 
 ## A* grid for pathfinding, synced with map_dict
 var astar_grid := AStarGrid2D.new() # <-- NEW
@@ -18,7 +18,7 @@ func init_walls():
 	## layer named "TileType" of type Int, where the integer corresponds
 	## to the TileType enum.
 	for entry in surface_layer.get_used_cells():
-		map_dict_v2[entry] = true
+		map_dict_all_non_wall_tiles[entry] = true
 		
 	map_dict.clear()
 	
@@ -34,7 +34,7 @@ func init_walls():
 			if type_enum_value >= 0 and type_enum_value <= 4: # Corresponds to the 5 members of TileType
 				map_dict[cell_coords] = type_enum_value
 
-				map_dict_v2.erase(cell_coords)
+				map_dict_all_non_wall_tiles.erase(cell_coords)
 				#print("using: ",cell_coords)
 			else:
 				push_warning("Tile at %s has an invalid TileType value: %s" % [cell_coords, type_enum_value])

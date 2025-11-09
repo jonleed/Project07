@@ -10,7 +10,7 @@ var converted_vectors:Array[Vector2i]
 
 func _init(tile_map:MapManager, provided_move_pattern:Pattern2D=load("res://resources/range_patterns/adjacent_tiles.tres")):
 	tile_map_ref = tile_map
-	surface_map = tile_map_ref.map_dict_v2
+	surface_map = tile_map_ref.map_dict_all_non_wall_tiles
 	move_pattern = provided_move_pattern
 	var temp_arr:PackedVector2Array = move_pattern.affected_tiles
 	for coordinate in temp_arr:
