@@ -77,7 +77,7 @@ func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 		if move_count < 1:
 			break
 		if index != len(path_arr) - 1 or (go_final):
-			if path_arr[index] == Vector2(-1234, -1234):
+			if path_arr[index] == Vector2(-INF, -INF):
 				break
 			else:
 				move_count -= 1

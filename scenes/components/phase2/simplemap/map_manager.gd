@@ -226,7 +226,7 @@ func get_star_path(start_coord: Vector2i, end_coord: Vector2i) -> Array[Vector2i
 	# Check if the end point is solid. A* can't path to a solid point.
 	if astar_grid.is_point_solid(end_coord):
 		#print("Pathfinding failed: Target is solid.")
-		var empty_array:Array[Vector2i] = []
+		var empty_array:Array[Vector2i] = [Vector2i(-INF, -INF)]
 		return empty_array # Return empty array
 		
 	# get_id_path() finds the path using grid coordinates

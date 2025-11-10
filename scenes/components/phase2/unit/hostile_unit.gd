@@ -286,9 +286,10 @@ func running_state() -> void:
 		movement_failed = true
 		return
 	
-	var pathfinder:Pathfinder = cached_parent.get_pathfinder()
-	var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, retreat_coordinate)
-	if path_to_take[0] == Vector2(-INF, -INF):
+	#var pathfinder:Pathfinder = cached_parent.get_pathfinder()
+	#var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, retreat_coordinate)
+	var path_to_take = cached_parent.map_manager.get_star_path(cur_pos, retreat_coordinate)
+	if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 		movement_failed = true
 	else:
 		cached_parent.move_unit_via_path(self, path_to_take)
@@ -364,9 +365,10 @@ func rushing_state() -> void:
 	if acting_point == Vector2i(-INF, -INF) or (cached_attack_action == null and cached_support_action == null):
 		movement_failed = true
 	else:
-		var pathfinder:Pathfinder = cached_parent.get_pathfinder()
-		var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, acting_point)
-		if path_to_take[0] == Vector2(-INF, -INF):
+		#var pathfinder:Pathfinder = cached_parent.get_pathfinder()
+		#var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, acting_point)
+		var path_to_take = cached_parent.map_manager.get_star_path(cur_pos, acting_point)
+		if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 			movement_failed = true
 		else:
 			cached_parent.move_unit_via_path(self, path_to_take)

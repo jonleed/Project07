@@ -106,7 +106,7 @@ func player_attempt_to_move_unit(target_coord: Vector2i):
 	# Pathfinder can be substituted in if desired for move-pattern based movement
 	# var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
 
-	if path.is_empty():
+	if path.is_empty() or path[0] == Vector2i(-INF, -INF):
 		print("No valid path found to target.")
 		return # The target is unreachable (blocked by wall, entity, or water)
 
