@@ -7,3 +7,5 @@ script = ExtResource("1_tp0p1")
 metadata/_custom_type_script = "uid://i4qgjsqm1kmh"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -11)
+scale = Vector2(0.75, 0.75)
