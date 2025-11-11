@@ -263,7 +263,7 @@ func retreat_to_friend() -> Vector2i:
 		var closest_tile:Vector2i = Vector2i(-INF, -INF)
 		closest_distance = INF
 		for adjacent_tile in empty_tiles_around_friendly_unit:
-			if adjacent_tile not in cached_parent.map_manager.map_dict_all_non_wall_tiles:
+			if adjacent_tile not in cached_parent.map_manager.map_dict_all_non_wall_tiles or adjacent_tile in cached_parent.map_manager.map_dict:
 				continue
 				
 			var dist_to_tile:float = cur_pos.distance_to(adjacent_tile)
@@ -328,9 +328,9 @@ func get_point_to_act_from(is_attacking_target:bool, target_unit:Entity) -> Arra
 	for action in potential_actions:
 		var points_that_can_hit_target:Array[Vector2i] = get_tiles_that_can_act_on_given_tile(target_unit, action)
 		for point in points_that_can_hit_target:
-			if point not in cached_parent.map_manager.map_dict_all_non_wall_tiles:
+			# Make sure it's a valid tile (in the map), and that there isn't an entity on that tile
+			if point not in cached_parent.map_manager.map_dict_all_non_wall_tiles or point in cached_parent.map_manager.map_dict:
 				continue
-			
 			
 			var distance_to_point:float = point.distance_to(cur_pos)
 			if distance_to_point < closest_distance :
