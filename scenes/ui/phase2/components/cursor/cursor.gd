@@ -1,9 +1,9 @@
 class_name Cursor
 extends Node2D
 
-# Todo: Add support for keyboard
+# TODO: Add support for keyboard
 
-signal entity_selected(entity:Entity)
+#signal entity_selected(entity:Entity)
 signal unit_selected(unit:Unit)
 signal deselected()
 signal tile_selected(coord:Vector2i)
@@ -48,7 +48,7 @@ func _unhandled_input(event):
 			emit_signal("unit_selected", entity)
 		elif entity is Entity:
 			print("Selected entity:", entity.name)
-			emit_signal("entity_selected", entity)
+			#emit_signal("entity_selected", entity)
 	
 	# Right click: Deselect
 	if event.is_action_pressed("Cancel"):

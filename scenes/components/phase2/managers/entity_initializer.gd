@@ -96,7 +96,10 @@ func init_player_units():
 	#player_manager.add_unit(new_unit,inf_vec_arr[index])
 	#player_manager.move_unit(new_unit,tile)
 	#await get_tree().process_frame
-	player_manager.refresh_gui(new_unit)
+	
+	## Refresh GUI After Unit Initialization
+	player_manager.refresh_gui()
+	player_manager._on_unit_deselected()
 
 func init_enemy_units():
 	for tile:Vector2i in enemy_tiles:

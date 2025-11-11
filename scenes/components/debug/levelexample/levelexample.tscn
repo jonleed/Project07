@@ -7,7 +7,11 @@
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="5_hpt63"]
 [ext_resource type="Texture2D" uid="uid://db3vpxrl3rims" path="res://assets/sprites/Map/Map Initializer 32x32.png" id="5_urvil"]
 [ext_resource type="Script" uid="uid://bfvnl7fhm1b7m" path="res://scenes/components/phase2/managers/entity_initializer.gd" id="6_pa45f"]
+<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
+=======
+[ext_resource type="Script" uid="uid://capte1w0cedfo" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
+>>>>>>> origin/main
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_kb0u0"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_w5nbb"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="8_262ej"]
@@ -127,7 +131,7 @@ cursor = NodePath("../../Cursor")
 unit_packed = ExtResource("12_w5nbb")
 map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
-metadata/_custom_type_script = "uid://j80klyllg32k"
+metadata/_custom_type_script = "uid://capte1w0cedfo"
 
 [node name="Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
 script = ExtResource("12_pa45f")
@@ -148,19 +152,13 @@ map_manager = NodePath("../MapManager")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("map_manager", "turn_manager", "player_unit_manager") instance=ExtResource("9_dilsu")]
+[node name="UI-Phase-2" parent="CanvasLayer" node_paths=PackedStringArray("map_manager", "turn_manager", "player_unit_manager", "cursor") instance=ExtResource("9_dilsu")]
 visible = false
 mouse_filter = 2
 map_manager = NodePath("../../MapManager")
 turn_manager = NodePath("../../Turn_Manager")
 player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
+cursor = NodePath("../../Cursor")
 
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
-[connection signal="unit_moved" from="Turn_Manager/Player_Unit_Manager" to="CanvasLayer/UI-Phase-2" method="draw_unit_movement"]
-[connection signal="unit_selected" from="Turn_Manager/Player_Unit_Manager" to="." method="_on_cursor_entity_selected"]
-[connection signal="deselected" from="Cursor" to="." method="_on_cursor_deselected"]
-[connection signal="deselected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="deselect"]
-[connection signal="entity_selected" from="Cursor" to="." method="_on_cursor_entity_selected"]
-[connection signal="tile_selected" from="Cursor" to="Turn_Manager/Player_Unit_Manager" method="player_attempt_to_move_unit"]
-[connection signal="unit_selected" from="Cursor" to="CanvasLayer/UI-Phase-2" method="cusor_select_unit"]
 [connection signal="highlight_action_tiles" from="CanvasLayer/UI-Phase-2" to="MapManager" method="highlight_tiles"]
