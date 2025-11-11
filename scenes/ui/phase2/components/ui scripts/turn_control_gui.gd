@@ -6,7 +6,7 @@ extends Control
 @onready var undo_btn: Button = $HBoxContainer/UndoBTN
 @onready var reset_btn: Button = $HBoxContainer/ResetBTN
 
-var current_turn := 1
+var current_turn  := 1
 
 func _ready():
 	player_unit_manager.connect("faction_turn_complete", Callable(self, "_on_turn_complete"))
