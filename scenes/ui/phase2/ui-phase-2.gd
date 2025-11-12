@@ -66,7 +66,14 @@ func add_to_action_container(action:Action):
 	actions_box.add_child(action_but_instance)
 	#connect action_but_instance signala
 	if action_but_instance.has_signal("action_pressed"):
-		action_but_instance.action_pressed.connect(highlight_selected_action) #this signal emits with an Action variable
+		#action_but_instance.action_pressed.connect(highlight_selected_action) #this signal emits with an Action variable
+		
+		# Set selected action in Player Unit Manager and enter Acting State
+		action_but_instance.action_pressed.connect(
+			func(act: Action):
+				player_unit_manager.selected_action = act
+				player_unit_manager.enter_state(Player_Unit_Manager.State.ACTING)
+				)
 	else:
 		print("Action button instance missing signal")
 

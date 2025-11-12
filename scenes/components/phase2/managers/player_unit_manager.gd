@@ -12,11 +12,12 @@ signal update_unit_display(arr:Array) # Updates UnitGUI to current Party
 signal unit_deselected # Deselects Selected Unit for UI
 signal tile_selection(target_coord:Vector2i) # Calls for Tile Highlights
 signal movement_selection(unit:Unit) # Calls for Movement Highlights
-signal action_selection(unit:Unit) # Calls for Action Highlights
+signal action_selection(act:Action) # Calls for Action Highlights
 signal enable_ui_inputs(enabled:bool) # Toogles UI Inputs
 signal unit_moved(unit:Unit) # Sends Unit position to Map Manager
 
 var selected_unit: Unit = null
+var selected_action: Action = null
 var current_state: State = State.IDLE
 var is_acting:bool = false
 
@@ -76,8 +77,6 @@ func exit_state(old_state: State):
 # IDLE
 func _on_enter_idle():
 	print("Enter Player Idle State")
-	_on_unit_deselected()
-
 	# Player IDLE phase, waits for cursor input
 	var unused_units = get_unused_units()
 	# Base case - No unused units remaining
@@ -106,11 +105,19 @@ func _on_exit_moving():
 func _on_enter_acting():
 	print("Enter Player Acting State")
 	is_acting = true
-	emit_signal("action_selection", selected_unit) # Call Movement Highlights
+	if not selected_unit or not selected_action:
+		print("Action State Failed - No unit or action selected")
+		_on_unit_deselected()
+		return
+	if selected_unit.action_count <= 0:
+		print("Action State Failed - Out of actions")
+		_on_unit_deselected()
+		return
+	
+	emit_signal("action_selection", selected_action) # Call Action Highlights
 
 func _on_exit_acting():
 	is_acting = false
-	_on_unit_deselected()
 
 # DISABLED
 func _on_enter_disabled():
@@ -130,9 +137,14 @@ func _on_unit_selected(unit:Unit) -> void:
 		print("Not Player Turn")
 		return
 	if is_acting and unit != selected_unit: # Prevent Selection if in Acting
-		pass # TODO
+		print("Target unit selected: ", unit)
+		player_attempt_action(unit)
+		return
 	if unit not in units: # Check if Player unit
 		print("Unit not a player unit")
+		return
+	if unit.health <= 0:
+		print("Unit is dead.")
 		return
 	if unit.action_count<1 and unit.move_count<1: # Check if Unit has actions left, if it doesnt, then unit has already acted
 		print("Unit is exhausted (is out of actions and moves)")
@@ -144,7 +156,8 @@ func _on_unit_selected(unit:Unit) -> void:
 
 	# If unit is already in moving go to IDLE / Deselect
 	if unit == selected_unit:
-		enter_state(State.IDLE)
+		#enter_state(State.IDLE)
+		_on_unit_deselected()
 		return
 	
 	# Move the selected unit to front of array for GUI
@@ -158,7 +171,9 @@ func _on_unit_selected(unit:Unit) -> void:
 # For removing highlights for Selected Unit / Right click
 func _on_unit_deselected() -> void:
 	selected_unit = null
+	selected_action = null
 	emit_signal("unit_deselected")
+	enter_state(State.IDLE)
 	return
 
 ## Helper Functions
@@ -247,6 +262,47 @@ func player_attempt_to_move_unit(target_coord: Vector2i):
 	else: # Idk if to switch to idle when out of moves, its a preference thing 
 		#enter_state(State.IDLE)
 		enter_state(State.MOVING)
+
+func player_attempt_action(target_unit: Unit):
+	if not selected_unit or not selected_action:
+		print("No selected unit or selected action.")
+		return
+	if not target_unit:
+		print("No valid target unit.")
+		return
+	if not action_decoder:
+		printerr("No ActionDecoder node assigned.")
+		return
+	
+	print("Attempting action:", selected_action.action_name, "from", selected_unit, "on", target_unit)
+	
+	# 1. Check if target is in range
+	var range_tiles = []
+	if selected_action.range_type == 0:
+		range_tiles = Globals.get_scaled_pattern_tiles(selected_unit.cur_pos, selected_action.range_pattern, selected_action.range_dist, map_manager)
+	elif selected_action.range_type == 1:
+		range_tiles = Globals.get_bfs_tiles(selected_unit.cur_pos, selected_action.range_dist, map_manager)
+	
+	if not target_unit.cur_pos in range_tiles:
+		print("Target out of range.")
+		return
+
+	# 2. Prepare Array and Position for Decoder
+	var targets: Array[Entity] = [target_unit]
+	
+	# 3. Decode and apply the effect ---
+	action_decoder.decode_action(selected_action, targets)
+	
+	# 4. Reduce action count and go back to idle
+	selected_unit.action_count = max(selected_unit.action_count - 1, 0)
+	refresh_gui()
+	
+	print(selected_unit.name, "has", selected_unit.action_count, "actions left out of", selected_unit.action_max)
+	if selected_unit.action_count > 0:
+		enter_state(State.ACTING)
+	else: 
+		_on_unit_deselected()
+
 
 ## Unit Creation
 @export var unit_packed:PackedScene

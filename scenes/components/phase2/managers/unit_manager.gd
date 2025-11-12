@@ -86,7 +86,7 @@ func reset_unit_turns() -> void:
 func get_unused_units() -> Array:
 	var unused_units = []
 	for u in units:
-		if u.action_count>0 or u.move_count > 0:
+		if (u.action_count>0 or u.move_count > 0) and u.health > 0:
 			unused_units.append(u)
 	return unused_units
 

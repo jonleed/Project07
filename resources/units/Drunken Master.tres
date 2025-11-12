@@ -11,6 +11,7 @@
 
 [sub_resource type="Resource" id="Resource_psyey"]
 script = ExtResource("2_3m1c4")
+base_dmg = 3
 range_type = 1
 range_dist = 10
 action_name = "Attack"
@@ -18,6 +19,7 @@ metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [sub_resource type="Resource" id="Resource_en4qs"]
 script = ExtResource("3_gr4uv")
+base_heal = 2
 range_pattern = ExtResource("3_psyey")
 range_dist = 3
 action_name = "Heal"
