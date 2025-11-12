@@ -31,8 +31,6 @@ func start_turn():
 func _step_turn():
 	print(faction_name)
 	var unused_units = get_unused_units()
-	for unit in unused_units:
-		unit.execute_turn()
 	
 	# Base case - No unused units remaining
 	if unused_units.is_empty():
@@ -91,7 +89,7 @@ func reset_unit_turns() -> void:
 func get_unused_units() -> Array:
 	var unused_units = []
 	for u in units:
-		if u.action_count>0 or u.move_count > 0:
+		if (u.action_count>0 or u.move_count > 0) and u.health > 0:
 			unused_units.append(u)
 	return unused_units
 
