@@ -6,6 +6,3 @@ func _ready() -> void:
 	load_unit_res(u_res)
 	add_to_group("Unit")
 	add_to_group("Player Unit")
-
-func calculate_relative_strength_target(coordinate:Vector2i) -> float:
-	return 10.0
