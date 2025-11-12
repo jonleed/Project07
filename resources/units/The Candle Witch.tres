@@ -1,17 +1,21 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=9 format=3 uid="uid://pwf0s8sl0rli"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://pwf0s8sl0rli"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_vp64j"]
-[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_2as78"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_k7hc5"]
-[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_6dwcd"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_swm1y"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_f2ci8"]
 [ext_resource type="SpriteFrames" uid="uid://cihmenfvo43ax" path="res://resources/animations/Candle Witch.tres" id="3_suwkm"]
-[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_k5c6v"]
-[ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/ui/portraits/candlewitch.png" id="4_suwkm"]
+[ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/portraits/candlewitch.png" id="4_suwkm"]
+
+[sub_resource type="Resource" id="Resource_2as78"]
+script = ExtResource("2_swm1y")
+base_dmg = 10
+range_type = 1
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [resource]
 script = ExtResource("2_k7hc5")
-action_array = Array[ExtResource("1_vp64j")]([ExtResource("2_2as78"), ExtResource("3_6dwcd"), ExtResource("4_k5c6v")])
+action_array = Array[ExtResource("1_vp64j")]([SubResource("Resource_2as78")])
 move_max = 13
 icon_sprite = ExtResource("4_suwkm")
 unit_name = "Candle Witch"
