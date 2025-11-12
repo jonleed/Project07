@@ -105,8 +105,12 @@ func _on_exit_moving():
 func _on_enter_acting():
 	print("Enter Player Acting State")
 	is_acting = true
-	if not selected_unit and not selected_action:
+	if not selected_unit or not selected_action:
 		print("Action State Failed - No unit or action selected")
+		_on_unit_deselected()
+		return
+	if selected_unit.action_count <= 0:
+		print("Action State Failed - Out of actions")
 		_on_unit_deselected()
 		return
 	
@@ -133,10 +137,14 @@ func _on_unit_selected(unit:Unit) -> void:
 		print("Not Player Turn")
 		return
 	if is_acting and unit != selected_unit: # Prevent Selection if in Acting
-		print("Target unit: ", unit)
-		return # TODO
+		print("Target unit selected: ", unit)
+		player_attempt_action(unit)
+		return
 	if unit not in units: # Check if Player unit
 		print("Unit not a player unit")
+		return
+	if unit.health <= 0:
+		print("Unit is dead.")
 		return
 	if unit.action_count<1 and unit.move_count<1: # Check if Unit has actions left, if it doesnt, then unit has already acted
 		print("Unit is exhausted (is out of actions and moves)")
@@ -259,9 +267,15 @@ func player_attempt_action(target_unit: Unit):
 	if not selected_unit or not selected_action:
 		print("No selected unit or selected action.")
 		return
+	if not target_unit:
+		print("No valid target unit.")
+		return
+	if not action_decoder:
+		printerr("No ActionDecoder node assigned.")
+		return
 	
 	print("Attempting action:", selected_action.action_name, "from", selected_unit, "on", target_unit)
-
+	
 	# 1. Check if target is in range
 	var range_tiles = []
 	if selected_action.range_type == 0:
@@ -273,18 +287,21 @@ func player_attempt_action(target_unit: Unit):
 		print("Target out of range.")
 		return
 
-	# 2. Apply effect (this is where your real action logic goes)
-	if selected_action is Attackaction:
-		#map_manager.apply_attack(selected_unit, target_coord, selected_action)
-	elif selected_action is Healaction:
-		#map_manager.apply_heal(selected_unit, target_coord, selected_action)
-	elif selected_action is Moveaction:
-		player_attempt_to_move_unit(target_coord)  
-
-	# 3. Reduce action count and go back to idle
-	selected_unit.action_count -= 1
+	# 2. Prepare Array and Position for Decoder
+	var targets: Array[Entity] = [target_unit]
+	
+	# 3. Decode and apply the effect ---
+	action_decoder.decode_action(selected_action, targets)
+	
+	# 4. Reduce action count and go back to idle
+	selected_unit.action_count = max(selected_unit.action_count - 1, 0)
 	refresh_gui()
-	_on_unit_deselected()
+	
+	print(selected_unit.name, "has", selected_unit.action_count, "actions left out of", selected_unit.action_max)
+	if selected_unit.action_count > 0:
+		enter_state(State.ACTING)
+	else: 
+		_on_unit_deselected()
 
 
 ## Unit Creation

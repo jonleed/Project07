@@ -124,7 +124,6 @@ cursor = NodePath("../../Cursor")
 unit_packed = ExtResource("12_w5nbb")
 map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
-base_unit_packed = null
 metadata/_custom_type_script = "uid://capte1w0cedfo"
 
 [node name="Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("map_manager", "action_decoder")]
