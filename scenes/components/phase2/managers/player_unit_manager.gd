@@ -189,6 +189,7 @@ func get_units() -> void:
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
 		remove_unit(changed_node)
+		refresh_gui()
 
 # Refreshes GUI
 func refresh_gui() -> void:
@@ -315,4 +316,5 @@ func create_unit_from_res(res:UnitResource)->Unit:
 	un.ready_entity()
 	un.add_to_group("Unit")
 	un.add_to_group("Player Unit")
+	un.health_changed.connect(_on_player_unit_health_changed)
 	return un

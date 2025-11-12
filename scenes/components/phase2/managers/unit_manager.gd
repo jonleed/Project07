@@ -59,6 +59,7 @@ func create_unit_from_res(res:UnitResource)->Unit:
 	un.load_unit_res(res)
 	un.ready_entity()
 	un.add_to_group("Unit")
+	un.health_changed.connect(remove_unit)
 	return un
 
 # Add a unit to this unit manager
@@ -71,8 +72,11 @@ func add_unit(unit: Unit,coord:Vector2i) -> void:
 
 # Remove a unit from this unit manager
 func remove_unit(unit: Unit) -> void:
+	if unit.health>0:
+		return
 	if unit in units:
 		map_manager.map_dict.erase(unit.cur_pos)
+		map_manager.update_astar_solidity(unit.cur_pos)
 		units.erase(unit)
 		unit.queue_free()
 
