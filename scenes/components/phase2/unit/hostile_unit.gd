@@ -92,6 +92,9 @@ func get_minimal_enemy(check_closest_override:bool=false) -> Entity:
 		# Fetch all units belonging to this enemy faction	
 		var unit_array:Array = get_tree().get_nodes_in_group(enemy_faction_name)		
 		for enemy_unit:Entity in unit_array:
+			if enemy_unit.health <= 0:
+				continue
+			
 			var enemy_unit_pos:Vector2i = enemy_unit.cur_pos
 			var dist_to_enemy:float = enemy_unit_pos.distance_to(cur_pos)
 			var used_value:float = dist_to_enemy
@@ -112,6 +115,8 @@ func get_minimal_friendly(plan_pos:Vector2i, check_closest_override:bool=false) 
 		var unit_array:Array = get_tree().get_nodes_in_group(friendly_faction_name)		
 		for friendly_unit:Entity in unit_array:
 			if friendly_unit == self:
+				continue
+			if friendly_unit.health <= 0:
 				continue
 			
 			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
@@ -250,6 +255,9 @@ func retreat_to_friend() -> Vector2i:
 			# Exclude ourself
 			if friendly_unit == self:
 				continue
+			if friendly_unit.health <= 0:
+				continue
+				
 			# Calculate the distance this friendly unit is from the queried coordinate
 			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
 			var dist_to_friendly:float = friendly_unit_pos.distance_to(cur_pos)
