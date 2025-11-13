@@ -7,11 +7,7 @@
 [ext_resource type="Script" uid="uid://g6evar1ip8pg" path="res://scenes/components/phase2/managers/turn_manager.gd" id="5_hpt63"]
 [ext_resource type="Texture2D" uid="uid://db3vpxrl3rims" path="res://assets/sprites/Map/Map Initializer 32x32.png" id="5_urvil"]
 [ext_resource type="Script" uid="uid://bfvnl7fhm1b7m" path="res://scenes/components/phase2/managers/entity_initializer.gd" id="6_pa45f"]
-<<<<<<< HEAD
-[ext_resource type="Script" uid="uid://j80klyllg32k" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
-=======
 [ext_resource type="Script" uid="uid://capte1w0cedfo" path="res://scenes/components/phase2/managers/player_unit_manager.gd" id="6_ugvcm"]
->>>>>>> origin/main
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_kb0u0"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_w5nbb"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="8_262ej"]
@@ -121,8 +117,9 @@ zoom = Vector2(4, 4)
 wait_time = 0.1
 autostart = true
 
-[node name="Turn_Manager" type="Node" parent="."]
+[node name="Turn_Manager" type="Node" parent="." node_paths=PackedStringArray("trap_manager")]
 script = ExtResource("5_hpt63")
+trap_manager = NodePath("Trap_Manager")
 metadata/_custom_type_script = "uid://g6evar1ip8pg"
 
 [node name="Player_Unit_Manager" type="Node" parent="Turn_Manager" node_paths=PackedStringArray("cursor", "map_manager", "action_decoder")]

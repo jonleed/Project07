@@ -5,6 +5,7 @@ extends Node
 var traps: Array[Trap] = []
 var is_functional: bool = true
 @export var action_decoder: ActionDecoder
+var used_traps: Array = []
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -26,6 +27,7 @@ func get_traps() -> void:
 	for child in get_children():
 		if child is Trap:
 			traps.append(child)
+	reset_traps_turns()
 
 func add_trap(trap: Trap, coord: Vector2i) -> void:
 	if trap in traps:
@@ -66,3 +68,14 @@ func create_trap_from_res(res:PackedScene) -> Trap:
 	trapper.add_to_group("Trap")
 	trapper.action_decoder = action_decoder
 	return trapper
+
+func reset_traps_turns() -> void:
+	for traps in traps:
+		traps.action_count = traps.action_max
+
+func get_unused_traps() -> Array:
+	var unused_traps = []
+	for t in traps:
+		if t.action_count>0:
+			unused_traps.append(t)
+	return unused_traps

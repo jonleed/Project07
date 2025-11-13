@@ -5,6 +5,7 @@ signal turn_banner_update(text: String)
 
 var unit_managers: Array[Unit_Manager] = []
 var cur_turn_index: int = 0
+@export var trap_manager: Trap_Manager
 
 func start():
 	# Grabs all children to populate Managers array
@@ -19,21 +20,22 @@ func start():
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
-	
-	var has_units:bool = false
+
+	var has_units: bool = false
 	for manager in unit_managers:
 		manager.get_units()
 		if not manager.units.is_empty():
 			has_units = true
-	
 	if not has_units:
 		return
-	
+	# ✅ Refresh traps each new faction turn
+	if trap_manager:
+		trap_manager.reset_traps_turns()
+
 	# Sends signal to TurnBannerGUI
 	emit_signal("turn_banner_update", current_manager.banner_text)
-	
 	print("New Manager Turn Start")
-	current_manager.start_turn() 
+	current_manager.start_turn()
 
 func end_faction_turn() -> void:
 	cur_turn_index = (cur_turn_index + 1) % unit_managers.size()
