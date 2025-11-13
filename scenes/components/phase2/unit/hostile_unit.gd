@@ -82,7 +82,7 @@ func determine_enemy_we_care_about() -> void:
 	
 
 func get_minimal_enemy(check_closest_override:bool=false) -> Entity:
-	var minimal_value = Globals.REALLY_BIG_NUMBER
+	var minimal_value = INF
 	var minimal_unit:Entity = null
 	for enemy_faction_name in get_enemy_unit_factions():
 		# Skip our own faction, just in case it somehow ended up in enemy factions
@@ -109,7 +109,7 @@ func determine_friend_we_care_about() -> void:
 	friend_that_we_care_about = get_minimal_enemy()
 	
 func get_minimal_friendly(plan_pos:Vector2i, check_closest_override:bool=false) -> Entity:
-	var minimal_value = Globals.REALLY_BIG_NUMBER
+	var minimal_value = INF
 	var minimal_unit:Entity = null
 	for friendly_faction_name in get_friendly_factions():
 		var unit_array:Array = get_tree().get_nodes_in_group(friendly_faction_name)		
@@ -240,15 +240,15 @@ func retreat_to_furthest_point_from_closest_enemy() -> Vector2i:
 		closest_enemy = get_minimal_enemy(true)
 	
 	var closest_enemy_coordinate:Vector2i = closest_enemy.cur_pos
-	if closest_enemy_coordinate != Globals.INVALID_COORDINATE:
+	if closest_enemy_coordinate != Vector2i(-INF, -INF):
 		var direction_to_enemy:Vector2i = calculate_heading(cur_pos, closest_enemy_coordinate)
 		var unit_vector:Vector2i = convert_to_unit_vector(direction_to_enemy)
 		return (-unit_vector * (move_count + 1)) + cur_pos
-	return Globals.INVALID_COORDINATE
+	return Vector2i(-INF, -INF)
 	
 func retreat_to_friend() -> Vector2i:
 	var closest_unit:Entity = null
-	var closest_distance:float = Globals.REALLY_BIG_NUMBER
+	var closest_distance:float = INF
 	for faction_name_ref in get_friendly_factions():
 		# Iterate through all units in the friendly faction
 		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
@@ -268,8 +268,8 @@ func retreat_to_friend() -> Vector2i:
 		return retreat_to_furthest_point_from_closest_enemy()
 	else:
 		var empty_tiles_around_friendly_unit:Array[Vector2i] = Globals.get_bfs_empty_tiles(cur_pos, 2, cached_parent.map_manager) 
-		var closest_tile:Vector2i = Globals.INVALID_COORDINATE
-		closest_distance = Globals.REALLY_BIG_NUMBER
+		var closest_tile:Vector2i = Vector2i(-INF, -INF)
+		closest_distance = INF
 		for adjacent_tile in empty_tiles_around_friendly_unit:
 			if adjacent_tile not in cached_parent.map_manager.map_dict_all_non_wall_tiles or adjacent_tile in cached_parent.map_manager.map_dict:
 				continue
@@ -278,26 +278,26 @@ func retreat_to_friend() -> Vector2i:
 			if dist_to_tile < closest_distance:
 				closest_tile = adjacent_tile
 				closest_distance = dist_to_tile
-		if closest_tile != Globals.INVALID_COORDINATE:
+		if closest_tile != Vector2i(-INF, -INF):
 			return closest_tile
 		else:
 			return retreat_to_furthest_point_from_closest_enemy()
 	
 func running_state() -> void:
-	var retreat_coordinate:Vector2i = Globals.INVALID_COORDINATE
+	var retreat_coordinate:Vector2i = Vector2i(-INF, -INF)
 	if retreat_location_behaviour == Hostile_Unit.where_to_retreat_to.TO_FURTHEST_POINT_FROM_CLOSEST_ENEMY:
 		retreat_coordinate = retreat_to_furthest_point_from_closest_enemy()
 	else:
 		retreat_coordinate = retreat_to_friend()
 	
-	if retreat_coordinate == Globals.INVALID_COORDINATE:
+	if retreat_coordinate == Vector2i(-INF, -INF):
 		movement_failed = true
 		return
 	
 	#var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 	#var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, retreat_coordinate)
 	var path_to_take = cached_parent.map_manager.get_star_path(cur_pos, retreat_coordinate)
-	if path_to_take.is_empty() or path_to_take[0] == Globals.INVALID_COORDINATE:
+	if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 		movement_failed = true
 	else:
 		cached_parent.move_unit_via_path(self, path_to_take)
@@ -326,9 +326,9 @@ func get_tiles_that_can_act_on_given_tile(target_unit:Entity, provided_action:Ac
 var cached_attack_action:Attackaction = null
 var cached_support_action:Healaction = null
 func get_point_to_act_from(is_attacking_target:bool, target_unit:Entity) -> Array:
-	var closest_point:Vector2i = Globals.INVALID_COORDINATE
+	var closest_point:Vector2i = Vector2i(-INF, -INF)
 	var closest_action:Action = null
-	var closest_distance:float = Globals.REALLY_BIG_NUMBER
+	var closest_distance:float = INF
 	var potential_actions:Array = get_attack_actions()
 	if not is_attacking_target:
 		potential_actions = get_restorative_actions()
@@ -348,7 +348,7 @@ func get_point_to_act_from(is_attacking_target:bool, target_unit:Entity) -> Arra
 	return [closest_point, closest_action]
 	
 func rushing_state() -> void:
-	var acting_point = Globals.INVALID_COORDINATE
+	var acting_point = Vector2i(-INF, -INF)
 	cached_attack_action = null
 	cached_support_action = null
 	if unit_type_behaviour == type_of_unit.ATTACKER:
@@ -370,13 +370,13 @@ func rushing_state() -> void:
 			acting_point = returned_data[0]
 			cached_attack_action = returned_data[1]
 	
-	if acting_point == Globals.INVALID_COORDINATE or (cached_attack_action == null and cached_support_action == null):
+	if acting_point == Vector2i(-INF, -INF) or (cached_attack_action == null and cached_support_action == null):
 		movement_failed = true
 	else:
 		#var pathfinder:Pathfinder = cached_parent.get_pathfinder()
 		#var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, acting_point)
 		var path_to_take = cached_parent.map_manager.get_star_path(cur_pos, acting_point)
-		if path_to_take.is_empty() or path_to_take[0] == Globals.INVALID_COORDINATE:
+		if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 			movement_failed = true
 		else:
 			cached_parent.move_unit_via_path(self, path_to_take)

@@ -6,8 +6,6 @@ var LOW_HEALTH_THRESHOLD:int = 2
 var MID_HEALTH_THRESHOLD:int = 4
 var THREATENING_DISTANCE:float = 10
 var SUMMONING_DISTANCE:float = 20
-var INVALID_COORDINATE:Vector2i = Vector2i(-4989, -4989)
-var REALLY_BIG_NUMBER:float = 9999
 
 ## Calculates reachable tiles using Breadth-First Search, respecting obstacles
 ## defined in the MapManager's dictionary.
