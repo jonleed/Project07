@@ -107,7 +107,7 @@ func init_enemy_units():
 	for tile:Vector2i in enemy_tiles:
 		var chosen_res:UnitResource = enemy_entities[enemy_tiles.get(tile,0)]
 		var new_unit:Unit = enemy_manager.create_unit_from_res(chosen_res)
-		enemy_manager.add_unit(new_unit,Vector2i(INF,INF))
+		enemy_manager.add_unit(new_unit,Vector2i(0,0))
 		enemy_manager.move_unit(new_unit,tile)
 		await get_tree().process_frame
 
