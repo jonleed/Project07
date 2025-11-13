@@ -5,9 +5,10 @@ extends Control
 
 func _ready():
 	visible = false
-	player_unit_manager.connect("unit_selected", Callable(self, "update_movement_label"))
+	player_unit_manager.connect("update_unit_display", Callable(self, "update_movement_label"))
 
-func update_movement_label(unit):
+func update_movement_label(units):
+	var unit = units[0]
 	if unit.move_count < 0:
 		visible = false
 	else: 
