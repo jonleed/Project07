@@ -2,7 +2,7 @@ extends Control
 
 # Todo: Implement finalized Unit variable names
 
-@onready var player_unit_manager: Player_Unit_Manager = get_parent().player_unit_manager
+@onready var player_unit_manager: Unit_Manager = get_parent().player_unit_manager
 
 func _ready():
 	player_unit_manager.connect("update_unit_display", Callable(self, "_on_update_unit_display"))
@@ -61,5 +61,4 @@ func _update_hearts(box, current_health: int, max_health: int):
 
 # Selects Unit from Portrait UI
 func _on_unit_selected(unit):
-	player_unit_manager.is_acting = false
 	player_unit_manager._on_unit_selected(unit)

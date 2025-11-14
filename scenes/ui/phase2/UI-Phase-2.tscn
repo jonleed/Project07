@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=21 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_0ti8f"]
 [ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_628vg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d27m8p4dvpydi" path="res://assets/ui/classlabel.png" id="3_335d7"]
 [ext_resource type="Script" uid="uid://bthevo808nqk5" path="res://scenes/ui/phase2/components/ui scripts/unit_gui.gd" id="3_qsu7h"]
 [ext_resource type="Texture2D" uid="uid://c7corju1cdsa2" path="res://assets/portraits/random.png" id="3_sawr6"]
+[ext_resource type="Script" uid="uid://d1cm2ewe3upta" path="res://scenes/ui/phase2/components/ui scripts/ui_state_machine.gd" id="6_kiwar"]
 [ext_resource type="Script" uid="uid://bpws045qp7on6" path="res://scenes/ui/phase2/components/ui scripts/turn_control_gui.gd" id="7_qsu7h"]
 [ext_resource type="Texture2D" uid="uid://c4qo2n8wvgt4c" path="res://assets/ui/turncontrolpanel.png" id="8_mfuxc"]
 [ext_resource type="Texture2D" uid="uid://7gy6uk3af70b" path="res://assets/ui/banner.png" id="9_4ycoo"]
@@ -578,7 +579,6 @@ text = "TURN START BANNER"
 horizontal_alignment = 1
 
 [node name="Movement GUI" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -624,3 +624,9 @@ layout_mode = 2
 [node name="PauseMenu" parent="." instance=ExtResource("14_2n8q5")]
 visible = false
 layout_mode = 1
+
+[node name="UI State Machine" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_kiwar")

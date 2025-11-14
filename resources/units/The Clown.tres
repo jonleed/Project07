@@ -1,21 +1,13 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://b7d4ceedmf682"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=6 format=3 uid="uid://b7d4ceedmf682"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_6jcb4"]
-[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_0jk40"]
 [ext_resource type="SpriteFrames" uid="uid://b60of5g33h0fw" path="res://resources/animations/The Clown.tres" id="2_c73w4"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_swvdy"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_0jk40"]
 [ext_resource type="Texture2D" uid="uid://dtehc3dorpg44" path="res://assets/portraits/jester.png" id="4_c73w4"]
 
-[sub_resource type="Resource" id="Resource_o4ar2"]
-script = ExtResource("2_0jk40")
-base_dmg = 10
-range_type = 1
-metadata/_custom_type_script = "uid://dhgqt46va2g45"
-
 [resource]
 script = ExtResource("2_swvdy")
-action_array = Array[ExtResource("1_6jcb4")]([SubResource("Resource_o4ar2")])
 action_max = 2
 move_max = 3
 icon_sprite = ExtResource("4_c73w4")

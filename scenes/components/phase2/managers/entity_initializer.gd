@@ -95,23 +95,14 @@ func init_player_units():
 	#player_manager.add_unit(new_unit,inf_vec_arr[index])
 	#player_manager.move_unit(new_unit,tile)
 	#await get_tree().process_frame
-	
-	## Refresh GUI After Unit Initialization
-	player_manager.refresh_gui()
-	player_manager._on_unit_deselected()
+	player_manager.refresh_gui(new_unit)
 
 func init_enemy_units():
 	for tile:Vector2i in enemy_tiles:
 		var chosen_res:UnitResource = enemy_entities[enemy_tiles.get(tile,0)]
 		var new_unit:Unit = enemy_manager.create_unit_from_res(chosen_res)
-		## Commented out is strangely broken on MacOS
-		#enemy_manager.add_unit(new_unit,Vector2i(-1,-1))
-		#enemy_manager.move_unit(new_unit,tile)
-		# Add unit like the player manager 
-		enemy_manager.units.append(new_unit)
-		map_manager.map_dict.set(tile, new_unit)
-		new_unit.cur_pos = tile
-		new_unit.global_position = map_manager.coords_to_glob(tile)
+		enemy_manager.add_unit(new_unit,Vector2i(INF,INF))
+		enemy_manager.move_unit(new_unit,tile)
 		await get_tree().process_frame
 
 func init_traps():
