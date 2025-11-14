@@ -5,9 +5,6 @@ class_name ActionDecoder
 
 #this action decoder takes the action and performs the duty of each action relative to the map
 #call this directly to perform the action, the check for which Entity performs this should be done elsewhere
-func _ready() -> void:
-	print("[ActionDecoder] Ready:", self)
-
 
 func decode_action(act:Action,targets:Array[Entity]):
 	if targets.is_empty():
