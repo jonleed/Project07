@@ -11,6 +11,8 @@ func _ready():
 func _on_update_unit_display(units):
 	# Show boxes based on number of units
 	var count = units.size()
+	if count<=0:
+		return
 	for i in range(4):
 		var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))
 		box.visible = i < count
@@ -18,9 +20,12 @@ func _on_update_unit_display(units):
 		if i < count:
 			var unit = units[i]
 			_populate_unit_box(box, unit, i)
+		
 
 # Populates Portaits and HP
 func _populate_unit_box(box, unit, index): 
+	if not unit:
+		return
 	print("Populating UnitGUI for ", unit.name)
 	# Populate Portraits
 	var unit_portrait = box.get_node("UnitSelClassCenterContainer/ClassIconTexture")

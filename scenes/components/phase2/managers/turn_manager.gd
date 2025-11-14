@@ -19,6 +19,7 @@ func start():
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
+	print("On faction: ", unit_managers[cur_turn_index].faction_name)
 	
 	var has_units:bool = false
 	for manager in unit_managers:
@@ -44,3 +45,6 @@ func gameover() -> void:
 	
 func victory() -> void:
 	emit_signal("turn_banner_update", "Survived")
+	
+func get_random_generator() -> RandomNumberGenerator:
+	return get_parent().get_random_generator()

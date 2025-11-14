@@ -34,5 +34,6 @@ func ready_entity():
 		if anim_frames.get_animation_names().has("Idle"):
 			anim_sprite.animation = "Idle"
 
+
 ##this current position represents the tile coordinate the entity is on
 var cur_pos:Vector2i = Vector2i.ZERO

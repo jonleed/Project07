@@ -4,7 +4,6 @@
 
 [node name="PlayerUnit" type="Node2D"]
 script = ExtResource("1_ywkuo")
-metadata/_custom_type_script = "uid://eyowdp8e6dvu"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -11)

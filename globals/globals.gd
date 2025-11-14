@@ -2,6 +2,10 @@ extends Node
 
 #this node will contain global variables and useful functions
 var party_units:Array
+var LOW_HEALTH_THRESHOLD:int = 2
+var MID_HEALTH_THRESHOLD:int = 4
+var THREATENING_DISTANCE:float = 10
+var SUMMONING_DISTANCE:float = 20
 
 ## Calculates reachable tiles using Breadth-First Search, respecting obstacles
 ## defined in the MapManager's dictionary.

@@ -102,5 +102,4 @@ func _on_proceed_to_phase_2_pressed() -> void:
 		else:
 			Logs.loaded_data.set(unit_res.unit_name,1)
 	Logs.save_dictionary(Logs.loaded_data)
-	#get_tree().change_scene_to_file("res://scenes/components/debug/GUItest/guitestscene.tscn")
 	get_tree().change_scene_to_file("res://scenes/components/debug/levelexample/levelexample.tscn")

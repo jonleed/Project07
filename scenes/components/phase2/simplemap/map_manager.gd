@@ -7,6 +7,7 @@ extends Node2D
 
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary ={}
+var map_dict_all_non_wall_tiles:Dictionary
 
 ## A* grid for pathfinding, synced with map_dict
 var astar_grid := AStarGrid2D.new() # <-- NEW
@@ -16,6 +17,9 @@ func init_walls():
 	## This assumes your tiles in the wall layer's tileset have a custom data
 	## layer named "TileType" of type Int, where the integer corresponds
 	## to the TileType enum.
+	for entry in surface_layer.get_used_cells():
+		map_dict_all_non_wall_tiles[entry] = true
+		
 	map_dict.clear()
 	
 	var used_cells = wall_layer.get_used_cells()
@@ -29,12 +33,13 @@ func init_walls():
 			# Ensure the value is a valid enum index before adding it.
 			if type_enum_value >= 0 and type_enum_value <= 4: # Corresponds to the 5 members of TileType
 				map_dict[cell_coords] = type_enum_value
+
+				map_dict_all_non_wall_tiles.erase(cell_coords)
 				#print("using: ",cell_coords)
 			else:
 				push_warning("Tile at %s has an invalid TileType value: %s" % [cell_coords, type_enum_value])
 		else:
 			push_warning("Wall tile at %s is missing 'TileType' custom data." % cell_coords)
-	#print(map_dict)
 
 enum TileType{
 	Ground,#0
@@ -221,7 +226,7 @@ func get_star_path(start_coord: Vector2i, end_coord: Vector2i) -> Array[Vector2i
 	# Check if the end point is solid. A* can't path to a solid point.
 	if astar_grid.is_point_solid(end_coord):
 		#print("Pathfinding failed: Target is solid.")
-		var empty_array:Array[Vector2i] = []
+		var empty_array:Array[Vector2i] = [Vector2i(-INF, -INF)]
 		return empty_array # Return empty array
 		
 	# get_id_path() finds the path using grid coordinates

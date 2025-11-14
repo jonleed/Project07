@@ -6,7 +6,7 @@ class_name EntityInitializer
 @export var trap_manager:Node
 @export var turn_manager: Turn_Manager
 @export var player_manager : Player_Unit_Manager
-@export var enemy_manager: Unit_Manager
+@export var enemy_manager: NPC_Manager
 @export var cursor:Cursor
 
 @export_subgroup("ENTITIES")
@@ -26,9 +26,10 @@ func _ready() -> void:
 	get_tiles()
 	init_player_units()
 	init_enemy_units()
-	turn_manager.start()
+	
 	player_manager.start()
 	enemy_manager.start()
+	turn_manager.start()
 	map_manager._initialize_astar_grid()
 	visible = false
 	cursor.deselected.emit()
@@ -68,6 +69,7 @@ func init_player_units():
 	for un in Globals.party_units:
 		arr.append(un)
 	print("Gotten Units: ",arr)
+	#
 	var tile:Vector2i
 	var new_unit:Unit
 	while not player_tiles.is_empty():
@@ -101,6 +103,7 @@ func init_player_units():
 	player_manager._on_unit_deselected()
 
 func init_enemy_units():
+	await get_tree().process_frame
 	for tile:Vector2i in enemy_tiles:
 		var chosen_res:UnitResource = enemy_entities[enemy_tiles.get(tile,0)]
 		var new_unit:Unit = enemy_manager.create_unit_from_res(chosen_res)

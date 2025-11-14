@@ -38,6 +38,8 @@ func _ready() -> void:
 	cursor.unit_selected.connect(_on_unit_selected)
 	cursor.tile_selected.connect(_on_tile_selection)
 
+# var pathfinder:Pathfinder
+
 func start():
 	faction_name = "Player"
 	banner_text = "Player Start"
@@ -45,6 +47,11 @@ func start():
 	if units.size() == 0:
 		print("Empty Units Array on Ready")
 		end_turn()
+		
+	# Pathfinder can be substituted in if desired for move pattern based movement; 
+	#pathfinder = Pathfinder.new(map_manager, load("res://resources/range_patterns/adjacent_tiles.tres"))
+	#pathfinder._rebuild_connections()
+	
 	# Enter IDLE State
 	enter_state(State.IDLE)
 
@@ -174,7 +181,7 @@ func _on_unit_deselected() -> void:
 	selected_action = null
 	emit_signal("unit_deselected")
 	enter_state(State.IDLE)
-	return
+
 
 ## Helper Functions
 func get_units() -> void:
@@ -184,11 +191,17 @@ func get_units() -> void:
 			units.append(child)
 	#also check the group
 	reset_unit_turns() # Problematic if get_units() is run mid-turn
-	print("Getting Units", units)
+	print("Getting Units: ", units)
 
+var game_over:bool = false
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
 		remove_unit(changed_node)
+		if units.is_empty():
+			print("GAME OVER")
+			game_over = true
+			await get_tree().process_frame
+			get_tree().change_scene_to_file("res://scenes/ui/main/Main-Menu.tscn")
 		refresh_gui()
 
 # Refreshes GUI
@@ -197,6 +210,8 @@ func refresh_gui() -> void:
 
 # Ends Turn Manager's Turn
 func end_turn() -> void:
+	if game_over:
+		return
 	print(faction_name, " Turn End")
 	refresh_gui()
 	_on_unit_deselected()
@@ -227,8 +242,11 @@ func _on_tile_selection(target_coord: Vector2i):
 func player_attempt_to_move_unit(target_coord: Vector2i):
 	# 1. Ask the MapManager for the path
 	var path: Array[Vector2i] = map_manager.get_star_path(selected_unit.cur_pos, target_coord)
+	
+	# Pathfinder can be substituted in if desired for move-pattern based movement
+	# var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
 
-	if path.is_empty():
+	if path.is_empty() or path[0] == Vector2i(-INF, -INF):
 		print("No valid path found to target.")
 		return # The target is unreachable (blocked by wall, entity, or water)
 
@@ -308,8 +326,8 @@ func player_attempt_action(target_unit: Unit):
 ## Unit Creation
 @export var unit_packed:PackedScene
 
-func create_unit_from_res(res:UnitResource)->Unit:
-	var un :Unit = unit_packed.instantiate()
+func create_unit_from_res(res:UnitResource)->PlayerUnit:
+	var un :PlayerUnit = unit_packed.instantiate()
 	add_child(un)
 	un.u_res = res
 	un.load_unit_res(res)

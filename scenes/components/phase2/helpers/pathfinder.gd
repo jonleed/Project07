@@ -1,33 +1,33 @@
 class_name Pathfinder
-extends AStar3D
+extends AStar2D
 
-var tile_map_ref:TerrainTileMap
-var surface_map:Dictionary[Vector2i, int]
-@export var identifier_map:Dictionary[Vector3, int]
+var tile_map_ref:MapManager
+var surface_map:Dictionary
+var move_pattern:Pattern2D
+var converted_vectors:Array[Vector2i]
+@export var identifier_map:Dictionary[Vector2i, int]
+@export var inverted_identifier_map:Dictionary[int, Vector2i]
 
-func _init(tile_map:TerrainTileMap):
+func _init(tile_map:MapManager, provided_move_pattern:Pattern2D=load("res://resources/range_patterns/adjacent_tiles.tres")):
 	tile_map_ref = tile_map
-	surface_map = tile_map_ref._provide_surface_map()
-
-func _ready():
-	pass
+	surface_map = tile_map_ref.map_dict_all_non_wall_tiles
+	move_pattern = provided_move_pattern
+	var temp_arr:PackedVector2Array = move_pattern.affected_tiles
+	for coordinate in temp_arr:
+		converted_vectors.append(Vector2i(coordinate))
 	
-func surrounding_vectors(provided_coordinate:Vector3, height_l=-1, height_u=1) -> Array[Vector3]:
-	var return_arr = []
-	for height in range(provided_coordinate.z + height_l, provided_coordinate.z + height_u + 1):
-		for row in range(provided_coordinate.y-1, provided_coordinate.y+2): # +2 because the upper bound of range is exclusive
-			for column in range(provided_coordinate.x-1, provided_coordinate.x+2):
-				if row != provided_coordinate.y and column != provided_coordinate.x and height != provided_coordinate.z:
-					return_arr.append(Vector3(column, row, height))
+func surrounding_vectors(provided_coordinate:Vector2i) -> Array[Vector2i]:
+	var return_arr:Array[Vector2i] = []
+	for vector in converted_vectors:
+		return_arr.append(vector + provided_coordinate)
 	return return_arr
 	
 func _rebuild_connections():
 	clear()
-	surface_map = tile_map_ref._provide_surface_map()
 	identifier_map = {}
 	var counter = 0
 	for coordinate in surface_map:
-		var conv_coord = Vector3(coordinate.x, coordinate.y, surface_map.get(coordinate))
+		var conv_coord = Vector2i(coordinate.x, coordinate.y)
 		identifier_map[conv_coord] = counter
 		add_point(counter, conv_coord, 1.0)
 		counter += 1
@@ -37,12 +37,27 @@ func _rebuild_connections():
 		for vector in vector_grab:
 			if vector in identifier_map:
 				connect_points(coord_id, identifier_map.get(vector))
-		var lower_vectors = surrounding_vectors(coordinate, -2, -2)
-		for vector in lower_vectors:
-			if vector in identifier_map:
-				connect_points(coord_id, identifier_map.get(vector), false)
 	
-func _return_path(provided_coordinate:Vector3i, provided_target:Vector3i):
-	var point_id = get_closest_point(Vector3(provided_coordinate.x, provided_coordinate.y, provided_coordinate.z))
-	var target_id = get_closest_point(Vector3(provided_target.x, provided_target.y, provided_target.z))
+func _return_path(provided_coordinate:Vector2i, provided_target:Vector2i):
+	var point_id:int = -INF
+	var target_id:int = -INF
+	if provided_coordinate in identifier_map:
+		point_id = identifier_map.get(provided_coordinate)
+	if provided_target in identifier_map:
+		target_id = identifier_map.get(provided_target)
+		
+	if point_id == -INF or target_id == -INF or point_id == null or target_id == null:
+		return [Vector2(-INF, -INF)]
+	
 	return get_point_path(point_id, target_id)
+	
+func calculate_path_cost(provided_path:PackedVector2Array):
+	var total_cost:float = 0.0
+	for coordinate in provided_path:
+		var cround:Vector2i = Vector2i(coordinate)
+		if cround in identifier_map:
+			total_cost += get_point_weight_scale(identifier_map.get(cround))
+		else:
+			return INF
+	return total_cost
+		

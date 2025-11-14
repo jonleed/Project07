@@ -29,6 +29,7 @@ func start_turn():
 
 # Main logic for Unit Manager - skeleton for the base class
 func _step_turn():
+	print(faction_name)
 	var unused_units = get_unused_units()
 	
 	# Base case - No unused units remaining
@@ -59,6 +60,7 @@ func create_unit_from_res(res:UnitResource)->Unit:
 	un.load_unit_res(res)
 	un.ready_entity()
 	un.add_to_group("Unit")
+	un.health_changed.connect(unit_health_updated)
 	un.health_changed.connect(remove_unit)
 	return un
 
@@ -69,6 +71,7 @@ func add_unit(unit: Unit,coord:Vector2i) -> void:
 			units.append(unit)
 			if not unit.get_parent():
 				add_child(unit)
+				unit.health_changed.connect(unit_health_updated)
 
 # Remove a unit from this unit manager
 func remove_unit(unit: Unit) -> void:
@@ -90,6 +93,8 @@ func reset_unit_turns() -> void:
 func get_unused_units() -> Array:
 	var unused_units = []
 	for u in units:
+		if not u:
+			continue
 		if (u.action_count>0 or u.move_count > 0) and u.health > 0:
 			unused_units.append(u)
 	return unused_units
@@ -97,6 +102,17 @@ func get_unused_units() -> Array:
 # Returns Unit's vector2i position
 func get_unit_position(unit: Unit)-> Vector2i:
 	return unit.cur_pos
+
+func unit_health_updated(given_entity:Entity) -> void:
+	if given_entity.health <= 0:
+		remove_unit(given_entity)
+
+## Used EXPLICITLY for NPC UNITS ONLY. (They need to be able to consider tiles with enemy units as they need to figure out how to get to that unit). 
+func move_unit_via_path(unit:Unit, path:PackedVector2Array, go_final_distance:bool=true):
+	var start_pos:Vector2i = unit.cur_pos
+	unit.move_down_path(path, go_final_distance)
+	var end_pos:Vector2i = unit.cur_pos
+	map_manager.entity_move(start_pos, end_pos)
 
 func move_unit(unit:Unit,coord:Vector2i):
 	map_manager.entity_move(unit.cur_pos,coord)
