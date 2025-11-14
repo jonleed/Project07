@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnt7illh76qd3"]
+
+[ext_resource type="Texture2D" uid="uid://bpsr4arpfau3c" path="res://assets/sprites/Template Trees 16x16.png" id="2_cgqth"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_no1s2"]
+atlas = ExtResource("2_cgqth")
+region = Rect2(97.301636, 17.048336, 13.108475, 7.710865)
+
+[node name="SpikeTrap" type="Node2D" groups=["Trap"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -0.5)
+texture = SubResource("AtlasTexture_no1s2")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
