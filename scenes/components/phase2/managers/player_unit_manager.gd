@@ -181,7 +181,7 @@ func _on_unit_deselected() -> void:
 	selected_action = null
 	emit_signal("unit_deselected")
 	enter_state(State.IDLE)
-	return
+
 
 ## Helper Functions
 func get_units() -> void:
@@ -193,9 +193,16 @@ func get_units() -> void:
 	reset_unit_turns() # Problematic if get_units() is run mid-turn
 	print("Getting Units: ", units)
 
+var game_over:bool = false
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
 		remove_unit(changed_node)
+		if units.is_empty():
+			print("GAME OVER")
+			game_over = true
+			await get_tree().process_frame
+			get_tree().change_scene_to_file("res://scenes/ui/main/Main-Menu.tscn")
+		refresh_gui()
 
 # Refreshes GUI
 func refresh_gui() -> void:
@@ -203,6 +210,8 @@ func refresh_gui() -> void:
 
 # Ends Turn Manager's Turn
 func end_turn() -> void:
+	if game_over:
+		return
 	print(faction_name, " Turn End")
 	refresh_gui()
 	_on_unit_deselected()
@@ -325,4 +334,5 @@ func create_unit_from_res(res:UnitResource)->PlayerUnit:
 	un.ready_entity()
 	un.add_to_group("Unit")
 	un.add_to_group("Player Unit")
+	un.health_changed.connect(_on_player_unit_health_changed)
 	return un

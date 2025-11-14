@@ -38,6 +38,7 @@ func create_unit_from_res(res:UnitResource)->Hostile_Unit:
 	un.ready_entity()
 	un.add_to_group("Unit")
 	un.add_to_group("Enemy Unit")
+	un.health_changed.connect(remove_unit)
 	return un
 
 func get_random_generator():

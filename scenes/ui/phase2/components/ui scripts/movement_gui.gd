@@ -8,7 +8,11 @@ func _ready():
 	player_unit_manager.connect("update_unit_display", Callable(self, "update_movement_label"))
 
 func update_movement_label(units):
+	if units.is_empty():
+		return
 	var unit = units[0]
+	if not unit:
+		return
 	if unit.move_count < 0:
 		visible = false
 	else: 

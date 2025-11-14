@@ -6,9 +6,8 @@
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_swvdy"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_0jk40"]
 [ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_xs4fo"]
-[ext_resource type="Texture2D" uid="uid://cghkwru6dteuo" path="res://assets/ui/jester.png" id="4_o4ar2"]
+[ext_resource type="Texture2D" uid="uid://dtehc3dorpg44" path="res://assets/ui/portraits/jester.png" id="4_c73w4"]
 [ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_xx0yu"]
-[ext_resource type="Texture2D" uid="uid://dtehc3dorpg44" path="res://assets/portraits/jester.png" id="4_c73w4"]
 
 [resource]
 script = ExtResource("2_swvdy")

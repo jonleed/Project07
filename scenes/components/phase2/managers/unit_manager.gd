@@ -74,8 +74,11 @@ func add_unit(unit: Unit,coord:Vector2i) -> void:
 
 # Remove a unit from this unit manager
 func remove_unit(unit: Unit) -> void:
-	if unit in units:
+	if unit.health>0:
+		return
+	if units.has(unit):
 		map_manager.map_dict.erase(unit.cur_pos)
+		map_manager.update_astar_solidity(unit.cur_pos)
 		units.erase(unit)
 		unit.queue_free()
 
@@ -89,6 +92,8 @@ func reset_unit_turns() -> void:
 func get_unused_units() -> Array:
 	var unused_units = []
 	for u in units:
+		if not u:
+			continue
 		if (u.action_count>0 or u.move_count > 0) and u.health > 0:
 			unused_units.append(u)
 	return unused_units
@@ -144,4 +149,3 @@ func attempt_to_move_unit(unit:Unit,target_coord: Vector2i):
 	
 	# Note: Your map_manager.entity_move function already sets
 	# unit.cur_pos = new_coord, so you don't need to do it here.
-
