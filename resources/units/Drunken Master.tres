@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_884dk"]
 [ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="3_gr4uv"]
 [ext_resource type="Resource" uid="uid://bcxt60sbegx3h" path="res://resources/range_patterns/debug pattern.tres" id="3_psyey"]
-[ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/portraits/drunkenmaster.png" id="4_3m1c4"]
+[ext_resource type="Texture2D" uid="uid://bbvaa4sifi6r4" path="res://assets/ui/portraits/drunkenmaster.png" id="4_3m1c4"]
 
 [sub_resource type="Resource" id="Resource_psyey"]
 script = ExtResource("2_3m1c4")

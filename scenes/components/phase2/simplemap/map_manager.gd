@@ -91,9 +91,12 @@ func entity_move(prev_coord:Vector2i, new_coord:Vector2i):
 
 		# The new spot is occupied by an entity, set solidity depending on entity type
 		if entity is Trap:
+			trap_dict.erase(prev_coord)
+			trap_dict[new_coord] = entity
 			astar_grid.set_point_solid(new_coord, false)
-		else:
-			astar_grid.set_point_solid(new_coord, true)
+		else: # Units should NOT make a tile solid.
+			astar_grid.set_point_solid(new_coord, false)
+
 		# --- END A* UPDATE ---
 
 func spawn_entity(entity:Entity, coord:Vector2i) -> bool:
@@ -107,6 +110,7 @@ func spawn_entity(entity:Entity, coord:Vector2i) -> bool:
 		# --- A* UPDATE ---
 		# If the thing we're spawning is a trap, keep the spot walkable.
 		if entity is Trap:
+			trap_dict[coord] = entity   # <-- FIX
 			astar_grid.set_point_solid(coord, false)
 		else:
 			# This spot is now occupied by a blocking entity, so it's solid

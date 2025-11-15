@@ -8,6 +8,7 @@ class_name EntityInitializer
 @export var player_manager: Player_Unit_Manager
 @export var enemy_manager: NPC_Manager
 @export var cursor: Cursor
+var initialized := false
 
 @export_subgroup("ENTITIES")
 #@export var player_entities:Array[UnitResource]
@@ -23,6 +24,7 @@ var trap_tiles: Dictionary[Vector2i,int] = {}
 
 
 func _ready() -> void:
+	call_deferred("_init_trap")
 	await map_manager.ready
 	get_tiles()
 	init_player_units()
@@ -124,7 +126,10 @@ func init_enemy_units():
 func init_traps():
 	if trap_manager == null:
 		push_error("Trap Manager is NULL during init_traps()!")
+		call_deferred("_init_trap")
 		return
+	print("[SpikeTrap] Trap initialized, manager = %s" % trap_manager)
+	initialized = true
 
 	for tile: Vector2i in trap_tiles:
 		var trap_index := trap_tiles[tile]
@@ -132,25 +137,18 @@ func init_traps():
 		if trap_index < 0 or trap_index >= trap_scenes.size():
 			printerr("Invalid trap index at tile: ", tile)
 			continue
-
-		var trap_scene = trap_scenes[trap_index]
-
-		# DEBUG — print the real type
-		print("trap_scene[", trap_index, "] = ", trap_scene, "   type: ", typeof(trap_scene))
-
-		# Hard check — MUST be a PackedScene
-		if not (trap_scene is PackedScene):
-			push_error("trap_scene[" + str(trap_index) + "] is NOT a PackedScene!")
+		
+		var trap_res:PackedScene = trap_scenes[trap_index]
+		if trap_res == null:
+			printerr("Trap resource at index ", trap_index, " is null.")
 			continue
-
-		# Correct instancing
-		var trap := trap_scene.instantiate()
-		trap_manager.add_child(trap)
-
-		trap.cur_pos = tile
-		trap.global_position = map_manager.coords_to_glob(tile)
-
-		trap_manager.add_trap(trap, tile)
-		map_manager.trap_dict[tile] = trap
-
+		
+		# instance and position the trap
+		var trap_instance:Node2D = trap_res.instantiate()
+		trap_manager.add_child(trap_instance)
+		trap_instance.position = map_manager.coords_to_glob(tile)
+		# add trap to map dictionary (so tiles know they are occupied)
+		
 		print("Spawned trap at ", tile)
+		
+		await get_tree().process_frame

@@ -10,6 +10,7 @@ var action_count: int = action_max
 @export_subgroup("Base Trap Values")
 @export var vision_dist: int = 5
 @export var map_manager: MapManager
+var trap_manager = Trap_Manager
 
 signal activation(trap: Trap)
 signal destroyed(trap: Trap)

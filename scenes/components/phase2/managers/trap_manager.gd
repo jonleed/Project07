@@ -46,6 +46,8 @@ func remove_trap(trap: Trap) -> void:
 	if trap in traps:
 		if map_manager.map_dict.has(trap.cur_pos):
 			map_manager.map_dict.erase(trap.cur_pos)
+			map_manager.trap_dict.erase(trap.coord)
+			map_manager.update_astar_solidity(trap.coord)
 		traps.erase(trap)
 		if is_instance_valid(trap):
 			trap.queue_free()
