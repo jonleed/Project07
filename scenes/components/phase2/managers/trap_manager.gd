@@ -53,17 +53,20 @@ func remove_trap(trap: Trap) -> void:
 			trap.queue_free()
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
-#func create_trap_from_res(res:Trap)->Trap:
-#	var trapper :Trap = trap_scene.instantiate()
-#	add_child(trapper)
-#
-#	trapper.t_res = res
-#	trapper.load_trap_res(res)
-#	trapper.ready_entity()
-#	trapper.add_to_group("Trap")
-#	return trapper
+func create_trap_from_res(res:PackedScene) -> Trap:
+	var trapper:Trap = res.instantiate()
+	add_child(trapper)
+	trapper.add_to_group("Trap")
+	trapper.action_decoder = action_decoder
+	return trapper
 
-#func create_trap_from_trap(trap: Node, trap_scene: PackedScene, coord: Vector2i) -> void:
-#	var new_trap: Trap = trap_scene.instantiate()
-#	add_trap(new_trap, coord)
-#	print(trap.name, "created a new trap at", coord)
+func reset_traps_turns() -> void:
+	for traps in traps:
+		traps.action_count = traps.action_max
+
+func get_unused_traps() -> Array:
+	var unused_traps = []
+	for t in traps:
+		if t.action_count>0:
+			unused_traps.append(t)
+	return unused_traps
