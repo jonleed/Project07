@@ -10,7 +10,6 @@ var action_count: int = action_max
 @export_subgroup("Base Trap Values")
 @export var vision_dist: int = 5
 @export var map_manager: MapManager
-var trap_manager = Trap_Manager
 
 signal activation(trap: Trap)
 signal destroyed(trap: Trap)
@@ -22,6 +21,7 @@ signal trap_ready(trap: Trap, global_pos: Vector2)
 
 
 func _ready() -> void:
+	call_deferred("_setup_trap")
 	var manager = get_tree().get_first_node_in_group("TrapManager")
 
 	if manager:
@@ -37,10 +37,13 @@ func _ready() -> void:
 func _assign_action_decoder() -> void:
 	if action_decoder == null:
 		# Look directly under root for ActionDecoder
-		var decoder = get_tree().get_root().find_child("ActionDecoder", true, false)
-		if decoder:
-			action_decoder = decoder
-			print("[Trap] Found ActionDecoder under root:", decoder)
+		#var decoder = get_tree().get_root().find_child("ActionDecoder", true, false)
+		var manager = get_tree().get_first_node_in_group("TrapManager")
+		#if decoder:
+		if manager:
+			action_decoder = manager.action_decoder
+		#	action_decoder = decoder
+			print("[Trap] Found ActionDecoder under root:", manager)
 		else:
 			push_warning("[Trap] Could not find ActionDecoder under root!")
 

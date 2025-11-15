@@ -7,6 +7,7 @@ var is_functional: bool = true
 @onready var trap_scene:Trap = $Trap
 @export var action_decoder:ActionDecoder
 #@onready var action_decoder: ActionDecoder = get_parent().get_node("ActionDecoder")
+var used_traps: Array = []
 
 func _ready() -> void:
 	print("[Trap_Manager] Ready, action_decoder =", action_decoder)
@@ -22,6 +23,7 @@ func get_traps() -> void:
 	for child in get_children():
 		if child is Trap:
 			traps.append(child)
+	reset_traps_turns()
 
 func add_trap(trap: Trap, coord: Vector2i) -> void:
 	if trap in traps:
