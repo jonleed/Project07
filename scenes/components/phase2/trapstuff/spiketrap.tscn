@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnt7illh76qd3"]
+[gd_scene load_steps=6 format=3 uid="uid://cnt7illh76qd3"]
 
+[ext_resource type="Script" path="res://scenes/components/phase2/trapstuff/spiketrap.gd" id="1_x5qbq"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_a0h2y"]
 [ext_resource type="Texture2D" uid="uid://bpsr4arpfau3c" path="res://assets/sprites/Template Trees 16x16.png" id="2_cgqth"]
+
+[sub_resource type="Resource" id="Resource_waqd0"]
+script = ExtResource("2_a0h2y")
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_no1s2"]
 atlas = ExtResource("2_cgqth")
 region = Rect2(97.301636, 17.048336, 13.108475, 7.710865)
 
 [node name="SpikeTrap" type="Node2D" groups=["Trap"]]
+script = ExtResource("1_x5qbq")
+attack_action = SubResource("Resource_waqd0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -0.5)

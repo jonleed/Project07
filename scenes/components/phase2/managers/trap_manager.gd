@@ -28,7 +28,6 @@ func add_trap(trap: Trap, coord: Vector2i) -> void:
 		return
 	if map_manager.spawn_entity(trap, coord):
 		traps.append(trap)
-		add_child(trap)
 		trap.action_decoder = action_decoder
 
 		trap.connect("activation", Callable(self, "_on_trap_activated"))
@@ -52,17 +51,17 @@ func remove_trap(trap: Trap) -> void:
 			trap.queue_free()
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
-func create_trap_from_res(res:Trap)->Trap:
-	var trapper :Trap = trap_scene.instantiate()
-	add_child(trapper)
+#func create_trap_from_res(res:Trap)->Trap:
+#	var trapper :Trap = trap_scene.instantiate()
+#	add_child(trapper)
+#
+#	trapper.t_res = res
+#	trapper.load_trap_res(res)
+#	trapper.ready_entity()
+#	trapper.add_to_group("Trap")
+#	return trapper
 
-	trapper.t_res = res
-	trapper.load_trap_res(res)
-	trapper.ready_entity()
-	trapper.add_to_group("Trap")
-	return trapper
-
-func create_trap_from_trap(trap: Node, trap_scene: PackedScene, coord: Vector2i) -> void:
-	var new_trap: Trap = trap_scene.instantiate()
-	add_trap(new_trap, coord)
-	print(trap.name, "created a new trap at", coord)
+#func create_trap_from_trap(trap: Node, trap_scene: PackedScene, coord: Vector2i) -> void:
+#	var new_trap: Trap = trap_scene.instantiate()
+#	add_trap(new_trap, coord)
+#	print(trap.name, "created a new trap at", coord)

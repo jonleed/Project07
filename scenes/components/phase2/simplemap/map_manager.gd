@@ -7,6 +7,7 @@ extends Node2D
 
 ##This map will hold everything in a Vector2i
 var map_dict:Dictionary ={}
+var trap_dict: Dictionary = {}
 var map_dict_all_non_wall_tiles:Dictionary
 
 ## A* grid for pathfinding, synced with map_dict
@@ -76,32 +77,40 @@ func get_surface_tile(coord:Vector2i)->int:
 	return 5
 
 ##this is the movement function for all members of the map dict dictionary
-func entity_move(prev_coord:Vector2i,new_coord:Vector2i):
+func entity_move(prev_coord:Vector2i, new_coord:Vector2i):
 	var entity = map_dict.get(prev_coord)
 	if entity and not entity is int:
 		map_dict.erase(prev_coord)
-		map_dict.set(new_coord,entity)
+		map_dict.set(new_coord, entity)
 		entity.cur_pos = new_coord
 		entity.global_position = coords_to_glob(new_coord)
 		
 		# --- A* UPDATE ---
 		# The old spot is now empty, so update its solidity based on the surface
-		update_astar_solidity(prev_coord) 
-		# The new spot is occupied by an entity, so it's solid
-		astar_grid.set_point_solid(new_coord, true)
+		update_astar_solidity(prev_coord)
+
+		# The new spot is occupied by an entity, set solidity depending on entity type
+		if entity is Trap:
+			astar_grid.set_point_solid(new_coord, false)
+		else:
+			astar_grid.set_point_solid(new_coord, true)
 		# --- END A* UPDATE ---
 
-func spawn_entity(entity:Entity,coord:Vector2i)->bool:
+func spawn_entity(entity:Entity, coord:Vector2i) -> bool:
 	# Check if the coordinate is valid (not solid)
-	if astar_grid.is_point_solid(coord): # <-- MODIFIED check
+	if astar_grid.is_point_solid(coord):
 		printerr("Tried to spawn entity in wall or inside another entity")
 		return false
 	else:
-		map_dict.set(coord,entity)
-		
+		map_dict.set(coord, entity)
+
 		# --- A* UPDATE ---
-		# This spot is now occupied, so it's solid
-		astar_grid.set_point_solid(coord, true)
+		# If the thing we're spawning is a trap, keep the spot walkable.
+		if entity is Trap:
+			astar_grid.set_point_solid(coord, false)
+		else:
+			# This spot is now occupied by a blocking entity, so it's solid
+			astar_grid.set_point_solid(coord, true)
 		# --- END A* UPDATE ---
 		
 		return true
@@ -199,12 +208,24 @@ func _initialize_astar_grid():
 			update_astar_solidity(coord)
 
 
-func update_astar_solidity(coord: Vector2i):
-	# 1. Check if an entity or wall (from init_walls) is at the coordinate
-	if map_dict.has(coord):
-		# If it's in map_dict, it's solid (either a wall or an entity)
-		astar_grid.set_point_solid(coord, true)
+func update_astar_solidity(coord: Vector2):
+	# 1a. If there's a trap at this coord, traps are walkable
+	if trap_dict.has(coord):
+		# trap = walkable
+		astar_grid.set_point_solid(coord, false)
 		return
+
+	# 1b. Check if an entity or wall (from init_walls) is at the coordinate
+	if map_dict.has(coord):
+		var value = map_dict[coord]
+		# allows traps stored in map_dict to be walked over
+		if value is Trap:
+			astar_grid.set_point_solid(coord, false) # trap = walkable
+			return
+		else:
+			# If it's in map_dict, it's solid (either a wall or a blocking entity)
+			astar_grid.set_point_solid(coord, true)
+			return
 
 	# 2. If the cell is empty in map_dict, check the surface type
 	var surface_type = get_surface_tile(coord)
@@ -217,7 +238,7 @@ func update_astar_solidity(coord: Vector2i):
 			# These are non-walkable surfaces
 			astar_grid.set_point_solid(coord, true)
 		_:
-			# Default for any other unknown tile type (like 5/Air)
+			# Default for any other unknown tile type
 			astar_grid.set_point_solid(coord, true)
 
 ## Calculates the shortest path, respecting obstacles.
