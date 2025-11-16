@@ -2,6 +2,7 @@ class_name Turn_Manager
 extends Node
 
 signal turn_banner_update(text: String)
+signal turn_started(manager)
 
 var unit_managers: Array[Unit_Manager] = []
 var cur_turn_index: int = 0
@@ -19,6 +20,7 @@ func start():
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
+	emit_signal("turn_started", current_manager)
 	print("On faction: ", unit_managers[cur_turn_index].faction_name)
 	
 	var has_units:bool = false

@@ -74,6 +74,9 @@ func get_trap_status() -> bool:
 	emit_signal("activation", self)
 	return has_activated
 
+func refresh_actions():
+	has_activated = false
+	action_count = action_max 
 
 func on_activate(_body: Node = null) -> void:
 	pass

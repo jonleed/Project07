@@ -19,6 +19,7 @@ func _on_body_entered(body: Node) -> void:
 	print("boom", body.name)
 	var entity = body.get_parent() if body.get_parent() is Entity else null
 	if has_activated or not is_functional:
+		print("thats the issue")
 		return
 	has_activated = true
 	print("boom ded:", entity.name)

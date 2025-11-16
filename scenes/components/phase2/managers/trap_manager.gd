@@ -4,12 +4,31 @@ extends Node
 @export var map_manager: MapManager
 var traps: Array[Trap] = []
 var is_functional: bool = true
-@onready var trap_scene:Trap = $Trap
-@export var action_decoder:ActionDecoder
+@onready var trap_scene: Trap = $Trap
+@export var action_decoder: ActionDecoder
 #@onready var action_decoder: ActionDecoder = get_parent().get_node("ActionDecoder")
 var used_traps: Array = []
+signal faction_turn_complete
+var faction_name = "Traps"
+
+
+func _on_turn_started(manager):
+	refresh_trap_actions()
+
+func refresh_trap_actions():
+	for trap in traps:
+		trap.refresh_actions()
+
+func start():
+	get_traps()
+	if traps.size() == 0:
+		end_turn()
 
 func _ready() -> void:
+	# listen to turn manager
+	get_parent().turn_started.connect(_on_turn_started)
+	# gather traps
+	get_traps()
 	print("[Trap_Manager] Ready, action_decoder =", action_decoder)
 
 
@@ -18,12 +37,21 @@ func reset_trap_turns() -> void:
 		trap.action_count = trap.action_max
 		trap.move_count = trap.move_max
 
+
+#func get_traps():
+#   traps.clear()
+#  for child in get_children():
+#     if child.has_method("refresh_actions"):
+#        traps.append(child)
+
+
 func get_traps() -> void:
 	traps.clear()
 	for child in get_children():
 		if child is Trap:
 			traps.append(child)
 	reset_traps_turns()
+
 
 func add_trap(trap: Trap, coord: Vector2i) -> void:
 	if trap in traps:
@@ -55,8 +83,8 @@ func remove_trap(trap: Trap) -> void:
 			trap.queue_free()
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
-func create_trap_from_res(res:PackedScene) -> Trap:
-	var trapper:Trap = res.instantiate()
+func create_trap_from_res(res: PackedScene) -> Trap:
+	var trapper: Trap = res.instantiate()
 	add_child(trapper)
 	trapper.add_to_group("Trap")
 	trapper.action_decoder = action_decoder
@@ -69,6 +97,19 @@ func reset_traps_turns() -> void:
 func get_unused_traps() -> Array:
 	var unused_traps = []
 	for t in traps:
-		if t.action_count>0:
+		if t.action_count > 0:
 			unused_traps.append(t)
 	return unused_traps
+
+func refresh_all_traps():
+	for trap in traps:
+		trap.action_count = trap.action_max
+		trap.move_count = trap.move_max
+
+func activate_traps():
+	for trap in traps:
+		trap.take_turn()  # Whatever method triggers them
+
+func end_turn():
+	print("Trap Manager Turn End")
+	emit_signal("faction_turn_complete")
