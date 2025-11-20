@@ -40,9 +40,6 @@ func create_unit_from_res(res:UnitResource)->Hostile_Unit:
 	un.add_to_group("Enemy Unit")
 	un.health_changed.connect(remove_unit)
 	return un
-
-func get_random_generator():
-	return get_parent().get_random_generator()
 	
 func get_pathfinder() -> Pathfinder:
 	return pathfinder
