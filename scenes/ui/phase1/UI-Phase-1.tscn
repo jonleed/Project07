@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c666g8lo54w1i" path="res://scenes/ui/phase1/ui-phase-1.gd" id="1_ho0fg"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_n6c17"]
-[ext_resource type="Resource" uid="uid://bc1k5rj4fsjdg" path="res://resources/units/simple_knight.tres" id="3_6im2j"]
+[ext_resource type="Resource" uid="uid://bb8hgw6ftjpnk" path="res://resources/units/The Knight.tres" id="3_aeh2h"]
 [ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/Drunken Master.tres" id="4_rrfk7"]
 [ext_resource type="Resource" uid="uid://pwf0s8sl0rli" path="res://resources/units/The Candle Witch.tres" id="5_aeh2h"]
 [ext_resource type="Resource" uid="uid://b7d4ceedmf682" path="res://resources/units/The Clown.tres" id="6_bjqky"]
@@ -10,7 +10,7 @@
 
 [node name="Ui-phase-1" type="Node" node_paths=PackedStringArray("unit_holder", "cur_party", "party_count", "proceed_button")]
 script = ExtResource("1_ho0fg")
-unit_resources = Array[ExtResource("2_n6c17")]([ExtResource("3_6im2j"), ExtResource("4_rrfk7"), ExtResource("5_aeh2h"), ExtResource("6_bjqky")])
+unit_resources = Array[ExtResource("2_n6c17")]([ExtResource("3_aeh2h"), ExtResource("4_rrfk7"), ExtResource("5_aeh2h"), ExtResource("6_bjqky")])
 unit_holder = NodePath("Control/Unit Holder/HBoxContainer")
 cur_party = NodePath("Control/PanelContainer/VBoxContainer/Cur Party/VBoxContainer")
 party_count = NodePath("Control/PanelContainer/VBoxContainer/Party Count")
