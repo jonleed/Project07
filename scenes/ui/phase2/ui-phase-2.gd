@@ -134,7 +134,7 @@ func highlight_selected_action(act:Action):
 	
 	var action_color:Color = Color.BLACK
 	
-	if act is Attackaction:
+	if act is Attackaction or Takeaction:
 		action_color = Color.RED
 	elif act is Healaction:
 		action_color = Color.GREEN

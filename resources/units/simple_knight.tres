@@ -1,13 +1,24 @@
 [gd_resource type="Resource" script_class="UnitResource" load_steps=10 format=3 uid="uid://bc1k5rj4fsjdg"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_vors4"]
-[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_mw41e"]
+[ext_resource type="Script" uid="uid://b2rrekllsqxk8" path="res://scenes/components/phase2/actions/actiontypes/take-action.gd" id="2_81c7v"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_o1d5v"]
-[ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="3_81c7v"]
-[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_pgwuu"]
-[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_j3dxb"]
+[ext_resource type="SpriteFrames" uid="uid://b60of5g33h0fw" path="res://resources/animations/The Clown.tres" id="4_81c7v"]
 [ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="4_q1kv2"]
-[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/ui/portraits/knight.png" id="5_81c7v"]
+[ext_resource type="Texture2D" uid="uid://cwgdkny3i76sj" path="res://assets/portraits/knight.png" id="5_81c7v"]
+
+[sub_resource type="Resource" id="Resource_81c7v"]
+script = ExtResource("4_q1kv2")
+affected_tiles = PackedVector2Array(1, -2, -1, -2, -2, -1, -2, 1, -1, 2, 1, 2, 2, 1, 2, -1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_q1kv2"]
+script = ExtResource("2_81c7v")
+base_dmg = 10
+range_pattern = SubResource("Resource_81c7v")
+range_dist = 3
+action_name = "Take"
+metadata/_custom_type_script = "uid://b2rrekllsqxk8"
 
 [sub_resource type="Resource" id="Resource_pil5w"]
 script = ExtResource("4_q1kv2")
@@ -16,10 +27,11 @@ metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 
 [resource]
 script = ExtResource("2_o1d5v")
-action_array = Array[ExtResource("1_vors4")]([ExtResource("2_mw41e"), ExtResource("3_pgwuu"), ExtResource("4_j3dxb")])
+action_array = Array[ExtResource("1_vors4")]([SubResource("Resource_q1kv2")])
+move_max = 0
 icon_sprite = ExtResource("5_81c7v")
 unit_name = "Knight"
 unit_desc = "[color=RED]Trapped[/color] within this porcelain body, the Knight yearns for the castle as it may hold the key to his liberation of his prison."
 entity_shape = SubResource("Resource_pil5w")
-anim_frames = ExtResource("3_81c7v")
+anim_frames = ExtResource("4_81c7v")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

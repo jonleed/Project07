@@ -235,7 +235,7 @@ func _on_tile_selection(target_coord: Vector2i):
 		emit_signal("tile_selection", target_coord)
 		return
 	if is_acting:
-		pass # TODO player_attempt_action
+		player_attempt_action_tile(target_coord)
 	else:
 		player_attempt_to_move_unit(target_coord)
 
@@ -307,8 +307,12 @@ func player_attempt_action(target_unit: Unit):
 		return
 
 	# 2. Prepare Array and Position for Decoder
-	var targets: Array[Entity] = [target_unit]
-	
+	var targets: Array[Entity]
+	if selected_action is Takeaction:
+		targets.append(selected_unit)
+	targets.append(target_unit)
+	print("Targets: ", targets)
+		
 	# 3. Decode and apply the effect ---
 	action_decoder.decode_action(selected_action, targets)
 	
@@ -321,6 +325,27 @@ func player_attempt_action(target_unit: Unit):
 		enter_state(State.ACTING)
 	else: 
 		_on_unit_deselected()
+
+func player_attempt_action_tile(target_coord: Vector2i):
+	if not selected_unit or not selected_action:
+		print("No selected unit/action.")
+		return
+	
+	# Movement-type action
+	var targets : Array[Entity] = [selected_unit]
+	selected_action.chosen_pos = target_coord
+	action_decoder.decode_action(selected_action, targets)
+
+	selected_unit.action_count = max(selected_unit.action_count - 1, 0)
+	refresh_gui()
+	
+	if selected_unit.action_count > 0:
+		enter_state(State.ACTING)
+	else: 
+		_on_unit_deselected()
+	
+	print("Action is not tile-based.")
+
 
 
 ## Unit Creation
