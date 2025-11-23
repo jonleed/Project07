@@ -15,6 +15,7 @@ signal movement_selection(unit:Unit) # Calls for Movement Highlights
 signal action_selection(act:Action) # Calls for Action Highlights
 signal enable_ui_inputs(enabled:bool) # Toogles UI Inputs
 signal unit_moved(unit:Unit) # Sends Unit position to Map Manager
+signal enemy_selected(unit:Unit) # Sends Enemy Unit to UI
 
 var selected_unit: Unit = null
 var selected_action: Action = null
@@ -149,6 +150,7 @@ func _on_unit_selected(unit:Unit) -> void:
 		return
 	if unit not in units: # Check if Player unit
 		print("Unit not a player unit")
+		emit_signal("enemy_selected", unit)
 		return
 	if unit.health <= 0:
 		print("Unit is dead.")

@@ -2,7 +2,7 @@ extends Unit
 class_name Hostile_Unit
 
 @export var enemy_res:AIResource = load("res://resources/AI/balls.tres")
-
+@onready var hp_label := $HPLabel
 var last_unit_to_damage_me:Entity = null
 
 func _ready() -> void:

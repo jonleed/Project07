@@ -33,6 +33,8 @@ func _ready() -> void:
 	player_unit_manager.movement_selection.connect(select_unit)
 	player_unit_manager.action_selection.connect(highlight_selected_action)
 	player_unit_manager.enable_ui_inputs.connect(_on_toggle_inputs)
+	player_unit_manager.enemy_selected.connect(select_enemy_unit)
+
 
 ## Helper Functions
 # Only Hides Movement GUI and Action Box
@@ -92,6 +94,8 @@ func select_tile(coord:Vector2i) -> void:
 
 ##this is a simple highlight example for a bfs targeting implementation
 func select_unit(unit: Unit) -> void:
+	if cur_unit_selected is Hostile_Unit:
+		cur_unit_selected.hp_label.hide()
 	_on_toggle_selected_unit_ui(true)
 	draw_unit_movement(unit)
 	load_unit_actions(unit)
@@ -104,7 +108,26 @@ func select_unit(unit: Unit) -> void:
 	#print(pattern_tiles)
 	map_manager.highlight_tiles(bfs_tiles,Color.BLUE,3)
 
+func select_enemy_unit(unit: Hostile_Unit) -> void:
+	if cur_unit_selected is Hostile_Unit:
+		cur_unit_selected.hp_label.hide()
+	draw_unit_movement(unit)
+	@warning_ignore("unused_variable")
+	var bfs_tiles = Globals.get_bfs_empty_tiles(unit.cur_pos,unit.move_count,map_manager)
+	#print("bfs tiles: ",bfs_tiles)
+	@warning_ignore("unused_variable")
+	var pattern_tiles = Globals.get_scaled_pattern_empty_tiles(unit.cur_pos,load("res://resources/range_patterns/debug pattern.tres"),unit.move_count,map_manager)
+	#print(pattern_tiles)
+	map_manager.highlight_tiles(bfs_tiles,Color.DARK_RED,3)
+	
+	# Show HP
+	unit.hp_label.show()
+	unit.hp_label.text = str(unit.health) 
+	cur_unit_selected = unit
+
 func deselect():
+	if cur_unit_selected is Hostile_Unit:
+		cur_unit_selected.hp_label.hide()
 	_on_toggle_selected_unit_ui(false)
 	# Clear Actions
 	clear_action_container()
