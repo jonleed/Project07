@@ -135,7 +135,7 @@ func use_action(given_action:Action, focus:Entity, consume_action:bool=true) -> 
 	if consume_action:
 		action_count -= 1
 	var units_to_affect:Array[Entity] = get_multihit_targets(given_action, focus, include_F, include_H)
-	cached_parent.action_decoder.decode_action(given_action, units_to_affect)
+	cached_parent.action_decoder.decode_action(given_action, units_to_affect, self)
 	
 	
 func _ready() -> void:

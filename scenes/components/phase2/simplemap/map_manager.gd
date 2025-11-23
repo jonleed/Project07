@@ -99,6 +99,28 @@ func entity_move(prev_coord:Vector2i, new_coord:Vector2i):
 
 		# --- END A* UPDATE ---
 
+func swap_entities(entity_a:Entity, entity_b:Entity) -> void:
+	# Store current positions
+	var pos_a = entity_a.cur_pos
+	var pos_b = entity_b.cur_pos
+
+	# Swap entities in the map dictionary
+	map_dict[pos_a] = entity_b
+	map_dict[pos_b] = entity_a
+
+	# Update each entity's current position
+	entity_a.cur_pos = pos_b
+	entity_b.cur_pos = pos_a
+
+	# Update their global positions 
+	entity_a.global_position = coords_to_glob(pos_b)
+	entity_b.global_position = coords_to_glob(pos_a)
+
+	# Update A* grid for both positions
+	update_astar_solidity(pos_a)
+	update_astar_solidity(pos_b)
+
+
 func spawn_entity(entity:Entity, coord:Vector2i) -> bool:
 	# Check if the coordinate is valid (not solid)
 	if astar_grid.is_point_solid(coord):
@@ -212,7 +234,7 @@ func _initialize_astar_grid():
 			update_astar_solidity(coord)
 
 
-func update_astar_solidity(coord: Vector2):
+func update_astar_solidity(coord: Vector2i):
 	# 1a. If there's a trap at this coord, traps are walkable
 	if trap_dict.has(coord):
 		# trap = walkable

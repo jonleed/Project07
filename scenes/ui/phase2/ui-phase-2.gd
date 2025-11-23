@@ -134,12 +134,22 @@ func highlight_selected_action(act:Action):
 	
 	var action_color:Color = Color.BLACK
 	
-	if act is Attackaction or Takeaction:
+	if act is Attackaction or act is Takeaction or act is Pushaction:
 		action_color = Color.RED
 	elif act is Healaction:
 		action_color = Color.GREEN
 	elif act is Moveaction:
 		action_color = Color.BLUE
+	elif act is Swapaction: # Only highlights selectable units
+		action_color = Color.BLUE_VIOLET
+		# Filter only tiles with an Entity on them
+		var entity_tiles:Array[Vector2i] = []
+		for tile in assembled_tiles:
+			var entity = map_manager.map_dict.get(tile, null)
+			if entity != null and entity is Entity:
+				entity_tiles.append(tile)
+		assembled_tiles = entity_tiles
+		
 	
 	highlight_action_tiles.emit(assembled_tiles,action_color,1)
 

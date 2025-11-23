@@ -49,6 +49,8 @@ func _unhandled_input(event):
 		elif entity is Entity:
 			print("Selected entity:", entity.name)
 			#emit_signal("entity_selected", entity)
+		else: 
+			print("Selected Wall")
 	
 	# Right click: Deselect
 	if event.is_action_pressed("Cancel"):
