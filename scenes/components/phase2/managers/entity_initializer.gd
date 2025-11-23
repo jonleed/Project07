@@ -122,6 +122,7 @@ func init_enemy_units():
 		new_unit.cur_pos = tile
 		new_unit.global_position = map_manager.coords_to_glob(tile)
 		await get_tree().process_frame
+		new_unit._ready()
 
 func init_traps():
 	if trap_manager == null:

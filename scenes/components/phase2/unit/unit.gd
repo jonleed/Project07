@@ -46,6 +46,7 @@ func load_unit_res(unit_res:UnitResource = null):
 	immortal = unit_res.immortal
 	entity_shape = unit_res.entity_shape
 	anim_frames = unit_res.anim_frames
+	u_res = unit_res
 	
 	
 func get_move_actions() -> Array[Moveaction]:

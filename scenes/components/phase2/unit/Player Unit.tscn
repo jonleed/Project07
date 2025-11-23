@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkc3adf4mya06"]
+[gd_scene load_steps=3 format=3 uid="uid://bkc3adf4mya06"]
 
 [ext_resource type="Script" uid="uid://eyowdp8e6dvu" path="res://scenes/components/phase2/unit/ally_unit.gd" id="1_ywkuo"]
+[ext_resource type="SpriteFrames" uid="uid://hby45fjcyarn" path="res://resources/animations/Blue Staff.tres" id="2_6usev"]
 
 [node name="PlayerUnit" type="Node2D"]
 script = ExtResource("1_ywkuo")
@@ -14,5 +15,6 @@ polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 [node name="Polygon2D" type="Polygon2D" parent="CharacterBody2D/CollisionPolygon2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -11)
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -5)
+sprite_frames = ExtResource("2_6usev")
+animation = &"Idle"

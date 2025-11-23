@@ -18,3 +18,6 @@ class_name UnitResource
 @export_subgroup("Entity Sprite")
 ##The anim frames that set this entity up
 @export var anim_frames:SpriteFrames
+
+@export_subgroup("AI Resource")
+@export var ai_res:AIResource

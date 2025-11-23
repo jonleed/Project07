@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AIResource" load_steps=2 format=3 uid="uid://cviieragvuii5"]
+
+[ext_resource type="Script" uid="uid://uxrkokbhg10a" path="res://resources/AI/enemy_AI_Resource.gd" id="1_4jqny"]
+
+[resource]
+script = ExtResource("1_4jqny")
+when_to_retreat = 2
+who_to_attack = 2
+who_to_support = 1
+metadata/_custom_type_script = "uid://uxrkokbhg10a"

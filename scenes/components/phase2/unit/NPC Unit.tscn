@@ -1,13 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://yhexcc5dvlyi"]
+[gd_scene load_steps=3 format=3 uid="uid://yhexcc5dvlyi"]
 
 [ext_resource type="Script" uid="uid://i4qgjsqm1kmh" path="res://scenes/components/phase2/unit/hostile_unit.gd" id="1_tp0p1"]
+[ext_resource type="SpriteFrames" uid="uid://hby45fjcyarn" path="res://resources/animations/Blue Staff.tres" id="2_05fyr"]
 
 [node name="NpcUnit" type="Node2D"]
 script = ExtResource("1_tp0p1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -11)
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -5)
+sprite_frames = ExtResource("2_05fyr")
+animation = &"Idle"
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1

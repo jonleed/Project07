@@ -1,14 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://bls2opb520x44"]
+[gd_scene load_steps=3 format=3 uid="uid://bls2opb520x44"]
 
 [ext_resource type="Script" uid="uid://b2kcev8dkaef8" path="res://scenes/components/phase2/unit/unit.gd" id="1_o1srr"]
+[ext_resource type="SpriteFrames" uid="uid://cp8hl2xycbikj" path="res://resources/animations/Blue Thief.tres" id="2_mxrov"]
 
 [node name="BaseUnit" type="Node2D"]
 script = ExtResource("1_o1srr")
 metadata/_custom_type_script = "uid://b2kcev8dkaef8"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -11)
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -5)
+sprite_frames = ExtResource("2_mxrov")
+animation = &"Idle"
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1

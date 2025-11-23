@@ -1,0 +1,65 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://bpc0r5di0h4q4"]
+
+[ext_resource type="Texture2D" uid="uid://dve3u8winy0ny" path="res://assets/sprites/spritesheets/Enemies/Enemies.png" id="1_2kxn8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xrw1w"]
+atlas = ExtResource("1_2kxn8")
+region = Rect2(0, 476, 16, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6slyc"]
+atlas = ExtResource("1_2kxn8")
+region = Rect2(16, 476, 16, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c616a"]
+atlas = ExtResource("1_2kxn8")
+region = Rect2(32, 476, 16, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ykab"]
+atlas = ExtResource("1_2kxn8")
+region = Rect2(48, 476, 16, 17)
+
+[resource]
+resource_local_to_scene = true
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Attack ",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xrw1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6slyc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c616a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ykab")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
