@@ -52,7 +52,7 @@ func on_activate(node = null) -> void:
 	var trap_action := Attackaction.new()
 	trap_action.dmg = trap_damage 
 	var typed_targets: Array[Entity] = targets
-	action_decoder.decode_action(trap_action, typed_targets)
+	action_decoder.decode_action(trap_action, typed_targets, self)
 
 	#was tempted to do the recursive version to make it spooky but we left that in cs1
 func find_entity(node: Node) -> Entity:
