@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_swm1y"]
 [ext_resource type="Script" uid="uid://c2x51a1xu8lbn" path="res://scenes/components/phase2/actions/actiontypes/swap-action.gd" id="3_2as78"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_f2ci8"]
-[ext_resource type="SpriteFrames" uid="uid://daih2w6ig4850" path="res://resources/animations/Ghost.tres" id="4_2as78"]
+[ext_resource type="SpriteFrames" uid="uid://dyuiyl8ek12f5" path="res://resources/animations/CandleWitch.tres" id="4_2as78"]
 [ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/portraits/candlewitch.png" id="4_suwkm"]
 
 [sub_resource type="Resource" id="Resource_2as78"]
@@ -27,7 +27,7 @@ action_array = Array[ExtResource("1_vp64j")]([SubResource("Resource_2as78"), Sub
 move_max = 13
 icon_sprite = ExtResource("4_suwkm")
 unit_name = "Candle Witch"
-unit_desc = "She seeks the bounty of the Castle of Metal and Soul not for gold or glory, but for its rare alloyed essence—living steel infused with the echoes of forgotten spirits. To her, this bounty is [b]sacred[/b]. With it, she can forge [color=yellow]eternal[/color] candles that burn with the soul of the castle itself."
+unit_desc = "When the candle that lights her head finally consumes her, she will be reborn as the Puddle Witch."
 base_health = 7
 entity_shape = ExtResource("3_f2ci8")
 anim_frames = ExtResource("4_2as78")

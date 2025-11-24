@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bkc3adf4mya06"]
 
 [ext_resource type="Script" uid="uid://eyowdp8e6dvu" path="res://scenes/components/phase2/unit/ally_unit.gd" id="1_ywkuo"]
-[ext_resource type="SpriteFrames" uid="uid://hby45fjcyarn" path="res://resources/animations/Blue Staff.tres" id="2_6usev"]
+[ext_resource type="SpriteFrames" uid="uid://dtn6wx28yla5y" path="res://resources/animations/WoodImp.tres" id="2_6usev"]
 
 [node name="PlayerUnit" type="Node2D"]
 script = ExtResource("1_ywkuo")
@@ -18,3 +18,5 @@ polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 position = Vector2(0, -5)
 sprite_frames = ExtResource("2_6usev")
 animation = &"Idle"
+autoplay = "Idle"
+frame_progress = 0.69158477

@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://c42x1nkcr0oca"]
+
+[ext_resource type="Texture2D" uid="uid://rgpbxxnbmjo4" path="res://assets/sprites/spritesheets/Enemies/Players.png" id="1_iwuer"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwuer"]
+atlas = ExtResource("1_iwuer")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ud0gq"]
+atlas = ExtResource("1_iwuer")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_il0mh"]
+atlas = ExtResource("1_iwuer")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cn5pr"]
+atlas = ExtResource("1_iwuer")
+region = Rect2(48, 16, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwuer")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ud0gq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_il0mh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cn5pr")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
