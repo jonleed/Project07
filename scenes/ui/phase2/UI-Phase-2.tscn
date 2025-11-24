@@ -529,17 +529,19 @@ grow_vertical = 2
 alignment = 1
 
 [node name="EndTurnBTN" type="Button" parent="Turn Control GUI/HBoxContainer"]
-custom_minimum_size = Vector2(150, 40)
+custom_minimum_size = Vector2(340, 40)
 layout_mode = 2
 text = "End Turn"
 
 [node name="UndoBTN" type="Button" parent="Turn Control GUI/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(85, 40)
 layout_mode = 2
 text = "Undo 
 Move"
 
 [node name="ResetBTN" type="Button" parent="Turn Control GUI/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(85, 40)
 layout_mode = 2
 text = "Reset 
