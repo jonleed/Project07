@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AIResource" load_steps=2 format=3 uid="uid://c2r6btjeqv83a"]
+
+[ext_resource type="Script" uid="uid://uxrkokbhg10a" path="res://resources/AI/enemy_AI_Resource.gd" id="1_nls8c"]
+
+[resource]
+script = ExtResource("1_nls8c")
+LOW_HEALTH_THRESHOLD = 0.3
+MID_HEALTH_THRESHOLD = 0.7
+THREATENING_DISTANCE = 7.0
+when_to_retreat = 2
+where_to_retreat_to = 1
+who_to_attack = 2
+who_to_support = 1
+metadata/_custom_type_script = "uid://uxrkokbhg10a"

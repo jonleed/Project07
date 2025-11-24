@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://b7d4ceedmf682"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=10 format=3 uid="uid://b7d4ceedmf682"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_6jcb4"]
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_0jk40"]
-[ext_resource type="SpriteFrames" uid="uid://b60of5g33h0fw" path="res://resources/animations/The Clown.tres" id="2_c73w4"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_swvdy"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_0jk40"]
+[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="3_o4ar2"]
 [ext_resource type="Texture2D" uid="uid://dtehc3dorpg44" path="res://assets/portraits/jester.png" id="4_c73w4"]
+[ext_resource type="SpriteFrames" uid="uid://ca430wjndocw4" path="res://resources/animations/Imp Mace.tres" id="4_o4ar2"]
 
 [sub_resource type="Resource" id="Resource_o4ar2"]
 script = ExtResource("2_0jk40")
@@ -13,14 +14,22 @@ base_dmg = 10
 range_type = 1
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
+[sub_resource type="Resource" id="Resource_mivav"]
+script = ExtResource("3_o4ar2")
+base_dmg = 2
+bonus_dmg = 1
+range_type = 1
+action_name = "Push"
+metadata/_custom_type_script = "uid://c6t7k8tj8427g"
+
 [resource]
 script = ExtResource("2_swvdy")
-action_array = Array[ExtResource("1_6jcb4")]([SubResource("Resource_o4ar2")])
+action_array = Array[ExtResource("1_6jcb4")]([SubResource("Resource_o4ar2"), SubResource("Resource_mivav")])
 action_max = 2
 move_max = 3
 icon_sprite = ExtResource("4_c73w4")
 unit_name = "The Clown"
 unit_desc = "He seeks the bounty not for fame, but for [color=purple]flair[/color]. With the castle’s artifacts, he could bend light into laughter, summon illusions that dance on air, and choreograph [color=red]chaos[/color] with precision."
 entity_shape = ExtResource("3_0jk40")
-anim_frames = ExtResource("2_c73w4")
+anim_frames = ExtResource("4_o4ar2")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

@@ -1,13 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://yhexcc5dvlyi"]
+[gd_scene load_steps=4 format=3 uid="uid://yhexcc5dvlyi"]
 
 [ext_resource type="Script" uid="uid://i4qgjsqm1kmh" path="res://scenes/components/phase2/unit/hostile_unit.gd" id="1_tp0p1"]
+[ext_resource type="SpriteFrames" uid="uid://hby45fjcyarn" path="res://resources/animations/Blue Staff.tres" id="2_05fyr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_05fyr"]
+font_color = Color(0.3198, 0.82, 0.38649338, 1)
 
 [node name="NpcUnit" type="Node2D"]
 script = ExtResource("1_tp0p1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -11)
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -5)
+sprite_frames = ExtResource("2_05fyr")
+animation = &"Idle"
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1
@@ -16,3 +21,13 @@ motion_mode = 1
 polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 
 [node name="Polygon2D" type="Polygon2D" parent="CharacterBody2D/CollisionPolygon2D"]
+
+[node name="HPLabel" type="Label" parent="."]
+visible = false
+offset_left = -2.0
+offset_top = -21.0
+offset_right = 8.0
+offset_bottom = 2.0
+scale = Vector2(0.5, 0.5)
+text = "8"
+label_settings = SubResource("LabelSettings_05fyr")

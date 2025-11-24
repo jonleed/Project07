@@ -46,6 +46,7 @@ func load_unit_res(unit_res:UnitResource = null):
 	immortal = unit_res.immortal
 	entity_shape = unit_res.entity_shape
 	anim_frames = unit_res.anim_frames
+	u_res = unit_res
 	
 	
 func get_move_actions() -> Array[Moveaction]:
@@ -135,7 +136,7 @@ func use_action(given_action:Action, focus:Entity, consume_action:bool=true) -> 
 	if consume_action:
 		action_count -= 1
 	var units_to_affect:Array[Entity] = get_multihit_targets(given_action, focus, include_F, include_H)
-	cached_parent.action_decoder.decode_action(given_action, units_to_affect)
+	cached_parent.action_decoder.decode_action(given_action, units_to_affect, self)
 	
 	
 func _ready() -> void:

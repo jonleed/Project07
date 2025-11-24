@@ -15,6 +15,7 @@ signal movement_selection(unit:Unit) # Calls for Movement Highlights
 signal action_selection(act:Action) # Calls for Action Highlights
 signal enable_ui_inputs(enabled:bool) # Toogles UI Inputs
 signal unit_moved(unit:Unit) # Sends Unit position to Map Manager
+signal enemy_selected(unit:Unit) # Sends Enemy Unit to UI
 
 var selected_unit: Unit = null
 var selected_action: Action = null
@@ -149,6 +150,7 @@ func _on_unit_selected(unit:Unit) -> void:
 		return
 	if unit not in units: # Check if Player unit
 		print("Unit not a player unit")
+		emit_signal("enemy_selected", unit)
 		return
 	if unit.health <= 0:
 		print("Unit is dead.")
@@ -307,14 +309,12 @@ func player_attempt_action(target_unit: Unit):
 		return
 
 	# 2. Prepare Array and Position for Decoder
-	var targets: Array[Entity]
-	if selected_action is Takeaction:
-		targets.append(selected_unit)
+	var targets: Array[Entity] = []
 	targets.append(target_unit)
 	print("Targets: ", targets)
 		
 	# 3. Decode and apply the effect ---
-	action_decoder.decode_action(selected_action, targets)
+	action_decoder.decode_action(selected_action, targets, selected_unit)
 	
 	# 4. Reduce action count and go back to idle
 	selected_unit.action_count = max(selected_unit.action_count - 1, 0)
@@ -330,11 +330,13 @@ func player_attempt_action_tile(target_coord: Vector2i):
 	if not selected_unit or not selected_action:
 		print("No selected unit/action.")
 		return
+	if selected_action is not Moveaction and selected_action is not Takeaction:
+		print("Cannot use action on tile") 
+		return
 	
-	# Movement-type action
-	var targets : Array[Entity] = [selected_unit]
+	var targets : Array[Entity] = []
 	selected_action.chosen_pos = target_coord
-	action_decoder.decode_action(selected_action, targets)
+	action_decoder.decode_action(selected_action, targets, selected_unit)
 
 	selected_unit.action_count = max(selected_unit.action_count - 1, 0)
 	refresh_gui()
@@ -343,8 +345,6 @@ func player_attempt_action_tile(target_coord: Vector2i):
 		enter_state(State.ACTING)
 	else: 
 		_on_unit_deselected()
-	
-	print("Action is not tile-based.")
 
 
 

@@ -1,56 +1,28 @@
 extends Unit
 class_name Hostile_Unit
 
-enum when_to_retreat {
-	WHEN_THREATENED, # Ie, an enemy unit is within X distance
-	MID_HEALTH, # Retreat at a higher health threshold
-	LOW_HEALTH, # Retreat at the 'standard' health threshold
-	NEVER # Never Retreat
-}
-
-enum where_to_retreat_to {
-	TO_CLOSEST_FRIEND,
-	TO_FURTHEST_POINT_FROM_CLOSEST_ENEMY
-}
-
-enum who_to_attack {
-	LAST_TO_DAMAGE, # Target the unit to last attack you; Otherwise, go for the closest
-	LOWEST_HEALTH, # Go for the unit with the least health
-	CLOSEST
-}
-
-enum who_to_support {
-	LOWEST_HEALTH,
-	CLOSEST
-}
-
-enum type_of_unit {
-	ATTACKER,
-	SUPPORTER
-}
-
-
-var retreat_location_behaviour:int = where_to_retreat_to.TO_CLOSEST_FRIEND
-var retreat_behaviour:int = when_to_retreat.LOW_HEALTH
-var attack_behaviour:int = who_to_attack.CLOSEST
-var support_behaviour:int = who_to_support.CLOSEST
-var unit_type_behaviour:int = type_of_unit.ATTACKER
+@export var enemy_res:AIResource = load("res://resources/AI/balls.tres")
+@onready var hp_label := $HPLabel
 var last_unit_to_damage_me:Entity = null
 
 func _ready() -> void:
-	pass
+	if u_res:
+		print("URES")
+	if u_res and u_res.ai_res:
+		enemy_res = u_res.ai_res
+		print("EXCHANGE")
 	
-func set_retreat_behaviour(provided_behaviour:int) -> void:
-	if provided_behaviour in when_to_retreat:
-		retreat_behaviour = provided_behaviour
-		
-func set_retreat_location(provided_behaviour:int) -> void:
-	if provided_behaviour in where_to_retreat_to:
-		retreat_location_behaviour = provided_behaviour
-
-func set_attack_behaviour(provided_behaviour:int) -> void:
-	if provided_behaviour in who_to_attack:
-		attack_behaviour = provided_behaviour
+#func set_enemy_res.when_to_retreat(provided_behaviour:int) -> void:
+	#if provided_behaviour in when_to_retreat:
+		#enemy_res.when_to_retreat = provided_behaviour
+		#
+#func set_retreat_location(provided_behaviour:int) -> void:
+	#if provided_behaviour in where_to_retreat_to:
+		#enemy_res.where_to_retreat_to = provided_behaviour
+#
+#func set_enemy_res.who_to_attack(provided_behaviour:int) -> void:
+	#if provided_behaviour in who_to_attack:
+		#enemy_res.who_to_attack = provided_behaviour
 		
 
 func execute_turn() -> void:
@@ -72,7 +44,7 @@ var enemy_that_we_care_about:Entity = null
 var friend_that_we_care_about:Entity = null
 
 func determine_enemy_we_care_about() -> void:
-	if attack_behaviour == Hostile_Unit.who_to_attack.LAST_TO_DAMAGE:
+	if enemy_res.who_to_attack == 0: #LAST TO DAMAGE
 		if last_unit_to_damage_me != null:
 			enemy_that_we_care_about = last_unit_to_damage_me
 		else:
@@ -98,7 +70,7 @@ func get_minimal_enemy(check_closest_override:bool=false) -> Entity:
 			var enemy_unit_pos:Vector2i = enemy_unit.cur_pos
 			var dist_to_enemy:float = enemy_unit_pos.distance_to(cur_pos)
 			var used_value:float = dist_to_enemy
-			if (not check_closest_override and attack_behaviour == Hostile_Unit.who_to_attack.LOWEST_HEALTH):
+			if (not check_closest_override and enemy_res.who_to_attack == 1):#Lowest Health
 				used_value = enemy_unit.health
 			if used_value < minimal_value:
 				minimal_value = used_value
@@ -122,7 +94,7 @@ func get_minimal_friendly(plan_pos:Vector2i, check_closest_override:bool=false) 
 			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
 			var dist_to_friendly:float = friendly_unit_pos.distance_to(plan_pos)
 			var used_value:float = dist_to_friendly
-			if (not check_closest_override and support_behaviour == Hostile_Unit.who_to_support.LOWEST_HEALTH):
+			if (not check_closest_override and enemy_res.who_to_support == 0):#Lowest Health
 				used_value = friendly_unit.health
 			if used_value < minimal_value:
 				minimal_value = used_value
@@ -151,15 +123,15 @@ func acting_state() -> void:
 		action_failed = true
 		return
 		
-	if unit_type_behaviour == type_of_unit.ATTACKER:
+	if enemy_res.type_of_unit == 0:#Attacker
 		attacking_state()
-	elif unit_type_behaviour == type_of_unit.SUPPORTER:
+	elif enemy_res.type_of_unit == 1:#Supporter
 		supporting_state()
 		
 	if action_failed:
-		if unit_type_behaviour == type_of_unit.ATTACKER:
+		if enemy_res.type_of_unit == 0:#Attacker
 			supporting_state()
-		elif unit_type_behaviour == type_of_unit.SUPPORTER:
+		elif enemy_res.type_of_unit == 1:#Supporter
 			attacking_state()
 	
 	return
@@ -203,16 +175,16 @@ func moving_state() -> void:
 	return
 	
 func should_we_should_retreat() -> bool:
-	match retreat_behaviour:
-		Hostile_Unit.when_to_retreat.NEVER:
+	match enemy_res.when_to_retreat:
+		3:#NEVER
 			return false
-		Hostile_Unit.when_to_retreat.LOW_HEALTH:
-			if health <= Globals.LOW_HEALTH_THRESHOLD:
+		2:#LOW Health
+			if health <= int(base_health*enemy_res.LOW_HEALTH_THRESHOLD):
 				return true
-		Hostile_Unit.when_to_retreat.MID_HEALTH:
-			if health <= Globals.MID_HEALTH_THRESHOLD:
+		1:#MED Health
+			if health <= int(base_health*enemy_res.MID_HEALTH_THRESHOLD):
 				return true
-		Hostile_Unit.when_to_retreat.WHEN_THREATENED:
+		0:#THREATENED
 			for enemy_faction_name in get_enemy_unit_factions():
 				# Skip our own faction, just in case it somehow ended up in enemy factions
 				if enemy_faction_name == cached_parent.faction_name:
@@ -221,7 +193,7 @@ func should_we_should_retreat() -> bool:
 				# Fetch all units belonging to this enemy faction	
 				var unit_array:Array = get_tree().get_nodes_in_group(enemy_faction_name)		
 				for enemy_unit in unit_array:
-					if enemy_unit.cur_pos.distance_to(cur_pos) <= Globals.THREATENING_DISTANCE:
+					if enemy_unit.cur_pos.distance_to(cur_pos) <= enemy_res.THREATENING_DISTANCE:
 						return true
 	return false
 	
@@ -234,7 +206,7 @@ func convert_to_unit_vector(provided_coordinate:Vector2i) -> Vector2i:
 	
 func retreat_to_furthest_point_from_closest_enemy() -> Vector2i:
 	var closest_enemy:Entity = null
-	if enemy_that_we_care_about != null and attack_behaviour == Hostile_Unit.who_to_attack.CLOSEST:
+	if enemy_that_we_care_about != null and enemy_res.who_to_attack == 2:#CLOSEST
 		closest_enemy = enemy_that_we_care_about
 	else:
 		closest_enemy = get_minimal_enemy(true)
@@ -285,7 +257,7 @@ func retreat_to_friend() -> Vector2i:
 	
 func running_state() -> void:
 	var retreat_coordinate:Vector2i = Vector2i(-INF, -INF)
-	if retreat_location_behaviour == Hostile_Unit.where_to_retreat_to.TO_FURTHEST_POINT_FROM_CLOSEST_ENEMY:
+	if enemy_res.where_to_retreat_to == 1:#FURTHEST POINT FROM CLOSEST ENEMY
 		retreat_coordinate = retreat_to_furthest_point_from_closest_enemy()
 	else:
 		retreat_coordinate = retreat_to_friend()
@@ -351,7 +323,7 @@ func rushing_state() -> void:
 	var acting_point = Vector2i(-INF, -INF)
 	cached_attack_action = null
 	cached_support_action = null
-	if unit_type_behaviour == type_of_unit.ATTACKER:
+	if enemy_res.type_of_unit == 0:#ATTACKER
 		if enemy_that_we_care_about != null:
 			var returned_data:Array = get_point_to_act_from(true, enemy_that_we_care_about)
 			acting_point = returned_data[0]
@@ -360,7 +332,7 @@ func rushing_state() -> void:
 			var returned_data:Array = get_point_to_act_from(false, friend_that_we_care_about)
 			acting_point = returned_data[0]
 			cached_support_action = returned_data[1]
-	elif unit_type_behaviour == type_of_unit.SUPPORTER:
+	elif enemy_res.type_of_unit == 1:#SUPPORTER
 		if friend_that_we_care_about != null:
 			var returned_data:Array = get_point_to_act_from(false, friend_that_we_care_about)
 			acting_point = returned_data[0]

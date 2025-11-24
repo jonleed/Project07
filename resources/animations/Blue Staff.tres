@@ -1,21 +1,21 @@
-[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://derp57aoc7x0k"]
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://hby45fjcyarn"]
 
-[ext_resource type="Texture2D" uid="uid://dve3u8winy0ny" path="res://assets/sprites/spritesheets/Enemies/Enemies.png" id="1_hip2x"]
+[ext_resource type="Texture2D" uid="uid://7j2k31buo13i" path="res://assets/sprites/spritesheets/Enemies/Enemies.png" id="1_0u77k"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x5oj2"]
-atlas = ExtResource("1_hip2x")
+atlas = ExtResource("1_0u77k")
 region = Rect2(0, 34, 16, 17)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ugbg6"]
-atlas = ExtResource("1_hip2x")
+atlas = ExtResource("1_0u77k")
 region = Rect2(16, 34, 16, 17)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dvx2m"]
-atlas = ExtResource("1_hip2x")
+atlas = ExtResource("1_0u77k")
 region = Rect2(32, 34, 16, 17)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n1vh7"]
-atlas = ExtResource("1_hip2x")
+atlas = ExtResource("1_0u77k")
 region = Rect2(48, 34, 16, 17)
 
 [resource]

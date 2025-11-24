@@ -33,6 +33,7 @@ func ready_entity():
 	if anim_frames:
 		if anim_frames.get_animation_names().has("Idle"):
 			anim_sprite.animation = "Idle"
+			anim_sprite.play()
 
 
 ##this current position represents the tile coordinate the entity is on
