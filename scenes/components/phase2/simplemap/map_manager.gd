@@ -212,7 +212,7 @@ func _initialize_astar_grid():
 			update_astar_solidity(coord)
 
 
-func update_astar_solidity(coord: Vector2):
+func update_astar_solidity(coord: Vector2i):
 	# 1a. If there's a trap at this coord, traps are walkable
 	if trap_dict.has(coord):
 		# trap = walkable

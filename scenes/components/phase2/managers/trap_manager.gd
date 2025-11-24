@@ -8,49 +8,31 @@ var is_functional: bool = true
 @export var action_decoder: ActionDecoder
 #@onready var action_decoder: ActionDecoder = get_parent().get_node("ActionDecoder")
 var used_traps: Array = []
-signal faction_turn_complete
 var faction_name = "Traps"
 
-
-func _on_turn_started(manager):
-	refresh_trap_actions()
-
-func refresh_trap_actions():
-	for trap in traps:
-		trap.refresh_actions()
-
-func start():
-	get_traps()
-	if traps.size() == 0:
-		end_turn()
-
 func _ready() -> void:
-	# listen to turn manager
-	get_parent().turn_started.connect(_on_turn_started)
 	# gather traps
 	get_traps()
-	print("[Trap_Manager] Ready, action_decoder =", action_decoder)
-
+	print("Trap_Manager Ready, action_decoder =", action_decoder)
+	var root := get_tree().current_scene  # NOT get_root(), NOT Window
+	if root:
+		var turn_manager = root.find_child("Turn_Manager", true, false)
+		if turn_manager:
+			turn_manager.connect("turn_started", Callable(self, "_on_turn_started"))
+		else:
+			print("Trap_Manager WARNING: Could not find Turn_Manager")
 
 func reset_trap_turns() -> void:
 	for trap in traps:
 		trap.action_count = trap.action_max
 		trap.move_count = trap.move_max
 
-
-#func get_traps():
-#   traps.clear()
-#  for child in get_children():
-#     if child.has_method("refresh_actions"):
-#        traps.append(child)
-
-
 func get_traps() -> void:
 	traps.clear()
 	for child in get_children():
 		if child is Trap:
 			traps.append(child)
-	reset_traps_turns()
+	refresh_all_traps()
 
 
 func add_trap(trap: Trap, coord: Vector2i) -> void:
@@ -83,16 +65,6 @@ func remove_trap(trap: Trap) -> void:
 			trap.queue_free()
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
-func create_trap_from_res(res: PackedScene) -> Trap:
-	var trapper: Trap = res.instantiate()
-	add_child(trapper)
-	trapper.add_to_group("Trap")
-	trapper.action_decoder = action_decoder
-	return trapper
-
-func reset_traps_turns() -> void:
-	for traps in traps:
-		traps.action_count = traps.action_max
 
 func get_unused_traps() -> Array:
 	var unused_traps = []
@@ -104,12 +76,8 @@ func get_unused_traps() -> Array:
 func refresh_all_traps():
 	for trap in traps:
 		trap.action_count = trap.action_max
-		trap.move_count = trap.move_max
-
-func activate_traps():
-	for trap in traps:
-		trap.take_turn()  # Whatever method triggers them
-
-func end_turn():
-	print("Trap Manager Turn End")
-	emit_signal("faction_turn_complete")
+		trap.refresh_actions()
+		
+func _on_turn_started(faction_manager: Unit_Manager) -> void:
+	if faction_manager.faction_name != "Traps":
+		refresh_all_traps()
