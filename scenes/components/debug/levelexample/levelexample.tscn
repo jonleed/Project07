@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bdngd8yodmnym" path="res://scenes/components/phase2/actions/Action-Decoder.tscn" id="7_kb0u0"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_w5nbb"]
 [ext_resource type="PackedScene" uid="uid://cmwrkn13c45qj" path="res://scenes/ui/phase2/components/cursor/Cursor.tscn" id="8_262ej"]
-[ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/Drunken Master.tres" id="9_ccsti"]
+[ext_resource type="Resource" uid="uid://bkbee2vs6l8f1" path="res://resources/units/The Drunken Master.tres" id="9_ccsti"]
 [ext_resource type="PackedScene" uid="uid://b18istpat370g" path="res://scenes/ui/phase2/UI-Phase-2.tscn" id="9_dilsu"]
 [ext_resource type="Resource" uid="uid://b2fvppdnqf165" path="res://resources/units/Humble Ogre.tres" id="9_r6ms3"]
 [ext_resource type="PackedScene" uid="uid://cnt7illh76qd3" path="res://scenes/components/phase2/trapstuff/spiketrap.tscn" id="10_ccsti"]
