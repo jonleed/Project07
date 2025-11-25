@@ -12,7 +12,8 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 	if act is Attackaction:
 		for target:Entity in targets:
 			target.health-=act.dmg
-			target.last_unit_to_damage_me = curUnit
+			if target is Hostile_Unit:
+				target.last_unit_to_damage_me = curUnit
 	elif act is Moveaction:
 		if targets.size()>1:
 			printerr("more than one target, still only accessing one target")
@@ -27,7 +28,8 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 		if targets.size()==1:
 			var target_pos = targets.get(0).cur_pos
 			targets.get(0).health-=act.dmg
-			targets.get(0).last_unit_to_damage_me = curUnit
+			if targets.get(0) is Hostile_Unit:
+				targets.get(0).last_unit_to_damage_me = curUnit
 			if targets.get(0).health <= 0:
 				await map_manager.entity_move(curUnit.cur_pos,target_pos)
 				curUnit.action_count +=1
@@ -57,20 +59,23 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 		var tile_at_new = map_manager.get_surface_tile(new_pos)
 		if tile_at_new == 5: # Out of bounds
 			print("Pushed out of bounds; bonus damage")
-			target.last_unit_to_damage_me = curUnit
+			if target is Hostile_Unit:
+				target.last_unit_to_damage_me = curUnit
 			target.health -= act.bonus_dmg
 		elif entity_at_new == null and tile_at_new != 5: # Free tile, move target
 			print("Pushed into free tile")
 			map_manager.entity_move(target.cur_pos, new_pos)
 		elif entity_at_new is int: # Pushed into wall
 			print("Pushed into wall; bonus damage")
-			target.last_unit_to_damage_me = curUnit
+			if target is Hostile_Unit:
+				target.last_unit_to_damage_me = curUnit
 			target.health -= act.bonus_dmg
 		else: # Pushed into entity
 			print("Pushed into entity; bonus damage")
-			entity_at_new.last_unit_to_damage_me = curUnit
+			if target is Hostile_Unit:
+				entity_at_new.last_unit_to_damage_me = curUnit
+				target.last_unit_to_damage_me = curUnit
 			entity_at_new.health -= act.bonus_dmg
-			target.last_unit_to_damage_me = curUnit
 			target.health -= act.bonus_dmg
 	
 	##just add on to the elif tree here for more decoded actions

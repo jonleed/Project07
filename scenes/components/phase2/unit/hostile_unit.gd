@@ -45,6 +45,7 @@ var action_failed:bool = false
 var movement_failed:bool = false
 var enemy_that_we_care_about:Entity = null
 var friend_that_we_care_about:Entity = null
+var last_unit_to_damage_me:Entity = null
 
 func determine_enemy_we_care_about() -> void:
 	if enemy_res.who_to_attack == 0: #LAST TO DAMAGE
