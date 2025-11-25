@@ -279,10 +279,10 @@ func should_we_should_retreat() -> bool:
 						return true
 	return false
 	
-func calculate_heading(unit_coordinate:Vector2i, provided_coordinate:Vector2i) -> Vector2i:
+func calculate_heading(unit_coordinate:Vector2, provided_coordinate:Vector2) -> Vector2:
 	return provided_coordinate - unit_coordinate
 	
-func convert_to_unit_vector(provided_coordinate:Vector2i) -> Vector2i:
+func convert_to_unit_vector(provided_coordinate:Vector2) -> Vector2:
 	var vector_length = provided_coordinate.length()
 	return provided_coordinate / vector_length
 	
@@ -295,40 +295,45 @@ func retreat_to_furthest_point_from_closest_enemy() -> Vector2i:
 		turn_log += "\n\t\t\t\tFetching closest enemy"
 		closest_enemy = get_minimal_enemy(true)
 	
-	var closest_enemy_coordinate:Vector2i = closest_enemy.cur_pos
-	if closest_enemy_coordinate != Vector2i(-INF, -INF):
-		var direction_to_enemy:Vector2i = calculate_heading(cur_pos, closest_enemy_coordinate)
-		var unit_vector:Vector2i = convert_to_unit_vector(direction_to_enemy)
-		return (-unit_vector * (move_count + 1)) + cur_pos
+	var closest_enemy_coordinate:Vector2 = Vector2(closest_enemy.cur_pos)
+	if closest_enemy_coordinate != Vector2(-INF, -INF):
+		var direction_to_enemy:Vector2 = calculate_heading(cur_pos, closest_enemy_coordinate)
+		turn_log += "\n\t\t\t\tDirection to Enemy is: ["+str(direction_to_enemy)+"]"
+		var unit_vector:Vector2 = convert_to_unit_vector(direction_to_enemy)
+		turn_log += "\n\t\t\t\tNormalized Direction is: ["+str(unit_vector)+"]"
+		var retreat_location = Vector2(cur_pos)
+		var last_non_wall_tile = retreat_location
+		var breaking_condition = false
+		var movement_accounted_for = 0
+		while movement_accounted_for < move_count and not breaking_condition:
+			movement_accounted_for += 1
+			var incremented_retreat_location = retreat_location - unit_vector
+			if cached_parent.map_manager.get_surface_tile(Vector2i(incremented_retreat_location)) != 5:
+				retreat_location = incremented_retreat_location
+				if retreat_location in cached_parent.map_manager.map_dict_all_non_wall_tiles:
+					last_non_wall_tile = retreat_location
+			else:
+				breaking_condition = true
+		retreat_location = Vector2i(last_non_wall_tile)
+		turn_log += "\n\t\t\t\tRetreat Location is: ["+str(retreat_location)+"]"
+		return retreat_location
 	turn_log += "\n\t\t\t\tClosest enemy is off the map?"
 	return Vector2i(-INF, -INF)
 	
 func retreat_to_friend() -> Vector2i:
-	var closest_unit:Entity = null
-	var closest_distance:float = INF
-	for faction_name_ref in get_friendly_factions():
-		# Iterate through all units in the friendly faction
-		for friendly_unit:Unit in get_tree().get_nodes_in_group(faction_name_ref):
-			# Exclude ourself
-			if friendly_unit == self:
-				continue
-			if friendly_unit.health <= 0:
-				continue
-				
-			# Calculate the distance this friendly unit is from the queried coordinate
-			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
-			var dist_to_friendly:float = friendly_unit_pos.distance_to(cur_pos)
-			if dist_to_friendly < closest_distance:
-				closest_unit = friendly_unit
-				closest_distance = dist_to_friendly
+	var closest_unit:Entity = get_minimal_friendly(cur_pos, true)	
+	turn_log += "\n\t\t\tClosest Friendly Unit is: ["+str(closest_unit)+"]"
 	if closest_unit == null:
 		return retreat_to_furthest_point_from_closest_enemy()
 	else:
-		var empty_tiles_around_friendly_unit:Array[Vector2i] = Globals.get_bfs_empty_tiles(cur_pos, 2, cached_parent.map_manager) 
+		var empty_tiles_around_friendly_unit:Array[Vector2i] = Globals.get_bfs_empty_tiles(closest_unit.cur_pos, 2, cached_parent.map_manager) 
+		turn_log += "\n\t\t\tPossible Tiles: ["+str(empty_tiles_around_friendly_unit)+"]"
 		var closest_tile:Vector2i = Vector2i(-INF, -INF)
-		closest_distance = INF
+		var closest_distance = INF
 		for adjacent_tile in empty_tiles_around_friendly_unit:
-			if adjacent_tile not in cached_parent.map_manager.map_dict_all_non_wall_tiles or adjacent_tile in cached_parent.map_manager.map_dict:
+			turn_log += "\n\t\t\t\tConsidering Tile: ["+str(adjacent_tile)+"]"
+			if adjacent_tile in cached_parent.map_manager.map_dict:
+				turn_log += "\n\t\t\t\tDiscarding solid tile"
 				continue
 				
 			var dist_to_tile:float = cur_pos.distance_to(adjacent_tile)
@@ -359,6 +364,7 @@ func running_state() -> void:
 	#var path_to_take:PackedVector2Array = pathfinder._return_path(cur_pos, retreat_coordinate)
 	var path_to_take = cached_parent.map_manager.get_star_path(cur_pos, retreat_coordinate)
 	if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
+		turn_log += "\n\t\t\tWe have an invalid path!!! -> "+str(path_to_take)
 		movement_failed = true
 	else:
 		move_down_path(path_to_take, true)

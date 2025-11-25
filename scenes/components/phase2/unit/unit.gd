@@ -74,15 +74,21 @@ func get_restorative_actions() -> Array[Healaction]:
 ## Do not call manually- call the UnitManager's move_unit_via_path() in order to also adjust map_manager
 func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 	# var pathfinder:Pathfinder = get_parent().get_pathfinder()
+	if self is Hostile_Unit:
+		self.turn_log += "\n\t\tMoving down path: " + str(path_arr)
 	for index in range(1, len(path_arr)):
 		if move_count < 1:
 			break
 		if Vector2i(path_arr[index]) in cached_parent.map_manager.map_dict:
+			if self is Hostile_Unit:
+				self.turn_log += "\n\t\t\tAborting due to obstacle"
 			break
 		if index != len(path_arr) - 1 or (go_final):
 			if path_arr[index] == Vector2(-INF, -INF):
 				break
 			else:
+				if self is Hostile_Unit:
+					self.turn_log += "\n\t\t\t"+str(cur_pos)+" -> "+str(path_arr[index])
 				move_count -= 1
 				cached_parent.map_manager.entity_move(cur_pos, path_arr[index])
 				cur_pos = path_arr[index]
