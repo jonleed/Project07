@@ -38,3 +38,6 @@ func ready_entity():
 
 ##this current position represents the tile coordinate the entity is on
 var cur_pos:Vector2i = Vector2i.ZERO
+
+##Stores the last entity to strike this entity
+var last_unit_to_damage_me:Entity = null
