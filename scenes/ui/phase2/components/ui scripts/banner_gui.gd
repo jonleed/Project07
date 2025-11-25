@@ -1,6 +1,7 @@
 extends Control
 
 @onready var turn_manager: Turn_Manager = get_parent().turn_manager
+@onready var round_initalizer: RoundInitializer = get_parent().round_initalizer
 
 @export var display_time: float = 1.5
 @export var fade_time: float = 0.4
@@ -12,7 +13,8 @@ func _ready():
 	visible = false
 	label.modulate.a = 0.0
 	background.modulate.a = 0.0
-	turn_manager.turn_banner_update.connect(show_banner)
+	round_initalizer.turn_banner_update.connect(show_banner)
+	#turn_manager.turn_banner_update.connect(show_banner)
 
 func show_banner(banner_text: String):
 	visible = true

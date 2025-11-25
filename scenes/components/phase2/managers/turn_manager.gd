@@ -3,9 +3,11 @@ extends Node
 
 signal turn_banner_update(text: String)
 signal turn_started(manager)
+signal round_start
 
 var unit_managers: Array[Unit_Manager] = []
 var cur_turn_index: int = 0
+var game_start: bool = false
 
 func start():
 	# Grabs all children to populate Managers array
@@ -40,6 +42,9 @@ func start_faction_turn() -> void:
 
 func end_faction_turn() -> void:
 	cur_turn_index = (cur_turn_index + 1) % unit_managers.size()
+	if cur_turn_index == 0:
+		emit_signal("round_start")
+	game_start = true
 	start_faction_turn()
 
 func gameover() -> void:

@@ -7,6 +7,7 @@ signal highlight_action_tiles(tiles: Array[Vector2i], color: Color, pattern:int)
 @export var map_manager:MapManager
 @export var turn_manager:Turn_Manager
 @export var player_unit_manager:Player_Unit_Manager
+@export var round_initalizer: RoundInitializer
 @export var cursor:Cursor
 
 @export_subgroup("Control Nodes")
