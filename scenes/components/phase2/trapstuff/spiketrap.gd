@@ -2,33 +2,63 @@ extends Trap
 class_name SpikeTrap
 
 @export var attack_action: Attackaction
+@export var trap_damage: int = 2
 @onready var trigger_area: Area2D = $Area2D
 
 
 func _ready() -> void:
+	#make a unique copy so no goofs on unit resources
+	if attack_action:
+		attack_action = attack_action.duplicate(true)
+	attack_action.base_dmg = trap_damage
+	attack_action.dmg_mult = 1.0
+	#connect trigger
 	trigger_area.body_entered.connect(_on_body_entered)
 	if action_decoder == null:
-		var manager = get_tree().get_first_node_in_group("TrapManager")
-		print("[SpikeTrap] Found TrapManager:", manager)
+		var manager = get_tree().get_root().find_child("Trap_Manager", true, false)
 		if manager:
 			action_decoder = manager.action_decoder
-			print("[SpikeTrap] Assigned decoder:", action_decoder)
-
+		else:
+			print("No decoder")
 
 func _on_body_entered(body: Node) -> void:
-	print("boom", body.name)
-	var entity = body.get_parent() if body.get_parent() is Entity else null
+	var entity := find_entity(body)
+	print("FOUND ENTITY:", entity, " is_entity:", entity is Entity)
+	if entity == null:
+		print("No Entity found")
+		return
 	if has_activated or not is_functional:
-		print("thats the issue")
+		print("not functional or already activated")
 		return
 	has_activated = true
+	on_activate(entity)
 	print("boom ded:", entity.name)
-	on_activate(body)
 
+func on_activate(node = null) -> void:
+	var bodies = $Area2D.get_overlapping_bodies()
+	#maybe modify for bigger spike(?) trap?
+	var targets: Array[Entity] = []
+	for b in bodies:
+		print("[TRAP] Checking:", b)
+		var ent = find_entity(b)
+		if ent != null:
+			print("[TRAP] FOUND TARGET:", ent)
+			targets.append(ent)
+		else:
+			print("[TRAP] No target found for:", b)
+	if targets.is_empty():
+		print("[TRAP] No valid targets")
+		return
+	var trap_action := Attackaction.new()
+	trap_action.dmg = trap_damage 
+	var typed_targets: Array[Entity] = targets
+	action_decoder.decode_action(trap_action, typed_targets, self)
 
-func on_activate(body: Node = null) -> void:
-	var decoder = get_tree().get_root().find_child("ActionDecoder", true, false)
-	if action_count < 1:
-		var parent_entity = body.get_parent()
-		#decoder.decode_action(attack_action, [parent_entity])
-		decoder.decode_action(attack_action, [parent_entity] as Array[Entity])
+	#was tempted to do the recursive version to make it spooky but we left that in cs1
+func find_entity(node: Node) -> Entity:
+	var current = node
+	while current != null:
+		if current is Entity:
+			return current
+		current = current.get_parent()
+	return null
