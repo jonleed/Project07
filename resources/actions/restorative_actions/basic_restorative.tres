@@ -12,7 +12,6 @@ noise = SubResource("FastNoiseLite_rdy81")
 
 [resource]
 script = ExtResource("1_0y7pb")
-base_heal = 100
 range_pattern = ExtResource("1_yfcux")
 action_name = "Rest"
 action_icon = SubResource("NoiseTexture2D_xp77l")

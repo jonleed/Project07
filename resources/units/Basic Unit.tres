@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=7 format=3 uid="uid://bj1nacy4dts10"]
+
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_fqeer"]
+[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_3e3u8"]
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_4xb5y"]
+[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_6eh4d"]
+[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_u36i4"]
+[ext_resource type="Resource" uid="uid://cviieragvuii5" path="res://resources/AI/balls.tres" id="5_adchk"]
+
+[resource]
+script = ExtResource("2_4xb5y")
+action_array = Array[ExtResource("1_fqeer")]([ExtResource("2_3e3u8"), ExtResource("3_6eh4d"), ExtResource("4_u36i4")])
+ai_res = ExtResource("5_adchk")
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"

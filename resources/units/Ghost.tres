@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=13 format=3 uid="uid://dkd15ksro81dy"]
+
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_l7m8u"]
+[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_x0fbm"]
+[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_ypvtj"]
+[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="4_alwjw"]
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="4_ypvtj"]
+[ext_resource type="Script" uid="uid://uxrkokbhg10a" path="res://resources/AI/enemy_AI_Resource.gd" id="5_0t4tj"]
+[ext_resource type="SpriteFrames" uid="uid://daih2w6ig4850" path="res://resources/animations/Ghost.tres" id="6_5tvp3"]
+[ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_p5gks"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rdy81"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xp77l"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_rdy81")
+
+[sub_resource type="Resource" id="Resource_83up1"]
+script = ExtResource("4_alwjw")
+base_heal = 5
+range_pattern = ExtResource("4_ypvtj")
+range_dist = 2
+action_name = "Heal"
+action_icon = SubResource("NoiseTexture2D_xp77l")
+metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
+
+[sub_resource type="Resource" id="Resource_isjr4"]
+script = ExtResource("5_0t4tj")
+when_to_retreat = 1
+who_to_attack = 2
+who_to_support = 1
+type_of_unit = 1
+metadata/_custom_type_script = "uid://uxrkokbhg10a"
+
+[resource]
+script = ExtResource("7_p5gks")
+action_array = Array[ExtResource("1_l7m8u")]([ExtResource("2_x0fbm"), ExtResource("3_ypvtj"), SubResource("Resource_83up1")])
+move_max = 3
+unit_name = "Ghost"
+base_health = 7
+anim_frames = ExtResource("6_5tvp3")
+ai_res = SubResource("Resource_isjr4")
+metadata/_custom_type_script = "uid://dc3mpm54egbqc"
