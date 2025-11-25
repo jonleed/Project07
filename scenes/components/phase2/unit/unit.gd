@@ -47,7 +47,13 @@ func load_unit_res(unit_res:UnitResource = null):
 	entity_shape = unit_res.entity_shape
 	anim_frames = unit_res.anim_frames
 	u_res = unit_res
-	
+	if self is Hostile_Unit:
+		# print("Initialised with: ", u_res)
+		# print("Initialised with (AI): ", u_res.ai_res.return_info_as_string())
+		if u_res.ai_res:
+			self.enemy_res = u_res.ai_res
+		else:
+			print("[WARNING!!!!] -> ", u_res.unit_name, " does NOT have an AI Resource assigned. Defaulting to AI/balls.tres")
 	
 func get_move_actions() -> Array[Moveaction]:
 	var move_action_arr:Array[Moveaction] = []
