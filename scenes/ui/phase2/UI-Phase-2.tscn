@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=22 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_0ti8f"]
 [ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_628vg"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://c7r4yfnn13qad" path="res://scenes/ui/phase2/components/ui scripts/banner_gui.gd" id="9_5kixl"]
 [ext_resource type="Script" uid="uid://csnyah5j5dbi1" path="res://scenes/ui/phase2/components/ui scripts/movement_gui.gd" id="11_2n8q5"]
 [ext_resource type="Texture2D" uid="uid://dkeb6lwnq13mk" path="res://assets/ui/movementicon.png" id="12_sawr6"]
+[ext_resource type="Texture2D" uid="uid://e6wuq5virpue" path="res://assets/ui/damageicon.png" id="13_2n8q5"]
 [ext_resource type="PackedScene" uid="uid://evc6pglbeeqm" path="res://scenes/ui/settings/Pause-Menu.tscn" id="14_2n8q5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_73c2s"]
@@ -34,6 +35,9 @@ outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_dwrl1"]
+font_size = 29
+
+[sub_resource type="LabelSettings" id="LabelSettings_1iy8h"]
 font_size = 29
 
 [node name="UI-Phase-2" type="Control" node_paths=PackedStringArray("actions_box")]
@@ -580,7 +584,6 @@ text = "TURN START BANNER"
 horizontal_alignment = 1
 
 [node name="Movement GUI" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -591,14 +594,16 @@ offset_right = 56.0
 offset_bottom = -127.0
 grow_vertical = 0
 scale = Vector2(0.75, 0.75)
+mouse_filter = 2
 script = ExtResource("11_2n8q5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Movement GUI"]
 layout_mode = 0
-offset_right = 40.0
+offset_right = 145.33334
 offset_bottom = 40.0
+mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="Movement GUI/HBoxContainer"]
+[node name="MovementIcon" type="TextureRect" parent="Movement GUI/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("12_sawr6")
 expand_mode = 2
@@ -607,6 +612,16 @@ expand_mode = 2
 layout_mode = 2
 text = "2"
 label_settings = SubResource("LabelSettings_dwrl1")
+
+[node name="ActionCountIcon" type="TextureRect" parent="Movement GUI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("13_2n8q5")
+expand_mode = 3
+
+[node name="ActionCountLabel" type="Label" parent="Movement GUI/HBoxContainer"]
+layout_mode = 2
+text = "4"
+label_settings = SubResource("LabelSettings_1iy8h")
 
 [node name="Actions Container" type="ScrollContainer" parent="."]
 layout_mode = 1

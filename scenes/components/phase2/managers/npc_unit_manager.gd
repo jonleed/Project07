@@ -35,9 +35,9 @@ func modulate_important_enemy()->void:
 	var chosen_enemy:Node2D = get_most_important_target()
 	if chosen_enemy:
 		if most_recent_modulated_enemy:
-			most_recent_modulated_enemy.modulate = Color.WHITE
+			most_recent_modulated_enemy.target.hide()
 		most_recent_modulated_enemy = chosen_enemy
-		chosen_enemy.modulate = Color.RED
+		chosen_enemy.target.show()
 
 func get_most_important_target()->Entity:
 	var ent_dict:Dictionary[Entity,int] = {}

@@ -95,7 +95,7 @@ func select_tile(coord:Vector2i) -> void:
 ##this is a simple highlight example for a bfs targeting implementation
 func select_unit(unit: Unit) -> void:
 	if cur_unit_selected != null and cur_unit_selected is Hostile_Unit:
-		cur_unit_selected.hp_label.hide()
+		cur_unit_selected.select_ui.hide()
 	_on_toggle_selected_unit_ui(true)
 	draw_unit_movement(unit)
 	load_unit_actions(unit)
@@ -110,7 +110,7 @@ func select_unit(unit: Unit) -> void:
 
 func select_enemy_unit(unit: Hostile_Unit) -> void:
 	if cur_unit_selected is Hostile_Unit:
-		cur_unit_selected.hp_label.hide()
+		cur_unit_selected.select_ui.hide()
 	draw_unit_movement(unit)
 	@warning_ignore("unused_variable")
 	var bfs_tiles = Globals.get_bfs_empty_tiles(unit.cur_pos,unit.move_count,map_manager)
@@ -120,14 +120,15 @@ func select_enemy_unit(unit: Hostile_Unit) -> void:
 	#print(pattern_tiles)
 	map_manager.highlight_tiles(bfs_tiles,Color.DARK_RED,3)
 	
-	# Show HP
-	unit.hp_label.show()
-	unit.hp_label.text = str(unit.health) 
+	# Show Enemey Select UI
+	unit.select_ui.show()
+	unit.hp_label.text = str(int(unit.health)) 
+	unit.dmg_label.text = str(int(unit.action_array[0].dmg)) 
 	cur_unit_selected = unit
 
 func deselect():
 	if cur_unit_selected is Hostile_Unit:
-		cur_unit_selected.hp_label.hide()
+		cur_unit_selected.select_ui.hide()
 	_on_toggle_selected_unit_ui(false)
 	# Clear Actions
 	clear_action_container()

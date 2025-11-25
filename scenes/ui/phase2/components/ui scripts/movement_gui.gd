@@ -2,6 +2,7 @@ extends Control
 
 @onready var player_unit_manager: Unit_Manager = get_parent().player_unit_manager
 @onready var movement_label: Label = $HBoxContainer/MovementLabel
+@onready var action_count_label: Label = $HBoxContainer/ActionCountLabel
 
 func _ready():
 	visible = false
@@ -18,3 +19,5 @@ func update_movement_label(units):
 	else: 
 		visible = true
 		movement_label.text = str(unit.move_count)
+		action_count_label.text = str(unit.action_count)
+		

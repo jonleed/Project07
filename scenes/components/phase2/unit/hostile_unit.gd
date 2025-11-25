@@ -2,7 +2,10 @@ extends Unit
 class_name Hostile_Unit
 
 @export var enemy_res:AIResource = load("res://resources/AI/balls.tres")
-@onready var hp_label := $HPLabel
+@onready var select_ui := $"Hostile Unit UI"
+@onready var dmg_label: Label = $"Hostile Unit UI/DMGLabel"
+@onready var hp_label: Label = $"Hostile Unit UI/HPLabel"
+
 var turn_log = ""
 
 

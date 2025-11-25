@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://yhexcc5dvlyi"]
+[gd_scene load_steps=7 format=3 uid="uid://yhexcc5dvlyi"]
 
 [ext_resource type="Script" uid="uid://i4qgjsqm1kmh" path="res://scenes/components/phase2/unit/hostile_unit.gd" id="1_tp0p1"]
 [ext_resource type="SpriteFrames" uid="uid://hby45fjcyarn" path="res://resources/animations/Blue Staff.tres" id="2_05fyr"]
+[ext_resource type="Texture2D" uid="uid://e6wuq5virpue" path="res://assets/ui/damageicon.png" id="3_qpovp"]
+[ext_resource type="Texture2D" uid="uid://cys00e07ha13f" path="res://assets/ui/enemyhpicon.png" id="4_w2mgv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_05fyr"]
 font_color = Color(0.3198, 0.82, 0.38649338, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5xus2"]
+font_color = Color(1, 0.29000002, 0.29000002, 1)
 
 [node name="NpcUnit" type="Node2D"]
 script = ExtResource("1_tp0p1")
@@ -22,12 +27,52 @@ polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
 
 [node name="Polygon2D" type="Polygon2D" parent="CharacterBody2D/CollisionPolygon2D"]
 
-[node name="HPLabel" type="Label" parent="."]
+[node name="Hostile Unit UI" type="Control" parent="."]
 visible = false
-offset_left = -2.0
-offset_top = -21.0
-offset_right = 8.0
-offset_bottom = 2.0
+layout_mode = 3
+anchors_preset = 0
+offset_left = -7.0
+offset_top = -23.0
+offset_right = 14.0
+offset_bottom = -7.0
+scale = Vector2(0.75, 0.75)
+mouse_filter = 2
+
+[node name="HPLabel" type="Label" parent="Hostile Unit UI"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 6.0
+offset_right = 21.0
+offset_bottom = 29.0
 scale = Vector2(0.5, 0.5)
 text = "8"
 label_settings = SubResource("LabelSettings_05fyr")
+
+[node name="HpIcon" type="TextureRect" parent="Hostile Unit UI"]
+layout_mode = 0
+offset_left = 4.0000005
+offset_top = 9.0
+offset_right = 20.0
+offset_bottom = 25.0
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_w2mgv")
+
+[node name="DMGLabel" type="Label" parent="Hostile Unit UI"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = -1.0
+offset_right = 21.0
+offset_bottom = 22.0
+scale = Vector2(0.5, 0.5)
+text = "8"
+label_settings = SubResource("LabelSettings_5xus2")
+
+[node name="DMGIcon" type="TextureRect" parent="Hostile Unit UI"]
+modulate = Color(0.9038326, 0, 0.14332518, 1)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 10.0
+offset_bottom = 8.0
+texture = ExtResource("3_qpovp")
+expand_mode = 1

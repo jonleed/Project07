@@ -13,6 +13,7 @@
 [node name="Ui-phase-1" type="Node" node_paths=PackedStringArray("unit_holder", "cur_party", "party_count", "proceed_button")]
 script = ExtResource("1_ho0fg")
 unit_resources = Array[ExtResource("2_n6c17")]([ExtResource("3_aeh2h"), ExtResource("4_rrfk7"), ExtResource("5_aeh2h"), ExtResource("6_bjqky"), ExtResource("7_17mje"), ExtResource("8_11kts")])
+max_party = 3
 unit_holder = NodePath("Control/Unit Holder/HBoxContainer")
 cur_party = NodePath("Control/PanelContainer/VBoxContainer/Cur Party/VBoxContainer")
 party_count = NodePath("Control/PanelContainer/VBoxContainer/Party Count")
