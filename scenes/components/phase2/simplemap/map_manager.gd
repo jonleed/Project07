@@ -225,6 +225,7 @@ func _initialize_astar_grid():
 	astar_grid.region = map_bounds.grow(1)
 	astar_grid.cell_size = Vector2(1, 1) # Assumes 1:1 grid
 	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	#print("Map Bounds: %s | AStar Region: %s" % [map_bounds, astar_grid.region])
 	astar_grid.update()
 	
 	# Iterate all cells *within the playable map boundaries*
@@ -276,6 +277,7 @@ func get_star_path(start_coord: Vector2i, end_coord: Vector2i) -> Array[Vector2i
 		#print("Pathfinding failed: Target is solid.")
 		var empty_array:Array[Vector2i] = [Vector2i(-INF, -INF)]
 		return empty_array # Return empty array
-		
+	
+	#print("Start: %s: %s\nEnd: %s: %s"%[start_coord,astar_grid.is_point_solid(start_coord),end_coord,astar_grid.is_point_solid(end_coord)])
 	# get_id_path() finds the path using grid coordinates
 	return astar_grid.get_id_path(start_coord, end_coord)
