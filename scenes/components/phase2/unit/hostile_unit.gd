@@ -295,6 +295,7 @@ func retreat_to_furthest_point_from_closest_enemy() -> Vector2i:
 		turn_log += "\n\t\t\t\tFetching closest enemy"
 		closest_enemy = get_minimal_enemy(true)
 	
+	turn_log += "\n\t\t\t\tCloset Enemy is: ["+str(closest_enemy)+"] at "+str(closest_enemy.cur_pos)
 	var closest_enemy_coordinate:Vector2 = Vector2(closest_enemy.cur_pos)
 	if closest_enemy_coordinate != Vector2(-INF, -INF):
 		var direction_to_enemy:Vector2 = calculate_heading(cur_pos, closest_enemy_coordinate)
@@ -307,12 +308,19 @@ func retreat_to_furthest_point_from_closest_enemy() -> Vector2i:
 		var movement_accounted_for = 0
 		while movement_accounted_for < move_count and not breaking_condition:
 			movement_accounted_for += 1
-			var incremented_retreat_location = retreat_location - unit_vector
-			if cached_parent.map_manager.get_surface_tile(Vector2i(incremented_retreat_location)) != 5:
+			var incremented_retreat_location:Vector2 = retreat_location - unit_vector
+			var rounded_location:Vector2i = Vector2i(round(incremented_retreat_location.x), round(incremented_retreat_location.y))
+			turn_log += "\n\t\t\t\t\t"+str(movement_accounted_for)+"\\"+str(move_count)+"; Incremented Tile from "+str(retreat_location)+" is: " + str(incremented_retreat_location) + "("+str(Vector2i(incremented_retreat_location))+")"
+			if cached_parent.map_manager.get_surface_tile(rounded_location) != 5:
+				# turn_log += "\n\t\t\t\t\t"+str(movement_accounted_for)+"\\"+str(move_count)+"; Tile: " + str(incremented_retreat_location) + "is NOT Air"
 				retreat_location = incremented_retreat_location
-				if retreat_location in cached_parent.map_manager.map_dict_all_non_wall_tiles:
-					last_non_wall_tile = retreat_location
+				if rounded_location in cached_parent.map_manager.map_dict_all_non_wall_tiles:
+					# turn_log += "\n\t\t\t\t\t\t"+str(movement_accounted_for)+"\\"+str(move_count)+"; Tile: " + str(incremented_retreat_location) + "is NOT a Wall"
+					last_non_wall_tile = rounded_location
+				else:
+					turn_log += "\n\t\t\t\t\t"+str(movement_accounted_for)+"\\"+str(move_count)+"; Tile: " + str(incremented_retreat_location) + "is occupied!"
 			else:
+				turn_log += "\n\t\t\t\t\t"+str(movement_accounted_for)+"\\"+str(move_count)+" BREAKING; Tile: " + str(incremented_retreat_location) + "is Air"
 				breaking_condition = true
 		retreat_location = Vector2i(last_non_wall_tile)
 		turn_log += "\n\t\t\t\tRetreat Location is: ["+str(retreat_location)+"]"
@@ -326,7 +334,7 @@ func retreat_to_friend() -> Vector2i:
 	if closest_unit == null:
 		return retreat_to_furthest_point_from_closest_enemy()
 	else:
-		var empty_tiles_around_friendly_unit:Array[Vector2i] = Globals.get_bfs_empty_tiles(closest_unit.cur_pos, 2, cached_parent.map_manager) 
+		var empty_tiles_around_friendly_unit:Array[Vector2i] = Globals.get_bfs_empty_tiles(closest_unit.cur_pos, 1, cached_parent.map_manager) 
 		turn_log += "\n\t\t\tPossible Tiles: ["+str(empty_tiles_around_friendly_unit)+"]"
 		var closest_tile:Vector2i = Vector2i(-INF, -INF)
 		var closest_distance = INF
