@@ -358,7 +358,7 @@ func running_state() -> void:
 	if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 		movement_failed = true
 	else:
-		cached_parent.move_unit_via_path(self, path_to_take)
+		move_down_path(path_to_take, true)
 	return
 	
 	
@@ -469,5 +469,5 @@ func rushing_state() -> void:
 		if path_to_take.is_empty() or path_to_take[0] == Vector2i(-INF, -INF):
 			movement_failed = true
 		else:
-			cached_parent.move_unit_via_path(self, path_to_take)
+			move_down_path(path_to_take, true)
 	return
