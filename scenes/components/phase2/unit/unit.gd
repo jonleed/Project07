@@ -93,17 +93,17 @@ func get_friendly_factions() -> Array[String]:
 		return ["Friendly", "Player Unit"]
 	elif faction_name_ref == "Traps":
 		return ["Traps"]
-	elif faction_name_ref == "Enemy":
-		return ["Enemy"]
-	return ["Enemy"]
+	elif faction_name_ref == "Enemy Unit":
+		return ["Enemy Unit"]
+	return ["Enemy Unit"]
 
 func get_enemy_unit_factions() -> Array[String]:	
 	var faction_name_ref:String = cached_parent.faction_name
 	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
-		return ["Enemy"]
+		return ["Enemy Unit"]
 	elif faction_name_ref == "Traps":
-		return ["Friendly", "Player Unit", "Enemy"]
-	elif faction_name_ref == "Enemy":
+		return ["Friendly", "Player Unit", "Enemy Unit"]
+	elif faction_name_ref == "Enemy Unit":
 		return ["Player Unit", "Friendly"]
 	return ["Friendly", "Player Unit"]
 
