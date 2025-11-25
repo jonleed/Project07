@@ -48,10 +48,13 @@ func _on_round_start():
 		emit_signal("turn_banner_update", "Round " + str(round_count))
 		pass
 
+signal game_won(val:bool)
 
 func spawn_round_enemies():
 	if spawn_count >= rounds.size():
 		print("No Round Data for this round")
+		if enemy_manager.units.is_empty():
+			game_won.emit(true)
 		emit_signal("turn_banner_update", "Round " + str(round_count))
 		return  # No data for this round
 	if spawn_tiles.size() == 0:

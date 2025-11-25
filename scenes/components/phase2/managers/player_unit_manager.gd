@@ -195,6 +195,7 @@ func get_units() -> void:
 	reset_unit_turns() # Problematic if get_units() is run mid-turn
 	print("Getting Units: ", units)
 
+signal end_game(val:bool)
 var game_over:bool = false
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
@@ -203,7 +204,7 @@ func _on_player_unit_health_changed(changed_node: Entity) -> void:
 			print("GAME OVER")
 			game_over = true
 			await get_tree().process_frame
-			get_tree().callv("change_scene_to_file",["res://scenes/ui/main/Main-Menu.tscn"])
+			end_game.emit(game_over)
 		refresh_gui()
 
 # Refreshes GUI

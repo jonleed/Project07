@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://87ikob4x4k87"]
+[gd_scene load_steps=49 format=4 uid="uid://87ikob4x4k87"]
 
 [ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://bkc3adf4mya06" path="res://scenes/components/phase2/unit/Player Unit.tscn" id="12_w5nbb"]
 [ext_resource type="Script" uid="uid://cqxhg00a17hk6" path="res://scenes/components/phase2/managers/npc_unit_manager.gd" id="13_w5nbb"]
 [ext_resource type="Script" uid="uid://bbybo151sp17j" path="res://scenes/components/phase2/managers/trap_manager.gd" id="14_tm18g"]
+[ext_resource type="PackedScene" uid="uid://6byovpfrflp2" path="res://scenes/ui/phase2/game_over.tscn" id="21_61tjl"]
+[ext_resource type="PackedScene" uid="uid://dkssyyldfisd1" path="res://scenes/ui/phase2/game_won.tscn" id="22_hf82m"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_l4rwm"]
 vertices = PackedVector2Array(8, 0, 0, 4, -8, 0, 0, -4)
@@ -1917,5 +1919,13 @@ player_unit_manager = NodePath("../../Turn_Manager/Player_Unit_Manager")
 round_initalizer = NodePath("../../MapManager/Round Init")
 cursor = NodePath("../../Cursor")
 
+[node name="Game Over" parent="CanvasLayer" instance=ExtResource("21_61tjl")]
+visible = false
+
+[node name="Game Won" parent="CanvasLayer" instance=ExtResource("22_hf82m")]
+visible = false
+
+[connection signal="game_won" from="MapManager/Round Init" to="CanvasLayer/Game Won" method="set_visibility"]
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
+[connection signal="end_game" from="Turn_Manager/Player_Unit_Manager" to="CanvasLayer/Game Over" method="set_visibility"]
 [connection signal="highlight_action_tiles" from="CanvasLayer/UI-Phase-2" to="MapManager" method="highlight_tiles"]
