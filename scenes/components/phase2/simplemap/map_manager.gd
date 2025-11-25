@@ -3,6 +3,7 @@ extends Node2D
 
 @export var surface_layer:TileMapLayer
 @export var wall_layer:TileMapLayer
+@export var remove_layer:TileMapLayer
 
 
 ##This map will hold everything in a Vector2i

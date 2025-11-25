@@ -17,6 +17,7 @@ func _step_turn():
 	# print("HOSTILE: ", unused_units, " ", units, " ", get_children())
 	for unit in unused_units:
 		unit.execute_turn()
+		#print("Turn log: ",unit.turn_log)
 	unused_units = get_unused_units()
 	
 	# Base case - No unused units remaining
@@ -25,6 +26,7 @@ func _step_turn():
 
 func end_turn() -> void:
 	modulate_important_enemy()
+	remove_retreating_units()
 	print(faction_name, " Turn End")
 	is_active = false
 	emit_signal("faction_turn_complete")
@@ -72,6 +74,16 @@ func create_unit_from_res(res:UnitResource)->Hostile_Unit:
 	un.add_to_group("Enemy Unit")
 	un.health_changed.connect(remove_unit)
 	return un
-	
+
 func get_pathfinder() -> Pathfinder:
 	return pathfinder
+
+func remove_retreating_units():
+	var removing_tiles:Array[Vector2i] = map_manager.remove_layer.get_used_cells()
+	for tile:Vector2i in removing_tiles:
+		var tile_value = map_manager.map_dict.get(tile)
+		if tile_value is Unit:
+			print("Removing Unit: ",tile_value)
+			tile_value.health -= tile_value.health
+			
+	

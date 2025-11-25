@@ -101,5 +101,6 @@ func spawn_round_enemies():
 		map_manager.map_dict.set(tile, new_unit)
 		new_unit.cur_pos = tile
 		new_unit.global_position = map_manager.coords_to_glob(tile)
-
-		await get_tree().process_frame
+		
+		if get_tree():
+			await get_tree().process_frame

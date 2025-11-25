@@ -203,7 +203,7 @@ func _on_player_unit_health_changed(changed_node: Entity) -> void:
 			print("GAME OVER")
 			game_over = true
 			await get_tree().process_frame
-			get_tree().change_scene_to_file("res://scenes/ui/main/Main-Menu.tscn")
+			get_tree().callv("change_scene_to_file",["res://scenes/ui/main/Main-Menu.tscn"])
 		refresh_gui()
 
 # Refreshes GUI
