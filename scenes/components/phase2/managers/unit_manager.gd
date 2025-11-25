@@ -107,13 +107,6 @@ func unit_health_updated(given_entity:Entity) -> void:
 	if given_entity.health <= 0:
 		remove_unit(given_entity)
 
-## Used EXPLICITLY for NPC UNITS ONLY. (They need to be able to consider tiles with enemy units as they need to figure out how to get to that unit). 
-func move_unit_via_path(unit:Unit, path:PackedVector2Array, go_final_distance:bool=true):
-	var start_pos:Vector2i = unit.cur_pos
-	unit.move_down_path(path, go_final_distance)
-	var end_pos:Vector2i = unit.cur_pos
-	map_manager.entity_move(start_pos, end_pos)
-
 func move_unit(unit:Unit,coord:Vector2i):
 	map_manager.entity_move(unit.cur_pos,coord)
 	unit.cur_pos = coord

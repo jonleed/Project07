@@ -73,15 +73,18 @@ func get_restorative_actions() -> Array[Healaction]:
 ## Move actions should set go_final to true; ATK actions should set go_final to false (as the final point is the tile the enemy unit is on)
 ## Do not call manually- call the UnitManager's move_unit_via_path() in order to also adjust map_manager
 func move_down_path(path_arr:PackedVector2Array, go_final:bool):
-	var pathfinder:Pathfinder = get_parent().get_pathfinder()
+	# var pathfinder:Pathfinder = get_parent().get_pathfinder()
 	for index in range(1, len(path_arr)):
 		if move_count < 1:
+			break
+		if Vector2i(path_arr[index]) in cached_parent.map_manager.map_dict:
 			break
 		if index != len(path_arr) - 1 or (go_final):
 			if path_arr[index] == Vector2(-INF, -INF):
 				break
 			else:
 				move_count -= 1
+				cached_parent.map_manager.entity_move(cur_pos, path_arr[index])
 				cur_pos = path_arr[index]
 				# Move incrementally, not all at once, to give traps a chance to trigger for when the body is entered.
 				# Ideally we'd be emitting a signal that the traps can monitor
@@ -93,17 +96,17 @@ func get_friendly_factions() -> Array[String]:
 		return ["Friendly", "Player Unit"]
 	elif faction_name_ref == "Traps":
 		return ["Traps"]
-	elif faction_name_ref == "Enemy":
-		return ["Enemy"]
-	return ["Enemy"]
+	elif faction_name_ref == "Enemy Unit":
+		return ["Enemy Unit"]
+	return ["Enemy Unit"]
 
 func get_enemy_unit_factions() -> Array[String]:	
 	var faction_name_ref:String = cached_parent.faction_name
 	if faction_name_ref == "Friendly" or faction_name_ref == "Player Unit":
-		return ["Enemy"]
+		return ["Enemy Unit"]
 	elif faction_name_ref == "Traps":
-		return ["Friendly", "Player Unit", "Enemy"]
-	elif faction_name_ref == "Enemy":
+		return ["Friendly", "Player Unit", "Enemy Unit"]
+	elif faction_name_ref == "Enemy Unit":
 		return ["Player Unit", "Friendly"]
 	return ["Friendly", "Player Unit"]
 
