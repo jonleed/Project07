@@ -94,7 +94,7 @@ func select_tile(coord:Vector2i) -> void:
 
 ##this is a simple highlight example for a bfs targeting implementation
 func select_unit(unit: Unit) -> void:
-	if cur_unit_selected is Hostile_Unit:
+	if cur_unit_selected != null and cur_unit_selected is Hostile_Unit:
 		cur_unit_selected.hp_label.hide()
 	_on_toggle_selected_unit_ui(true)
 	draw_unit_movement(unit)
