@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://6byovpfrflp2"]
+[gd_scene load_steps=3 format=3 uid="uid://6byovpfrflp2"]
 
 [ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/game_over.gd" id="1_yc0eg"]
+[ext_resource type="Texture2D" uid="uid://ceuh6gt2pfl5w" path="res://assets/ui/youlose.png" id="2_ram0g"]
 
 [node name="Game Over" type="Control"]
 layout_mode = 3
@@ -12,12 +13,22 @@ grow_vertical = 2
 script = ExtResource("1_yc0eg")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
+modulate = Color(1, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 395.0
+offset_top = 215.0
+offset_right = 575.0
+offset_bottom = 275.0
+scale = Vector2(2, 2)
+texture = ExtResource("2_ram0g")
 
 [node name="Main Menu" type="Button" parent="."]
 layout_mode = 1

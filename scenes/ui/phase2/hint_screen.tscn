@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4a1ndwvnrso8"]
+
+[ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/game_over.gd" id="1_h6dy8"]
+
+[node name="Hint Screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h6dy8")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Return" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -47.0
+offset_right = 48.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Return
+"
+
+[connection signal="pressed" from="Return" to="." method="_on_return_pressed"]
