@@ -1,16 +1,44 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://c6y025k8tpnhg"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=12 format=3 uid="uid://c6y025k8tpnhg"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_xqnpm"]
-[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_ctbmu"]
-[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_kg5av"]
-[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_3lhvl"]
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_ctbmu"]
+[ext_resource type="Script" uid="uid://rt32nydn3ipi" path="res://scenes/components/phase2/actions/actiontypes/pull-action.gd" id="2_xqnpm"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="3_ctbmu"]
 [ext_resource type="SpriteFrames" uid="uid://bkk4hb1oxbmgn" path="res://resources/animations/CrocodileBoy.tres" id="5_xqnpm"]
 [ext_resource type="Texture2D" uid="uid://1n2t77qlamt3" path="res://assets/portraits/crocodileboy.png" id="6_ctbmu"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="6_ipyps"]
 
+[sub_resource type="Resource" id="Resource_ewisk"]
+script = ExtResource("2_ctbmu")
+affected_tiles = PackedVector2Array(-2, 0, -1, 0, 0, -1, 0, -2, 1, 0, 2, 0, 0, 1, 0, 2)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_kg5av"]
+script = ExtResource("2_xqnpm")
+base_dmg = 1
+range_pattern = SubResource("Resource_ewisk")
+range_dist = 5
+action_name = "Hook"
+metadata/_custom_type_script = "uid://rt32nydn3ipi"
+
+[sub_resource type="Resource" id="Resource_ipyps"]
+script = ExtResource("2_ctbmu")
+affected_tiles = PackedVector2Array(0, -1, 1, 0, 0, 1, -1, 0)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_3lhvl"]
+script = ExtResource("3_ctbmu")
+base_dmg = 2
+heal_on_kill = 3.0
+range_pattern = SubResource("Resource_ipyps")
+range_dist = 2
+action_name = "Chomp"
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+
 [resource]
 script = ExtResource("6_ipyps")
-action_array = Array[ExtResource("1_xqnpm")]([ExtResource("2_ctbmu"), ExtResource("3_kg5av"), ExtResource("4_3lhvl")])
+action_array = Array[ExtResource("1_xqnpm")]([SubResource("Resource_kg5av"), SubResource("Resource_3lhvl")])
+action_max = 2
 icon_sprite = ExtResource("6_ctbmu")
 unit_name = "Crocodile Boy"
 unit_desc = "Considered hideous by most, the Crocodile Boy actually has a soft side and enjoys to play in the garden. "

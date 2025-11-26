@@ -1,5 +1,5 @@
 extends Action
-class_name Attackaction
+class_name Pullaction
 @export var base_dmg:int = 0:
 	set(value):
 		base_dmg = value
@@ -9,4 +9,4 @@ class_name Attackaction
 		dmg_mult = value
 		dmg = float(base_dmg)*dmg_mult
 var dmg : float = float(base_dmg)*dmg_mult
-@export var heal_on_kill:float = 0.0
+@export var bonus_dmg:int = 0

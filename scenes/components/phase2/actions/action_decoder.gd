@@ -15,6 +15,8 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 			if target is Hostile_Unit:
 				target.last_unit_to_damage_me = curUnit
 			Globals.play_ui_sound("Basic_Attack")
+			if target.health <= 0:
+				curUnit.health+= act.heal_on_kill
 	elif act is Moveaction:
 		if targets.size()>1:
 			printerr("more than one target, still only accessing one target")
@@ -82,5 +84,35 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 				target.last_unit_to_damage_me = curUnit
 			entity_at_new.health -= act.bonus_dmg
 			target.health -= act.bonus_dmg
-	
+	elif act is Pullaction:
+		if targets.size() != 1:
+			printerr("Pull requires one unit in targets")
+			return
+
+		var target: Entity = targets[0]
+
+		# Base damage
+		target.health -= act.dmg
+
+		# Direction from curUnit -> target
+		var diff: Vector2i = target.cur_pos - curUnit.cur_pos
+		var direction := Vector2i(sign(diff.x), sign(diff.y))
+
+		# Tile directly in front of curUnit toward the target
+		var pull_pos: Vector2i = curUnit.cur_pos + direction
+
+		# Cannot pull onto curUnit or invalid direction
+		if direction == Vector2i.ZERO:
+			print("Pull: target on same tile, nothing to do")
+			return
+
+		# Check tile validity
+		var entity_at_pull = map_manager.map_dict.get(pull_pos, null)
+		# Tile free → move target
+		if entity_at_pull == null:
+			print("Pulled onto free tile")
+			map_manager.entity_move(target.cur_pos, pull_pos)
+			return
+
+		target.health -= act.bonus_dmg
 	##just add on to the elif tree here for more decoded actions

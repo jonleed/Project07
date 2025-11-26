@@ -10,7 +10,7 @@
 
 [sub_resource type="Resource" id="Resource_2as78"]
 script = ExtResource("2_swm1y")
-base_dmg = 10
+base_dmg = 3
 range_type = 1
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
