@@ -248,9 +248,10 @@ func player_attempt_to_move_unit(target_coord: Vector2i):
 	
 	# Pathfinder can be substituted in if desired for move-pattern based movement
 	# var path:PackedVector2Array = pathfinder._return_path(selected_unit.cur_pos, target_coord)
-
+	#print(path)
 	if path.is_empty() or path[0] == Vector2i(-INF, -INF):
 		print("No valid path found to target.")
+		#print("Empty: ",path.is_empty())
 		return # The target is unreachable (blocked by wall, entity, or water)
 
 	# 2. Calculate the *true* distance
@@ -273,6 +274,7 @@ func player_attempt_to_move_unit(target_coord: Vector2i):
 	# Tell the map_manager to update its dictionary and the unit's position
 	map_manager.entity_move(selected_unit.cur_pos, target_coord)
 	refresh_gui()
+	Globals.play_ui_sound(["Text","Select"].pick_random())
 	
 	# Note: Your map_manager.entity_move function already sets
 	# unit.cur_pos = new_coord, so you don't need to do it here.

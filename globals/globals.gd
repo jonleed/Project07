@@ -105,7 +105,13 @@ func get_scaled_pattern_empty_tiles(origin: Vector2i, pattern: Pattern2D, distan
 
 @onready var ui_sounds:Dictionary[String,AudioStream] ={
 	"Confirm":preload("res://assets/audio/Confirm 1.wav"),
-	"Cancel":preload("res://assets/audio/Cancel 1.wav")
+	"Cancel":preload("res://assets/audio/Cancel 1.wav"),
+	"Select":preload("res://assets/audio/Select 1.wav"),
+	"Text":preload("res://assets/audio/Text 1.wav"),
+	"Support_Heal":preload("res://assets/audio/Bubble 1.wav"),
+	"Basic_Attack":preload("res://assets/audio/Hit damage 1.wav"),
+	"Heavy_Attack":preload("res://assets/audio/Boss hit 1.wav"),
+	"Swap_Magic":preload("res://assets/audio/Blow 1V2.wav")
 }
 
 func play_ui_sound(stream_source):

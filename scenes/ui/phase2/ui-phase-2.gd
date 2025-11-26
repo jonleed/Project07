@@ -77,6 +77,7 @@ func add_to_action_container(action:Action):
 			func(act: Action):
 				player_unit_manager.selected_action = act
 				player_unit_manager.enter_state(Player_Unit_Manager.State.ACTING)
+				Globals.play_ui_sound(["Confirm","Select"].pick_random())
 				)
 	else:
 		print("Action button instance missing signal")
@@ -149,7 +150,7 @@ func draw_unit_movement(unit:Unit):
 
 ##this function highlights actions on the map manager
 func highlight_selected_action(act:Action):
-	print("WOPIADOPIW")
+	#print("WOPIADOPIW")
 	if not cur_unit_selected:
 		return
 	var assembled_tiles:Array[Vector2i] = []

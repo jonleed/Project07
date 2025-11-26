@@ -14,6 +14,7 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 			target.health-=act.dmg
 			if target is Hostile_Unit:
 				target.last_unit_to_damage_me = curUnit
+			Globals.play_ui_sound("Basic_Attack")
 	elif act is Moveaction:
 		if targets.size()>1:
 			printerr("more than one target, still only accessing one target")
@@ -21,6 +22,8 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 	elif act is Healaction:
 		for target:Entity in targets:
 			target.health+= act.heal
+			print("Healing target, %s for %s."%[target,act.heal])
+		Globals.play_ui_sound("Support_Heal")
 	elif act is Takeaction: # Take like in Chess; I thought it was a clever name...
 		if targets.size()>=2:
 			printerr("Take requires less than two unit in targets")
@@ -35,11 +38,13 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 				curUnit.action_count +=1
 		else: # Move without attacking
 			await map_manager.entity_move(curUnit.cur_pos,act.chosen_pos)
+		Globals.play_ui_sound("Heavy_Attack")
 	elif act is Swapaction:
 		if targets.size()!=1:
 			printerr("Swap requires one unit in targets")
 			return
 		map_manager.swap_entities(curUnit,  targets.get(0))
+		Globals.play_ui_sound("Swap_Magic")
 	elif act is Pushaction:
 		if targets.size()!=1:
 			printerr("Push requires one unit in targets")

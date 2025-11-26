@@ -47,7 +47,13 @@ func load_unit_res(unit_res:UnitResource = null):
 	entity_shape = unit_res.entity_shape
 	anim_frames = unit_res.anim_frames
 	u_res = unit_res
-	
+	if self is Hostile_Unit:
+		# print("Initialised with: ", u_res)
+		# print("Initialised with (AI): ", u_res.ai_res.return_info_as_string())
+		if u_res.ai_res:
+			self.enemy_res = u_res.ai_res
+		else:
+			print("[WARNING!!!!] -> ", u_res.unit_name, " does NOT have an AI Resource assigned. Defaulting to AI/balls.tres")
 	
 func get_move_actions() -> Array[Moveaction]:
 	var move_action_arr:Array[Moveaction] = []
@@ -74,15 +80,21 @@ func get_restorative_actions() -> Array[Healaction]:
 ## Do not call manually- call the UnitManager's move_unit_via_path() in order to also adjust map_manager
 func move_down_path(path_arr:PackedVector2Array, go_final:bool):
 	# var pathfinder:Pathfinder = get_parent().get_pathfinder()
+	if self is Hostile_Unit:
+		self.turn_log += "\n\t\tMoving down path: " + str(path_arr)
 	for index in range(1, len(path_arr)):
 		if move_count < 1:
 			break
 		if Vector2i(path_arr[index]) in cached_parent.map_manager.map_dict:
+			if self is Hostile_Unit:
+				self.turn_log += "\n\t\t\tAborting due to obstacle"
 			break
 		if index != len(path_arr) - 1 or (go_final):
 			if path_arr[index] == Vector2(-INF, -INF):
 				break
 			else:
+				if self is Hostile_Unit:
+					self.turn_log += "\n\t\t\t"+str(cur_pos)+" -> "+str(path_arr[index])
 				move_count -= 1
 				cached_parent.map_manager.entity_move(cur_pos, path_arr[index])
 				cur_pos = path_arr[index]
