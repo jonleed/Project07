@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://6byovpfrflp2"]
 
-[ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/game_over.gd" id="1_yc0eg"]
+[ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/hint_screen.gd" id="1_yc0eg"]
 [ext_resource type="Texture2D" uid="uid://ceuh6gt2pfl5w" path="res://assets/ui/youlose.png" id="2_ram0g"]
 
 [node name="Game Over" type="Control"]

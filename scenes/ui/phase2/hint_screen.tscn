@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4a1ndwvnrso8"]
 
-[ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/game_over.gd" id="1_h6dy8"]
+[ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/hint_screen.gd" id="1_h6dy8"]
 
 [node name="Hint Screen" type="Control"]
 layout_mode = 3
