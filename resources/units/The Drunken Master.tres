@@ -15,6 +15,7 @@ action_array = Array[ExtResource("1_8hqp8")]([ExtResource("2_m1pqd"), ExtResourc
 icon_sprite = ExtResource("4_3m1c4")
 unit_name = "Drunken Master"
 unit_desc = "Always smiling, probably high on life. "
+base_health = 2
 entity_shape = ExtResource("3_884dk")
 anim_frames = ExtResource("4_gr4uv")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

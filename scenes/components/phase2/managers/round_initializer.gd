@@ -9,20 +9,25 @@ class_name RoundInitializer
 var initialized := false
 
 @export_subgroup("Rounds")
+@export var kills_to_win: int = 1
 @export var spawn_interval: int = 1
 @export var rounds: Array[RoundData] = []
 var round_count: int = -1
 var spawn_count: int = 0
+var kill_count: int = 0
 
 #the tiles that spawn the enemy units 
 var spawn_tiles: Array[Vector2i] = []
 
 signal turn_banner_update(text: String)
+signal objective_update(count:int, total:int) 
 
 func _ready() -> void:
 	turn_manager.round_start.connect(_on_round_start)
 	get_tiles()
+	enemy_manager.update_kill_count.connect(kill_count_update)
 	visible = false
+	objective_update.emit(kill_count, kills_to_win)
 
 
 func get_tiles():
@@ -49,12 +54,19 @@ func _on_round_start():
 		pass
 
 signal game_won(val:bool)
+func kill_count_update(): 
+	kill_count+=1 
+	objective_update.emit(kill_count, kills_to_win) 
+	printerr("KILL COUNT: ", kill_count)
+	if kills_to_win <= kill_count: 
+		game_won.emit(true)
 
 func spawn_round_enemies():
 	if spawn_count >= rounds.size():
 		print("No Round Data for this round")
 		if enemy_manager.units.is_empty():
-			game_won.emit(true)
+			#game_won.emit(true)
+			pass
 		emit_signal("turn_banner_update", "Round " + str(round_count))
 		return  # No data for this round
 	if spawn_tiles.size() == 0:

@@ -12,7 +12,7 @@
 script = ExtResource("2_54hhx")
 action_array = Array[ExtResource("1_k6u1j")]([ExtResource("2_eigx5"), ExtResource("3_br1r5"), ExtResource("4_ssyhc")])
 unit_name = "Humble Ogre"
-base_health = 7
+base_health = 3
 anim_frames = ExtResource("5_br1r5")
 ai_res = ExtResource("5_ssyhc")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

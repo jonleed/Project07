@@ -1,19 +1,25 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://hhwgisiq4l3o"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=7 format=3 uid="uid://hhwgisiq4l3o"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_m8d65"]
-[ext_resource type="Resource" uid="uid://b5amteovsr0yc" path="res://resources/actions/attack_actions/basic_melee_attack.tres" id="2_bfgf3"]
-[ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_4sk71"]
-[ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_kyvf2"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_s2eer"]
 [ext_resource type="SpriteFrames" uid="uid://dtn6wx28yla5y" path="res://resources/animations/WoodImp.tres" id="5_73m8r"]
 [ext_resource type="Texture2D" uid="uid://b5eoojb0cr06k" path="res://assets/portraits/woodimp.png" id="6_mex4d"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="7_o1gh3"]
 
+[sub_resource type="Resource" id="Resource_73m8r"]
+script = ExtResource("2_s2eer")
+base_dmg = 100
+range_type = 1
+range_dist = 5
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+
 [resource]
 script = ExtResource("7_o1gh3")
-action_array = Array[ExtResource("1_m8d65")]([ExtResource("2_bfgf3"), ExtResource("3_4sk71"), ExtResource("4_kyvf2")])
+action_array = Array[ExtResource("1_m8d65")]([SubResource("Resource_73m8r")])
 icon_sprite = ExtResource("6_mex4d")
 unit_name = "Wood Imp"
 unit_desc = "\"Yumbo yacwan.\" - Wood Imp"
 base_health = 2
+immortal = true
 anim_frames = ExtResource("5_73m8r")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

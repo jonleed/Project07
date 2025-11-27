@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b18istpat370g"]
+[gd_scene load_steps=26 format=3 uid="uid://b18istpat370g"]
 
 [ext_resource type="Script" uid="uid://b72cvueshlqdl" path="res://scenes/ui/phase2/ui-phase-2.gd" id="1_0ti8f"]
 [ext_resource type="PackedScene" uid="uid://0e1vqscyqft0" path="res://scenes/ui/phase2/components/playerui/ActionButton.tscn" id="2_628vg"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dkeb6lwnq13mk" path="res://assets/ui/movementicon.png" id="12_sawr6"]
 [ext_resource type="Texture2D" uid="uid://e6wuq5virpue" path="res://assets/ui/damageicon.png" id="13_2n8q5"]
 [ext_resource type="PackedScene" uid="uid://evc6pglbeeqm" path="res://scenes/ui/settings/Pause-Menu.tscn" id="14_2n8q5"]
+[ext_resource type="Script" uid="uid://bavn1y6sju68f" path="res://scenes/ui/phase2/components/ui scripts/objective_gui.gd" id="14_yhe56"]
 [ext_resource type="Script" uid="uid://sxofiiyk845c" path="res://scenes/ui/phase2/components/ui scripts/hint_gui.gd" id="15_dwrl1"]
 [ext_resource type="Texture2D" uid="uid://dxq6jhavfj3ax" path="res://assets/ui/hintbutton.png" id="16_yhe56"]
 
@@ -639,6 +640,7 @@ offset_left = -27.560059
 offset_top = 16.0
 offset_right = -14.0
 offset_bottom = -45.088005
+script = ExtResource("14_yhe56")
 
 [node name="PanelContainer" type="PanelContainer" parent="Objective GUI"]
 layout_mode = 0

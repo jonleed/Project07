@@ -1875,6 +1875,7 @@ map_manager = NodePath("..")
 trap_manager = NodePath("../../Turn_Manager/Trap_Manager")
 turn_manager = NodePath("../../Turn_Manager")
 enemy_manager = NodePath("../../Turn_Manager/Unit_Manager")
+kills_to_win = 6
 rounds = Array[ExtResource("12_8o8fv")]([SubResource("Resource_l2egs"), SubResource("Resource_61tjl"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs")])
 
 [node name="Camera2D" type="Camera2D" parent="."]

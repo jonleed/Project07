@@ -18,7 +18,7 @@ metadata/_custom_type_script = "uid://dhgqt46va2g45"
 [resource]
 script = ExtResource("6_vqmkt")
 action_array = Array[ExtResource("1_umeeq")]([SubResource("Resource_680y1"), ExtResource("3_dpipn"), ExtResource("4_yvxik")])
-move_max = 7
+move_max = 4
 unit_name = "Bat"
 base_health = 2
 anim_frames = ExtResource("6_680y1")

@@ -84,6 +84,20 @@ func remove_retreating_units():
 		var tile_value = map_manager.map_dict.get(tile)
 		if tile_value is Unit:
 			print("Removing Unit: ",tile_value)
-			tile_value.health -= tile_value.health
+			if tile_value in units:
+				map_manager.map_dict.erase(tile_value.cur_pos)
+				map_manager.update_astar_solidity(tile_value.cur_pos)
+				units.erase(tile_value)
+				tile_value.queue_free()
 			
-	
+
+signal update_kill_count()
+func remove_unit(unit: Unit) -> void:
+	if unit.health>0:
+		return
+	if unit in units:
+		map_manager.map_dict.erase(unit.cur_pos)
+		map_manager.update_astar_solidity(unit.cur_pos)
+		units.erase(unit)
+		unit.queue_free()
+		update_kill_count.emit()
