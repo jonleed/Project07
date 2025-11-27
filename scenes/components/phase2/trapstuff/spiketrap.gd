@@ -8,10 +8,12 @@ class_name SpikeTrap
 
 func _ready() -> void:
 	#make a unique copy so no goofs on unit resources
-	if attack_action:
-		attack_action = attack_action.duplicate(true)
-	attack_action.base_dmg = trap_damage
-	attack_action.dmg_mult = 1.0
+	var trap_action := Attackaction.new()
+	trap_action.dmg = trap_damage
+	#if attack_action:
+	#	attack_action = attack_action.duplicate(true)
+	#attack_action.base_dmg = trap_damage
+	#attack_action.dmg_mult = 1.0
 	#connect trigger
 	trigger_area.body_entered.connect(_on_body_entered)
 	if action_decoder == null:
@@ -52,7 +54,8 @@ func on_activate(node = null) -> void:
 	var trap_action := Attackaction.new()
 	trap_action.dmg = trap_damage 
 	var typed_targets: Array[Entity] = targets
-	action_decoder.decode_action(trap_action, typed_targets, self)
+	#action_decoder.decode_action(trap_action, typed_targets, self)
+	trap_action.execute(typed_targets)
 
 	#was tempted to do the recursive version to make it spooky but we left that in cs1
 func find_entity(node: Node) -> Entity:

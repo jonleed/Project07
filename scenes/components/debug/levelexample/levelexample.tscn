@@ -1855,7 +1855,7 @@ tile_map_data = PackedByteArray("AADz/wwAAAAAAAEAAADz/w0AAAAAAAEAAAD0/w0AAAAAAAE
 tile_set = ExtResource("4_7lr0t")
 
 [node name="Ent Init" type="TileMapLayer" parent="MapManager" node_paths=PackedStringArray("map_manager", "trap_manager", "turn_manager", "player_manager", "enemy_manager", "cursor")]
-tile_map_data = PackedByteArray("AAAMAPf/BQABAAAAAAD8/xMABQACAAAAAAD5/xAABQACAAAAAAAAABUABQACAAAAAAD8//z/BQAAAAAAAAD6//3/BQAAAAAAAAD4//z/BQAAAAAAAAD9//n/BQAAAAAAAAD8//f/BQAAAAAAAAD8//r/BQAAAAAAAAAOAPn/BQABAAAAAAAQAPv/BQABAAAAAAA=")
+tile_map_data = PackedByteArray("AAAMAPf/BQABAAAAAAD8/xMABQACAAAAAAD5/xAABQACAAAAAAAAABUABQACAAAAAAD8//z/BQAAAAAAAAD6//3/BQAAAAAAAAD4//z/BQAAAAAAAAD9//n/BQAAAAAAAAD8//f/BQAAAAAAAAD8//r/BQAAAAAAAAAOAPn/BQABAAAAAAAQAPv/BQABAAAAAAD7/wEABQAAAAQAAAD4/wEABQAAAAQAAAD+/wEABQAAAAQAAAABAPz/BQAAAAQAAAABAPf/BQAAAAQAAAA=")
 tile_set = SubResource("TileSet_l2egs")
 script = ExtResource("6_pa45f")
 map_manager = NodePath("..")

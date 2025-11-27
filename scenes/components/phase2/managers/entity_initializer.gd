@@ -29,7 +29,7 @@ func _ready() -> void:
 	get_tiles()
 	init_player_units()
 	#init_enemy_units()
-	#init_traps()
+	init_traps()
 	player_manager.start()
 	enemy_manager.start()
 	turn_manager.start()

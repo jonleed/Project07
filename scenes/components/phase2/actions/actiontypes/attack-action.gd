@@ -11,3 +11,7 @@ class_name Attackaction
 var dmg : float = float(base_dmg)*dmg_mult
 @export var heal_on_kill:float = 0.0
 @export var all_tile_attack:bool = false
+
+func execute(targets:Array[Entity]):
+		for target:Entity in targets:
+			target.health-=dmg
