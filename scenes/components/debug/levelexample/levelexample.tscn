@@ -1825,7 +1825,7 @@ metadata/_custom_type_script = "uid://btodx1p0782eh"
 
 [sub_resource type="Resource" id="Resource_61tjl"]
 script = ExtResource("12_8o8fv")
-units = Array[ExtResource("7_w5nbb")]([ExtResource("9_ccsti"), ExtResource("9_r6ms3")])
+units = Array[ExtResource("7_w5nbb")]([ExtResource("9_r6ms3")])
 metadata/_custom_type_script = "uid://btodx1p0782eh"
 
 [node name="levelexample" type="Node2D"]

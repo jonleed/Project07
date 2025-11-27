@@ -41,9 +41,10 @@ metadata/_custom_type_script = "uid://dhgqt46va2g45"
 [resource]
 script = ExtResource("6_ipyps")
 action_array = Array[ExtResource("1_xqnpm")]([SubResource("Resource_kg5av"), SubResource("Resource_3lhvl")])
-action_max = 2
+move_max = 4
 icon_sprite = ExtResource("6_ctbmu")
 unit_name = "Crocodile Boy"
 unit_desc = "Considered hideous by most, the Crocodile Boy actually has a soft side and enjoys to play in the garden. "
+base_health = 7
 anim_frames = ExtResource("5_xqnpm")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"
