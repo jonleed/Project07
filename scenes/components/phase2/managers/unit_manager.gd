@@ -83,6 +83,9 @@ func remove_unit(unit: Unit) -> void:
 		map_manager.update_astar_solidity(unit.cur_pos)
 		units.erase(unit)
 		unit.queue_free()
+		if self.has_method("refresh_gui"):
+			await get_tree().process_frame
+			self.call("refresh_gui")
 	Globals.play_ui_sound("Unit_Died")
 
 # Resets all unit manager's units so they can act again

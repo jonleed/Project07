@@ -45,6 +45,8 @@ func _ready() -> void:
 	setup_input_map()
 
 func _unhandled_input(event):
+	if not event.is_pressed():
+		return
 	if event.is_action_pressed("Pause"):
 		pause_menu.show()
 	if event.is_action_pressed("Enter"):
