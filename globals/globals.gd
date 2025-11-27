@@ -111,7 +111,10 @@ func get_scaled_pattern_empty_tiles(origin: Vector2i, pattern: Pattern2D, distan
 	"Support_Heal":preload("res://assets/audio/Bubble 1.wav"),
 	"Basic_Attack":preload("res://assets/audio/Hit damage 1.wav"),
 	"Heavy_Attack":preload("res://assets/audio/Boss hit 1.wav"),
-	"Swap_Magic":preload("res://assets/audio/Blow 1V2.wav")
+	"Swap_Magic":preload("res://assets/audio/Blow 1V2.wav"),
+	"Unit_Died":preload("res://assets/audio/Block Break 1.wav"),
+	"Victory":preload("res://assets/audio/success-fanfare-trumpets-6185.mp3"),
+	"Loss":preload("res://assets/audio/cartoon-trombone-sound-effect-241387.mp3")
 }
 
 func play_ui_sound(stream_source):

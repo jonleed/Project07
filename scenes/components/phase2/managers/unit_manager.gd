@@ -73,6 +73,7 @@ func add_unit(unit: Unit,coord:Vector2i) -> void:
 				add_child(unit)
 				unit.health_changed.connect(unit_health_updated)
 
+
 # Remove a unit from this unit manager
 func remove_unit(unit: Unit) -> void:
 	if unit.health>0:
@@ -82,6 +83,7 @@ func remove_unit(unit: Unit) -> void:
 		map_manager.update_astar_solidity(unit.cur_pos)
 		units.erase(unit)
 		unit.queue_free()
+	Globals.play_ui_sound("Unit_Died")
 
 # Resets all unit manager's units so they can act again
 func reset_unit_turns() -> void:

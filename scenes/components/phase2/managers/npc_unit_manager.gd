@@ -99,3 +99,4 @@ func remove_unit(unit: Unit) -> void:
 		units.erase(unit)
 		unit.queue_free()
 		update_kill_count.emit()
+	Globals.play_ui_sound("Unit_Died")

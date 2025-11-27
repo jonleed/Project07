@@ -13,6 +13,7 @@ config_version=5
 config/name="Project07"
 run/main_scene="uid://bjwfrloo6oxt0"
 config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="uid://c7corju1cdsa2"
 
 [autoload]
 

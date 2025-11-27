@@ -59,6 +59,9 @@ func kill_count_update():
 	objective_update.emit(kill_count, kills_to_win) 
 	printerr("KILL COUNT: ", kill_count)
 	if kills_to_win <= kill_count: 
+		Globals.play_music("",true)
+		await get_tree().create_timer(0.5).timeout
+		Globals.play_ui_sound("Victory")
 		game_won.emit(true)
 
 func spawn_round_enemies():

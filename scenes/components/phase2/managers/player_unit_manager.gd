@@ -200,10 +200,13 @@ var game_over:bool = false
 func _on_player_unit_health_changed(changed_node: Entity) -> void:
 	if changed_node.health<=0:
 		remove_unit(changed_node)
+		refresh_gui()
 		if units.is_empty():
 			print("GAME OVER")
 			game_over = true
+			Globals.play_music("",true)
 			await get_tree().process_frame
+			Globals.play_ui_sound("Loss")
 			end_game.emit(game_over)
 		refresh_gui()
 
