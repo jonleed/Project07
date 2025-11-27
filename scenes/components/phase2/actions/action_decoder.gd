@@ -40,7 +40,19 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 				await map_manager.entity_move(curUnit.cur_pos,target_pos)
 				curUnit.action_count +=1
 		else: # Move without attacking
-			await map_manager.entity_move(curUnit.cur_pos,act.chosen_pos)
+			# Validate that chosen_pos is within valid range
+			var assembled_tiles: Array[Vector2i] = []
+			if act.range_type == 0:
+				assembled_tiles = Globals.get_scaled_pattern_tiles(curUnit.cur_pos, act.range_pattern, act.range_dist, map_manager)
+			elif act.range_type == 1:
+				assembled_tiles = Globals.get_bfs_tiles(curUnit.cur_pos, act.range_dist, map_manager)
+			
+			# Check if chosen_pos is in valid tiles
+			if act.chosen_pos in assembled_tiles:
+				await map_manager.entity_move(curUnit.cur_pos, act.chosen_pos)
+			else:
+				printerr("Invalid move position: ", act.chosen_pos, " not in valid range")
+				curUnit.action_count +=1
 		Globals.play_ui_sound("Heavy_Attack")
 	elif act is Swapaction:
 		if targets.size()!=1:
