@@ -9,8 +9,12 @@ script = ExtResource("1_jmrm8")
 [node name="UI" type="AudioStreamPlayer" parent="."]
 bus = &"UI"
 
+[node name="Music" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
 [node name="PauseMenu" parent="." instance=ExtResource("2_6nnoh")]
 visible = false
 top_level = true
 
 [connection signal="finished" from="UI" to="." method="_on_ui_finished"]
+[connection signal="finished" from="Music" to="." method="_on_music_finished"]
