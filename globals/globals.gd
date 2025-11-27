@@ -143,7 +143,7 @@ const MUSIC_DB : float = -5.0
 @onready var music: AudioStreamPlayer = $Music
 
 var music_loads:Dictionary = {
-	"Game":preload("res://assets/audio/Music/hard-type-beatrap-instrumentaltrap-game-358478.mp3"),
+	"Game":preload("res://assets/audio/Music/the-last-point-beat-electronic-digital-394291.mp3"),
 	"Menu":preload("res://assets/audio/Music/coffee-with-sugar-background-music-by-alien-dreamscapes-237715.mp3")
 }
 
