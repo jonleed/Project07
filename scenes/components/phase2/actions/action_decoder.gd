@@ -23,7 +23,8 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 		map_manager.entity_move(targets.get(0).cur_pos,act.chosen_pos)
 	elif act is Healaction:
 		for target:Entity in targets:
-			target.health+= act.heal
+			target.health += act.heal
+			target.health = clamp(target.health, 0, target.base_health)
 			print("Healing target, %s for %s."%[target,act.heal])
 		Globals.play_ui_sound("Support_Heal")
 	elif act is Takeaction: # Take like in Chess; I thought it was a clever name...
