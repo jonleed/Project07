@@ -137,3 +137,37 @@ func _on_ui_finished() -> void:
 
 func show_options():
 	$PauseMenu.visible = true
+
+const MUSIC_DB : float = -5.0
+
+@onready var music: AudioStreamPlayer = $Music
+
+var music_loads:Dictionary = {
+	"Game":preload("res://assets/audio/Music/hard-type-beatrap-instrumentaltrap-game-358478.mp3"),
+	"Menu":preload("res://assets/audio/Music/coffee-with-sugar-background-music-by-alien-dreamscapes-237715.mp3")
+}
+
+func loop_music():
+	var fade_tween:Tween = self.create_tween()
+	#fade out music
+	#fade_tween.tween_property(music,"volume_db",-80.0,1.0)
+	music.volume_db = -80
+	#play music
+	music.play()
+	#fade in over time
+	fade_tween.tween_property(music,"volume_db",MUSIC_DB,0.9)
+
+func play_music(music_name:String,instant:bool = false):
+	if instant:
+		music.stop()
+	match music_name:
+		"Game":
+			music.stream = music_loads["Game"]
+			loop_music()
+		"Menu":
+			music.stream = music_loads["Menu"]
+			music.play()
+
+
+func _on_music_finished() -> void:
+	loop_music()

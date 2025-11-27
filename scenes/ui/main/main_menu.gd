@@ -1,5 +1,7 @@
 extends Control
 
+func _ready() -> void:
+	Globals.play_music("Menu",true)
 
 func _on_start_pressed() -> void:
 	Globals.play_ui_sound("Confirm")

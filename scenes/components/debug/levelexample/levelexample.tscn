@@ -1879,7 +1879,7 @@ kills_to_win = 6
 rounds = Array[ExtResource("12_8o8fv")]([SubResource("Resource_l2egs"), SubResource("Resource_61tjl"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs")])
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(4, 4)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
