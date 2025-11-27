@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bohbk3frymh61"]
+[gd_scene load_steps=3 format=3 uid="uid://bohbk3frymh61"]
 
 [ext_resource type="Script" uid="uid://d3mv8t5ha8rye" path="res://scenes/ui/phase1/plot.gd" id="1_4rgkd"]
+[ext_resource type="Texture2D" uid="uid://bpcgh7b7vi7rh" path="res://assets/menu art/brickhouse.jpg" id="2_xmj6c"]
 
 [node name="Plot" type="Control"]
 layout_mode = 3
@@ -11,19 +12,51 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4rgkd")
 
-[node name="Continue" type="Button" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -123.0
+offset_top = 1.0
+offset_right = 1181.0
+offset_bottom = 830.0
+texture = ExtResource("2_xmj6c")
+expand_mode = 1
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1150.0
+offset_bottom = 649.0
+
+[node name="Label" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -39.5
-offset_top = -15.5
-offset_right = 39.5
-offset_bottom = 15.5
+offset_left = -406.0
+offset_top = -239.0
+offset_right = 410.0
+offset_bottom = 185.75
 grow_horizontal = 2
 grow_vertical = 2
+text = "      There once were hideous 3 monsters and scoundrels who lived alone in a brick house in the forest. They were shunned by society and forced to live in solitude. Or they self exiled themselves due to their deformities. Im not sure, I didn’t feel comfortable asking. To be honest, it’s not so bad in the brick house, theres good food and the environment is peaceful. I went outside to read my first morning here and the birds were chipping, it’s honestly quite pleasant, I apologize for being negative at first. 
+
+      Well anyway, they lived here, in the brick house, you know like playing and doing things to pass the time. Then suddenly like by the will of a mighty malevolent God, the brick house and the monsters were transported to the gates to a deep hell. Like flames, lava, spikey rocks; the whole works. The God spoke to them, telling them that they were now his puppets and only once they bested his legions of demons and other baddies in combat will he reward them with their freedom. The residents of the brick house seemed to excitedly take up the challenge. It’s in the nature for ugly creatures to be evil. I would have asked specifically why the evil God did what he did, but I didn’t feel comfortable asking. Well, thats about it. Only time will tell if the hideous monsters and scoundrels will prevail against this great evil. "
+autowrap_mode = 2
+
+[node name="Continue" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.5
+offset_top = -47.0
+offset_right = 39.5
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Continue"
 
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]

@@ -122,7 +122,7 @@ func select_enemy_unit(unit: Hostile_Unit) -> void:
 	#print(pattern_tiles)
 	map_manager.highlight_tiles(bfs_tiles,Color.DARK_RED,3)
 	
-	# Show Enemey Select UI
+	# Show Enemy Select UI
 	unit.select_ui.show()
 	unit.hp_label.text = str(int(unit.health)) 
 	unit.dmg_label.text = str(int(unit.action_array[0].dmg)) 
