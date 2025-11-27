@@ -20,6 +20,7 @@ base_dmg = 2
 bonus_dmg = 1
 range_type = 1
 action_name = "Push"
+tool_tip = "Pushes unit 1 tile back dealing 2 damage. If you push onto a wall or another unit, deal bonus damage to both the target and the entity behind them. "
 metadata/_custom_type_script = "uid://c6t7k8tj8427g"
 
 [resource]

@@ -19,6 +19,7 @@ script = ExtResource("3_2as78")
 range_type = 1
 range_dist = 32
 action_name = "Swap"
+tool_tip = "Swaps places between any unit and this one. "
 metadata/_custom_type_script = "uid://c2x51a1xu8lbn"
 
 [resource]

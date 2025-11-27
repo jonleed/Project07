@@ -20,6 +20,7 @@ base_dmg = 1
 range_pattern = SubResource("Resource_ctbmu")
 range_dist = 2
 action_name = "Hook"
+tool_tip = "Deal 1 damage and pull unit one tile in front of you in the direction you used the hook. "
 metadata/_custom_type_script = "uid://rt32nydn3ipi"
 
 [sub_resource type="Resource" id="Resource_ipyps"]
@@ -34,6 +35,7 @@ heal_on_kill = 3.0
 range_pattern = SubResource("Resource_ipyps")
 range_dist = 2
 action_name = "Chomp"
+tool_tip = "Chomp at your foes. If you kill them, you eat them for 2 HP."
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [resource]

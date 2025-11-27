@@ -112,8 +112,7 @@ func select_unit(unit: Unit) -> void:
 	map_manager.highlight_tiles(bfs_tiles,Color.BLUE,3)
 
 func select_enemy_unit(unit: Hostile_Unit) -> void:
-	if cur_unit_selected is Hostile_Unit:
-		cur_unit_selected.select_ui.hide()
+	deselect()
 	draw_unit_movement(unit)
 	@warning_ignore("unused_variable")
 	var bfs_tiles = Globals.get_bfs_empty_tiles(unit.cur_pos,unit.move_count,map_manager)

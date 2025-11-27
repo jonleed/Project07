@@ -24,3 +24,4 @@ class_name Action
 @export_group("Cosmetics")
 @export var action_name:String = "Action 1"
 @export var action_icon:Texture2D
+@export_multiline var tool_tip:String = ""

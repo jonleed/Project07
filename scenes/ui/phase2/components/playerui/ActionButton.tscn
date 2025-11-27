@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://0e1vqscyqft0"]
+[gd_scene load_steps=3 format=3 uid="uid://0e1vqscyqft0"]
 
 [ext_resource type="Script" uid="uid://3dgk41cigp40" path="res://scenes/ui/phase2/components/playerui/action_button.gd" id="1_y6fvg"]
 
-[node name="ActionButton" type="PanelContainer" node_paths=PackedStringArray("action_texture_rect", "action_butt")]
+[sub_resource type="LabelSettings" id="LabelSettings_y6fvg"]
+font_color = Color(0.5686275, 0, 0, 1)
+
+[node name="ActionButton" type="PanelContainer" node_paths=PackedStringArray("action_texture_rect", "action_butt", "dmg_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,12 +14,17 @@ grow_vertical = 2
 script = ExtResource("1_y6fvg")
 action_texture_rect = NodePath("HBoxContainer/TextureRect")
 action_butt = NodePath("HBoxContainer/Button")
+dmg_label = NodePath("HBoxContainer/DMG Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
+
+[node name="DMG Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_y6fvg")
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
