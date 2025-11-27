@@ -115,7 +115,7 @@ func get_minimal_friendly(plan_pos:Vector2i, override_consider_closest:bool=fals
 				continue
 				
 			if exclude_max_health:
-				if friendly_unit.health >= friendly_unit.base_health:
+				if friendly_unit.health >= friendly_unit.base_health or friendly_unit.immortal:
 					turn_log += "\n\t\t\t\tExcluding unit at maximum health"
 					continue
 			
