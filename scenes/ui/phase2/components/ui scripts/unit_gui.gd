@@ -9,6 +9,7 @@ func _ready():
 
 # Given array of Player Units, Updates UnitGUI
 func _on_update_unit_display(units):
+	await get_tree().process_frame
 	# Show boxes based on number of units
 	var count = units.size()
 	if count<=0:
@@ -66,5 +67,8 @@ func _update_hearts(box, current_health: int, max_health: int):
 
 # Selects Unit from Portrait UI
 func _on_unit_selected(unit):
+	if not is_instance_valid(unit):
+		_on_update_unit_display(player_unit_manager.units)
+		return
 	player_unit_manager.is_acting = false
 	player_unit_manager._on_unit_selected(unit)
