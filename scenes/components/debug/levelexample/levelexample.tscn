@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=4 uid="uid://87ikob4x4k87"]
+[gd_scene load_steps=55 format=4 uid="uid://87ikob4x4k87"]
 
 [ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
@@ -22,6 +22,7 @@
 [ext_resource type="Resource" uid="uid://dkd15ksro81dy" path="res://resources/units/Ghost.tres" id="13_s4fv2"]
 [ext_resource type="Script" uid="uid://cqxhg00a17hk6" path="res://scenes/components/phase2/managers/npc_unit_manager.gd" id="13_w5nbb"]
 [ext_resource type="Script" uid="uid://bbybo151sp17j" path="res://scenes/components/phase2/managers/trap_manager.gd" id="14_tm18g"]
+[ext_resource type="Resource" uid="uid://cjkrt0ujb8th6" path="res://resources/units/Skeleton.tres" id="15_44nnb"]
 [ext_resource type="PackedScene" uid="uid://6byovpfrflp2" path="res://scenes/ui/phase2/game_over.tscn" id="21_61tjl"]
 [ext_resource type="PackedScene" uid="uid://dkssyyldfisd1" path="res://scenes/ui/phase2/game_won.tscn" id="22_hf82m"]
 [ext_resource type="PackedScene" uid="uid://c4a1ndwvnrso8" path="res://scenes/ui/phase2/hint_screen.tscn" id="23_hf82m"]
@@ -1818,6 +1819,11 @@ sources/3 = SubResource("TileSetAtlasSource_r6ms3")
 sources/2 = SubResource("TileSetAtlasSource_ccsti")
 sources/5 = SubResource("TileSetAtlasSource_8o8fv")
 
+[sub_resource type="Resource" id="Resource_oejbc"]
+script = ExtResource("12_8o8fv")
+units = Array[ExtResource("7_w5nbb")]([ExtResource("15_44nnb"), ExtResource("15_44nnb"), ExtResource("15_44nnb"), ExtResource("15_44nnb")])
+metadata/_custom_type_script = "uid://btodx1p0782eh"
+
 [sub_resource type="Resource" id="Resource_l2egs"]
 script = ExtResource("12_8o8fv")
 units = Array[ExtResource("7_w5nbb")]([ExtResource("13_s4fv2"), ExtResource("9_hf82m"), ExtResource("9_r6ms3"), ExtResource("9_r6ms3")])
@@ -1876,7 +1882,7 @@ trap_manager = NodePath("../../Turn_Manager/Trap_Manager")
 turn_manager = NodePath("../../Turn_Manager")
 enemy_manager = NodePath("../../Turn_Manager/Unit_Manager")
 kills_to_win = 15
-rounds = Array[ExtResource("12_8o8fv")]([SubResource("Resource_l2egs"), SubResource("Resource_61tjl"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs")])
+rounds = Array[ExtResource("12_8o8fv")]([SubResource("Resource_oejbc"), SubResource("Resource_l2egs"), SubResource("Resource_61tjl"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs"), SubResource("Resource_l2egs")])
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
