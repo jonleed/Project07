@@ -32,7 +32,7 @@ action_array = Array[ExtResource("1_ucw12")]([SubResource("Resource_6umek")])
 move_max = 0
 icon_sprite = ExtResource("4_6umek")
 unit_name = "Knight"
-unit_desc = "Little is known about the Knight, other than his favorite color which is [color=Yellow]Yellow[/color]."
+unit_desc = "Minor celebrity among board game enthusiasts."
 entity_shape = SubResource("Resource_pil5w")
 anim_frames = ExtResource("4_hwx2h")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

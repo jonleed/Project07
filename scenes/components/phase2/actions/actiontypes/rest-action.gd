@@ -9,3 +9,4 @@ class_name Healaction
 		heal_mult = value
 		heal = float(base_heal)*heal_mult
 var heal : float = float(base_heal)*heal_mult
+@export var all_tile_heal:bool = false

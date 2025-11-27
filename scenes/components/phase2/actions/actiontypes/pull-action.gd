@@ -10,3 +10,4 @@ class_name Pullaction
 		dmg = float(base_dmg)*dmg_mult
 var dmg : float = float(base_dmg)*dmg_mult
 @export var bonus_dmg:int = 0
+@export var all_tile_attack:bool = false

@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=12 format=3 uid="uid://hhwgisiq4l3o"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=15 format=3 uid="uid://hhwgisiq4l3o"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_m8d65"]
 [ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="3_mex4d"]
 [ext_resource type="Script" uid="uid://rt32nydn3ipi" path="res://scenes/components/phase2/actions/actiontypes/pull-action.gd" id="3_wna85"]
+[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="4_cn04u"]
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="4_r6ncp"]
 [ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="4_wna85"]
 [ext_resource type="SpriteFrames" uid="uid://dtn6wx28yla5y" path="res://resources/animations/WoodImp.tres" id="5_73m8r"]
 [ext_resource type="Texture2D" uid="uid://b5eoojb0cr06k" path="res://assets/portraits/woodimp.png" id="6_mex4d"]
@@ -15,21 +17,33 @@ metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 
 [sub_resource type="Resource" id="Resource_7bchq"]
 script = ExtResource("3_wna85")
-base_dmg = 2
+base_dmg = 1
+all_tile_attack = true
 range_pattern = SubResource("Resource_r6ncp")
 range_dist = 2
 action_name = "Inkwa Ipaqua"
 tool_tip = "Gwah gwah wuhguh"
 metadata/_custom_type_script = "uid://rt32nydn3ipi"
 
+[sub_resource type="Resource" id="Resource_a1tk8"]
+script = ExtResource("4_cn04u")
+base_dmg = 1
+all_tile_attack = true
+range_pattern = ExtResource("4_r6ncp")
+range_dist = 2
+action_name = "Kongo Ipaqua"
+tool_tip = "Okween yacuwanse"
+metadata/_custom_type_script = "uid://c6t7k8tj8427g"
+
 [sub_resource type="Resource" id="Resource_cn04u"]
 script = ExtResource("3_mex4d")
 affected_tiles = PackedVector2Array(0, -2, 1, -1, -1, -1, 0, 0, -1, 1, 0, 2, 1, 1)
 metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 
-[sub_resource type="Resource" id="Resource_a1tk8"]
+[sub_resource type="Resource" id="Resource_826h4"]
 script = ExtResource("4_wna85")
 base_heal = 2
+all_tile_heal = true
 range_pattern = SubResource("Resource_cn04u")
 range_dist = 2
 action_name = "Kowconcheti"
@@ -38,13 +52,12 @@ metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
 
 [resource]
 script = ExtResource("7_o1gh3")
-action_array = Array[ExtResource("1_m8d65")]([SubResource("Resource_7bchq"), SubResource("Resource_a1tk8")])
-action_max = 2
+action_array = Array[ExtResource("1_m8d65")]([SubResource("Resource_7bchq"), SubResource("Resource_a1tk8"), SubResource("Resource_826h4")])
+action_max = 3
 move_max = 6
 icon_sprite = ExtResource("6_mex4d")
 unit_name = "Wood Imp"
 unit_desc = "\"Yumbo yacwan.\" - Wood Imp"
 base_health = 3
-immortal = true
 anim_frames = ExtResource("5_73m8r")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

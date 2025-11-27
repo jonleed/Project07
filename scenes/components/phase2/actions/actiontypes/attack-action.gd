@@ -10,3 +10,4 @@ class_name Attackaction
 		dmg = float(base_dmg)*dmg_mult
 var dmg : float = float(base_dmg)*dmg_mult
 @export var heal_on_kill:float = 0.0
+@export var all_tile_attack:bool = false

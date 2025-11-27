@@ -18,10 +18,11 @@ metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 [sub_resource type="Resource" id="Resource_2as78"]
 script = ExtResource("2_swm1y")
 base_dmg = 2
+all_tile_attack = true
 range_pattern = SubResource("Resource_k5c6v")
 range_dist = 2
 action_name = "Ring of Fire"
-tool_tip = "Columns of fire errupt on the tile within the ring."
+tool_tip = "Columns of fire errupt damaging ALL units within the ring."
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [sub_resource type="Resource" id="Resource_6dwcd"]

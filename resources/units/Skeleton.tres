@@ -1,28 +1,20 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://cjkrt0ujb8th6"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=6 format=3 uid="uid://cjkrt0ujb8th6"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_ymg80"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_2ia3q"]
-[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_3ju4w"]
-[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="3_v8snd"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_510i2"]
 [ext_resource type="SpriteFrames" uid="uid://h2v0egc81iwn" path="res://resources/animations/Black Skeleton.tres" id="4_6qv1d"]
 
-[sub_resource type="Resource" id="Resource_thw0r"]
-script = ExtResource("2_3ju4w")
-affected_tiles = PackedVector2Array(0, 0, 1, -1, 0, -1, -1, -1, -1, 0, -1, 1, 0, 1, 1, 1, 1, 0)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="Resource" id="Resource_xhqy3"]
-script = ExtResource("3_v8snd")
-base_heal = 10
-range_pattern = SubResource("Resource_thw0r")
-action_name = "Reassemble"
-metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
+[sub_resource type="Resource" id="Resource_3ju4w"]
+script = ExtResource("2_510i2")
+base_dmg = 2
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [resource]
 script = ExtResource("2_2ia3q")
-action_array = Array[ExtResource("1_ymg80")]([SubResource("Resource_xhqy3")])
+action_array = Array[ExtResource("1_ymg80")]([SubResource("Resource_3ju4w"), null])
 move_max = 3
 unit_name = "Skeleton"
-base_health = 30
+base_health = 4
 anim_frames = ExtResource("4_6qv1d")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"
