@@ -97,9 +97,9 @@ func get_minimal_enemy(check_closest_override:bool=false) -> Entity:
 	return minimal_unit
 
 func determine_friend_we_care_about() -> void:
-	friend_that_we_care_about = get_minimal_friendly(cur_pos)
+	friend_that_we_care_about = get_minimal_friendly(cur_pos, false, true)
 	
-func get_minimal_friendly(plan_pos:Vector2i, override_consider_closest:bool=false) -> Entity:
+func get_minimal_friendly(plan_pos:Vector2i, override_consider_closest:bool=false, exclude_max_health:bool=false) -> Entity:
 	var minimal_value = INF
 	var minimal_unit:Entity = null
 	for friendly_faction_name in get_friendly_factions():
@@ -113,6 +113,11 @@ func get_minimal_friendly(plan_pos:Vector2i, override_consider_closest:bool=fals
 			if friendly_unit.health <= 0:
 				turn_log += "\n\t\t\t\tSkipping as health is below 0"
 				continue
+				
+			if exclude_max_health:
+				if friendly_unit.health >= friendly_unit.base_health:
+					turn_log += "\n\t\t\t\tExcluding unit at maximum health"
+					continue
 			
 			var friendly_unit_pos:Vector2i = friendly_unit.cur_pos
 			var dist_to_friendly:float = friendly_unit_pos.distance_to(plan_pos)
