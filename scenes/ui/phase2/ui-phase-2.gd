@@ -18,9 +18,14 @@ signal highlight_action_tiles(tiles: Array[Vector2i], color: Color, pattern:int)
 @onready var turn_control_gui: Control = $"Turn Control GUI"
 @onready var movement_gui: Control = $"Movement GUI"
 @onready var turn_banner_gui: Control = $"TurnBanner GUI"
+@onready var pause_menu: PanelContainer = $PauseMenu
+@onready var end_turn_btn: Button = $"Turn Control GUI/HBoxContainer/EndTurnBTN"
 
 var selected_coords:Array[Vector2i] = []
 var cur_unit_selected:Unit = null # Load all actions of selected unit
+var number_key_actions := ["Act_1", "Act_2", "Act_3", "Act_4", "Act_5"]
+var number_keys := [KEY_1, KEY_2, KEY_3, KEY_4, KEY_5]
+
 
 func _ready() -> void:
 	## Check if any managers are missing
@@ -36,6 +41,29 @@ func _ready() -> void:
 	player_unit_manager.action_selection.connect(highlight_selected_action)
 	player_unit_manager.enable_ui_inputs.connect(_on_toggle_inputs)
 	player_unit_manager.enemy_selected.connect(select_enemy_unit)
+	
+	setup_input_map()
+
+func _unhandled_input(event):
+	if event.is_action_pressed("Pause"):
+		pause_menu.show()
+	if event.is_action_pressed("Enter"):
+		end_turn_btn.emit_signal("pressed")
+
+	# Debug: Print when any key is pressed
+	if event is InputEventKey and event.pressed:
+		print("Key pressed: ", event.keycode)
+	
+	# Trigger action buttons when their mapped number key is pressed
+	for i in range(number_key_actions.size()):
+		if event.is_action_pressed(number_key_actions[i]):
+			var btns = actions_box.get_children()
+			if i < btns.size():
+				var btn = btns[i]
+				# Press the internal action_butt button
+				if btn.has_node("action_butt") or "action_butt" in btn:
+					btn.action_butt.emit_signal("pressed")
+			break
 
 
 ## Helper Functions
@@ -60,10 +88,11 @@ func load_unit_actions(unit:Unit):
 	if not unit is PlayerUnit:
 		return
 	clear_action_container()
-	for act in unit.action_array:
-		add_to_action_container(act)
+	for i in range(unit.action_array.size()):
+		var act = unit.action_array[i]
+		add_to_action_container(act, i)
 
-func add_to_action_container(action:Action):
+func add_to_action_container(action:Action, index: int):
 	#create button for action
 	var action_but_instance=action_but_packed.instantiate()
 	action_but_instance.load_action(action)
@@ -81,6 +110,10 @@ func add_to_action_container(action:Action):
 				)
 	else:
 		print("Action button instance missing signal")
+	if index < number_key_actions.size():
+		action_but_instance.set_meta("input_action", number_key_actions[index])
+	else:
+		action_but_instance.set_meta("input_action", null)
 
 func clear_action_container():
 	for child in actions_box.get_children():
@@ -184,3 +217,13 @@ func highlight_selected_action(act:Action):
 #for the undo and redo we need a stack of things we plan on doing
 #in our document we suggest that all things happen with their time as processing
 #we will be making our player choices, which will be sent to resolve player choices (action decoder)
+
+### Input Map
+func setup_input_map():
+	for i in range(number_key_actions.size()):
+		var act_name = number_key_actions[i]
+		if not InputMap.has_action(act_name):
+			InputMap.add_action(act_name)
+			var key_event := InputEventKey.new()
+			key_event.keycode = number_keys[i]
+			InputMap.action_add_event(act_name, key_event)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4a1ndwvnrso8"]
+[gd_scene load_steps=3 format=3 uid="uid://c4a1ndwvnrso8"]
 
 [ext_resource type="Script" uid="uid://c4rd0ew42kguk" path="res://scenes/ui/phase2/hint_screen.gd" id="1_h6dy8"]
+[ext_resource type="Texture2D" uid="uid://cdgd5o8my3l0" path="res://assets/ui/Tutorial.png" id="2_h6dy8"]
 
 [node name="Hint Screen" type="Control"]
 layout_mode = 3
@@ -18,6 +19,24 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color(0.0885599, 0.0885599, 0.0885599, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.277
+offset_left = 4.0
+offset_top = 477.0
+offset_right = 126.68
+offset_bottom = 434.504
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 651.0
+texture = ExtResource("2_h6dy8")
+expand_mode = 2
 
 [node name="Return" type="Button" parent="."]
 layout_mode = 1
