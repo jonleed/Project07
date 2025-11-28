@@ -2,7 +2,7 @@ extends Unit_Manager
 class_name NPC_Manager
 
 var debugging_allowed:bool = false
-var pathfinder:Pathfinder
+#var pathfinder:Pathfinder
 func _ready():
 	get_units()
 	if units.size() == 0:
@@ -73,8 +73,8 @@ func create_unit_from_res(res:UnitResource)->Hostile_Unit:
 	un.health_changed.connect(remove_unit)
 	return un
 
-func get_pathfinder() -> Pathfinder:
-	return pathfinder
+#func get_pathfinder() -> Pathfinder:
+	#return pathfinder
 
 func remove_retreating_units():
 	var removing_tiles:Array[Vector2i] = map_manager.remove_layer.get_used_cells()

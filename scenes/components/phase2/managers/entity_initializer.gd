@@ -24,7 +24,7 @@ var trap_tiles: Dictionary[Vector2i,int] = {}
 
 
 func _ready() -> void:
-	call_deferred("_init_trap")
+	#call_deferred("init_traps")
 	await map_manager.ready
 	get_tiles()
 	init_player_units()

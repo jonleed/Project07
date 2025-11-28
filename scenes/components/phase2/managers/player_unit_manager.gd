@@ -157,6 +157,7 @@ func _on_unit_selected(unit:Unit) -> void:
 		return
 	if unit.action_count<1 and unit.move_count<1: # Check if Unit has actions left, if it doesnt, then unit has already acted
 		print("Unit is exhausted (is out of actions and moves)")
+		Globals.play_ui_sound("Cancel")
 		return
 	if unit.action_count<1:
 		print("Unit is out of Actions")

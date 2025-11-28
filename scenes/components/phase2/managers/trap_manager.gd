@@ -4,7 +4,7 @@ extends Node
 @export var map_manager: MapManager
 var traps: Array[Trap] = []
 var is_functional: bool = true
-@onready var trap_scene: Trap = $Trap
+#@onready var trap_scene: Trap = $Trap
 @export var action_decoder: ActionDecoder
 #@onready var action_decoder: ActionDecoder = get_parent().get_node("ActionDecoder")
 var used_traps: Array = []

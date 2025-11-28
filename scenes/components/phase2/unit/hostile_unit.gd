@@ -383,7 +383,7 @@ func running_state() -> void:
 		move_down_path(path_to_take, true)
 	return
 	
-	
+
 func get_tiles_that_can_act_on_given_tile(target_unit:Entity, provided_action:Action) -> Array[Vector2i]:
 	var possible_coordinates:Array[Vector2i] = []
 	if provided_action.range_type == 0:

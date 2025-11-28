@@ -48,7 +48,7 @@ func _assign_action_decoder() -> void:
 			push_warning("[Trap] Could not find ActionDecoder under root!")
 
 
-func _on_health_changed(changed_node: Entity) -> void:
+func _on_health_changed(_changed_node: Entity) -> void:
 	if health <= 0 and not immortal:
 		on_destroy()
 

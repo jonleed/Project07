@@ -10,18 +10,35 @@ func _ready():
 # Given array of Player Units, Updates UnitGUI
 func _on_update_unit_display(units):
 	await get_tree().process_frame
+	
+	##clean data of invalid units
+	var valid_units:Array = []
+	for unit in units:
+		if is_instance_valid(unit):
+			valid_units.append(unit)
+	
 	# Show boxes based on number of units
-	var count = units.size()
+	var count = valid_units.size()
 	if count<=0:
 		return
-	for i in range(4):
-		var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))
-		box.visible = i < count
-
-		if i < count:
-			var unit = units[i]
-			_populate_unit_box(box, unit, i)
+	
+	for child in $HBoxContainer.get_children():
+		child.visible = false
+	
+	for i in count:
+		var box = $HBoxContainer.get_child(i)
+		var unit = valid_units[i]
 		
+		if is_instance_valid(unit):
+			_populate_unit_box(box,unit,i)
+			if unit.move_count>0 or unit.action_count>0:
+				box.modulate = Color.WHITE
+			else:
+				box.modulate = Color.DIM_GRAY
+			box.visible = true
+	
+	
+
 
 # Populates Portaits and HP
 func _populate_unit_box(box, unit, index): 

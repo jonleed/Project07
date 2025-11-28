@@ -1,20 +1,59 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=6 format=3 uid="uid://cjkrt0ujb8th6"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=18 format=3 uid="uid://cjkrt0ujb8th6"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_ymg80"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_2ia3q"]
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_510i2"]
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="2_xhqy3"]
+[ext_resource type="Resource" uid="uid://foymb330k1wh" path="res://resources/AI/Macho.tres" id="3_3ju4w"]
 [ext_resource type="SpriteFrames" uid="uid://h2v0egc81iwn" path="res://resources/animations/Black Skeleton.tres" id="4_6qv1d"]
+[ext_resource type="Script" uid="uid://c4vo2cq2blyvo" path="res://scenes/components/phase2/actions/actiontypes/move-action.gd" id="4_hq87h"]
+[ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="5_uq266"]
+[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="6_khwbm"]
 
-[sub_resource type="Resource" id="Resource_3ju4w"]
+[sub_resource type="Resource" id="Resource_pmjlt"]
 script = ExtResource("2_510i2")
-base_dmg = 2
+base_dmg = 1
+range_pattern = ExtResource("2_xhqy3")
+action_name = "Basic Attack"
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
+
+[sub_resource type="Gradient" id="Gradient_3vogg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u1ym4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5a3ew"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_u1ym4")
+color_ramp = SubResource("Gradient_3vogg")
+
+[sub_resource type="Resource" id="Resource_duf7g"]
+script = ExtResource("4_hq87h")
+range_pattern = ExtResource("2_xhqy3")
+action_name = "Move"
+action_icon = SubResource("NoiseTexture2D_5a3ew")
+metadata/_custom_type_script = "uid://c4vo2cq2blyvo"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rdy81"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xp77l"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_rdy81")
+
+[sub_resource type="Resource" id="Resource_i1m1p"]
+script = ExtResource("6_khwbm")
+range_pattern = ExtResource("5_uq266")
+action_name = "Rest"
+action_icon = SubResource("NoiseTexture2D_xp77l")
+metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
 
 [resource]
 script = ExtResource("2_2ia3q")
-action_array = Array[ExtResource("1_ymg80")]([SubResource("Resource_3ju4w"), null])
-move_max = 3
+action_array = Array[ExtResource("1_ymg80")]([SubResource("Resource_pmjlt"), SubResource("Resource_duf7g"), SubResource("Resource_i1m1p")])
+action_max = 2
 unit_name = "Skeleton"
-base_health = 4
+base_health = 3
 anim_frames = ExtResource("4_6qv1d")
+ai_res = ExtResource("3_3ju4w")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"
