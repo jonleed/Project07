@@ -206,7 +206,7 @@ func _on_player_unit_health_changed(changed_node: Entity) -> void:
 			print("GAME OVER")
 			game_over = true
 			Globals.play_music("",true)
-			#await get_tree().process_frame
+			await get_tree().process_frame
 			Globals.play_ui_sound("Loss")
 			end_game.emit(game_over)
 		refresh_gui()
