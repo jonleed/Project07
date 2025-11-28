@@ -12,7 +12,6 @@ func _on_update_unit_display(units):
 	await get_tree().process_frame
 	# Show boxes based on number of units
 	var count = units.size()
-	var displayed_units:Dictionary
 	if count<=0:
 		return
 	
@@ -22,13 +21,16 @@ func _on_update_unit_display(units):
 	for i in count:
 		var box = $HBoxContainer.get_child(i)
 		var unit = units[i]
-		_populate_unit_box(box,unit,i)
+		
 		if is_instance_valid(unit):
+			_populate_unit_box(box,unit,i)
 			if unit.move_count>0 or unit.action_count>0:
 				box.modulate = Color.WHITE
 			else:
 				box.modulate = Color.DIM_GRAY
 			box.visible = true
+		#else:
+			#_populate_unit_box(box,unit,clamp(i-1,0,count))
 	
 	#for i in range(4):
 		#var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))

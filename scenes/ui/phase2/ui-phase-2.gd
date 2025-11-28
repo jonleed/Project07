@@ -48,6 +48,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):
 		pause_menu.show()
 	if Input.is_action_just_pressed("Enter"):
+		end_turn_btn.release_focus()
 		end_turn_btn.emit_signal("pressed")
 	
 	var btns = actions_box.get_children()
