@@ -39,8 +39,8 @@ func _rebuild_connections():
 				connect_points(coord_id, identifier_map.get(vector))
 	
 func _return_path(provided_coordinate:Vector2i, provided_target:Vector2i):
-	var point_id:int = -INF
-	var target_id:int = -INF
+	var point_id:int = int(-INF)
+	var target_id:int = int(-INF)
 	if provided_coordinate in identifier_map:
 		point_id = identifier_map.get(provided_coordinate)
 	if provided_target in identifier_map:

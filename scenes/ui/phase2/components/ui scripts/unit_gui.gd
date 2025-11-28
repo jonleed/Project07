@@ -12,16 +12,25 @@ func _on_update_unit_display(units):
 	await get_tree().process_frame
 	# Show boxes based on number of units
 	var count = units.size()
+	var displayed_units:Dictionary
 	if count<=0:
 		return
 	for i in range(4):
 		var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))
-		box.visible = i < count
-
+		#set visibility by validity
+		#box.visible = i < count
+		
 		if i < count:
 			var unit = units[i]
+			##do get or add logic to hide already displayed units
+			if displayed_units.get(unit,false) or unit == null:
+				box.visible = false
+			else:
+				displayed_units.set(unit,unit)
+				box.visible = true
+			
 			_populate_unit_box(box, unit, i)
-		
+
 
 # Populates Portaits and HP
 func _populate_unit_box(box, unit, index): 

@@ -47,9 +47,9 @@ func _ready() -> void:
 func _unhandled_input(event):
 	if not event.is_pressed():
 		return
-	if event.is_action_pressed("Pause"):
+	if Input.is_action_just_pressed("Pause"):
 		pause_menu.show()
-	if event.is_action_pressed("Enter"):
+	if Input.is_action_just_pressed("Enter"):
 		end_turn_btn.emit_signal("pressed")
 
 	# Debug: Print when any key is pressed
