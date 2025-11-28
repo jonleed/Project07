@@ -44,28 +44,53 @@ func _ready() -> void:
 	
 	setup_input_map()
 
-func _unhandled_input(event):
-	if not event.is_pressed():
-		return
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):
 		pause_menu.show()
 	if Input.is_action_just_pressed("Enter"):
 		end_turn_btn.emit_signal("pressed")
-
-	# Debug: Print when any key is pressed
-	if event is InputEventKey and event.pressed:
-		print("Key pressed: ", event.keycode)
 	
-	# Trigger action buttons when their mapped number key is pressed
-	for i in range(number_key_actions.size()):
-		if event.is_action_pressed(number_key_actions[i]):
-			var btns = actions_box.get_children()
-			if i < btns.size():
-				var btn = btns[i]
-				# Press the internal action_butt button
-				if btn.has_node("action_butt") or "action_butt" in btn:
-					btn.action_butt.emit_signal("pressed")
-			break
+	var btns = actions_box.get_children()
+	var btn = null
+	if Input.is_action_just_pressed("Act_1"):
+		if btns.get(0):
+			btn = btns[0]
+	elif Input.is_action_just_pressed("Act_2"):
+		if btns.get(1):
+			btn = btns[1]
+	elif Input.is_action_just_pressed("Act_3"):
+		if btns.get(2):
+			btn = btns[2]
+	elif Input.is_action_just_pressed("Act_4"):
+		if btns.get(3):
+			btn = btns[3]
+	elif Input.is_action_just_pressed("Act_5"):
+		if btns.get(4):
+			btn = btns[4]
+	
+	if btn:
+		# Press the internal action_butt button
+		if btn.has_node("action_butt") or "action_butt" in btn:
+				btn.action_butt.emit_signal("pressed")
+
+#func _unhandled_input(event):
+	#if not event.is_pressed():
+		#return
+	#
+	## Debug: Print when any key is pressed
+	#if event is InputEventKey and event.pressed:
+		#print("Key pressed: ", event.keycode)
+	#
+	## Trigger action buttons when their mapped number key is pressed
+	#for i in range(number_key_actions.size()):
+		#if event.is_action_pressed(number_key_actions[i]):
+			#var btns = actions_box.get_children()
+			#if i < btns.size():
+				#var btn = btns[i]
+				## Press the internal action_butt button
+				#if btn.has_node("action_butt") or "action_butt" in btn:
+					#btn.action_butt.emit_signal("pressed")
+			#break
 
 
 ## Helper Functions

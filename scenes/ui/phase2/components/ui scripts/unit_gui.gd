@@ -15,21 +15,36 @@ func _on_update_unit_display(units):
 	var displayed_units:Dictionary
 	if count<=0:
 		return
-	for i in range(4):
-		var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))
-		#set visibility by validity
-		#box.visible = i < count
-		
-		if i < count:
-			var unit = units[i]
-			##do get or add logic to hide already displayed units
-			if displayed_units.get(unit,false) or unit == null:
-				box.visible = false
+	
+	for child in $HBoxContainer.get_children():
+		child.visible = false
+	
+	for i in count:
+		var box = $HBoxContainer.get_child(i)
+		var unit = units[i]
+		_populate_unit_box(box,unit,i)
+		if is_instance_valid(unit):
+			if unit.move_count>0 or unit.action_count>0:
+				box.modulate = Color.WHITE
 			else:
-				displayed_units.set(unit,unit)
-				box.visible = true
-			
-			_populate_unit_box(box, unit, i)
+				box.modulate = Color.DIM_GRAY
+			box.visible = true
+	
+	#for i in range(4):
+		#var box = $HBoxContainer.get_node("UnitBox%d" % (i + 1))
+		##set visibility by validity
+		##box.visible = i < count
+		#
+		#if i < count:
+			#var unit = units[i]
+			###do get or add logic to hide already displayed units
+			#if displayed_units.get(unit,false) or unit == null:
+				#box.visible = false
+			#else:
+				#displayed_units.set(unit,unit)
+				#box.visible = true
+			#
+			#_populate_unit_box(box, unit, i)
 
 
 # Populates Portaits and HP
