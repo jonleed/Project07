@@ -2,7 +2,7 @@ extends Trap
 class_name SpikeTrap
 
 @export var attack_action: Attackaction
-@export var trap_damage: int = 2
+@export var trap_damage: int = 10
 @onready var trigger_area: Area2D = $Area2D
 
 

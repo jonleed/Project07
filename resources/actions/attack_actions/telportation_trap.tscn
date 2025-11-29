@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6yshl25ehqiw"]
+
+[ext_resource type="Script" uid="uid://c6ids5tus1pdw" path="res://scenes/components/phase2/trapstuff/teleporty.gd" id="1_7hklh"]
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="2_o0skd"]
+[ext_resource type="Script" uid="uid://c2x51a1xu8lbn" path="res://scenes/components/phase2/actions/actiontypes/swap-action.gd" id="3_ljhvu"]
+[ext_resource type="Texture2D" uid="uid://vmhi2pr1o3fm" path="res://assets/sprites/TeleporterReal.png" id="4_o0skd"]
+
+[sub_resource type="Resource" id="Resource_f0mfc"]
+script = ExtResource("3_ljhvu")
+metadata/_custom_type_script = "uid://c2x51a1xu8lbn"
+
+[node name="TelportationTrap" type="Node2D"]
+script = ExtResource("1_7hklh")
+action_array = Array[ExtResource("2_o0skd")]([SubResource("Resource_f0mfc")])
+immortal = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_o0skd")

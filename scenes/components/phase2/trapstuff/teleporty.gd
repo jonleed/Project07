@@ -1,0 +1,2 @@
+extends Trap
+class_name TelportationTrap

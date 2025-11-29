@@ -1,24 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnt7illh76qd3"]
+[gd_scene load_steps=8 format=3 uid="uid://cnt7illh76qd3"]
 
 [ext_resource type="Script" uid="uid://b47tb48svaqfh" path="res://scenes/components/phase2/trapstuff/spiketrap.gd" id="1_x5qbq"]
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_a0h2y"]
-[ext_resource type="Texture2D" uid="uid://bpsr4arpfau3c" path="res://assets/sprites/Template Trees 16x16.png" id="2_cgqth"]
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_waqd0"]
+[ext_resource type="Texture2D" uid="uid://cwpvqyk1mon0u" path="res://assets/sprites/isometric_medieval_fantasy_tiles.png" id="4_waqd0"]
+
+[sub_resource type="Resource" id="Resource_jx447"]
+script = ExtResource("2_waqd0")
+affected_tiles = PackedVector2Array(0, 0)
+grid_size = Vector2i(1, 1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_7b5v6"]
+script = ExtResource("2_waqd0")
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
 
 [sub_resource type="Resource" id="Resource_waqd0"]
 script = ExtResource("2_a0h2y")
+base_dmg = 10
+is_vision_based = false
+range_pattern = SubResource("Resource_7b5v6")
+multihit_pattern = SubResource("Resource_jx447")
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_no1s2"]
-atlas = ExtResource("2_cgqth")
-region = Rect2(97.301636, 17.048336, 13.108475, 7.710865)
 
 [node name="SpikeTrap" type="Node2D" groups=["Trap"]]
 script = ExtResource("1_x5qbq")
 attack_action = SubResource("Resource_waqd0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -0.5)
-texture = SubResource("AtlasTexture_no1s2")
+position = Vector2(2.4999998, -6.75)
+scale = Vector2(0.9375, 1.4411765)
+texture = ExtResource("4_waqd0")
+hframes = 11
+vframes = 10
+frame = 21
 
 [node name="Area2D" type="Area2D" parent="."]
 

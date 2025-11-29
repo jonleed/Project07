@@ -4,6 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cp8hl2xycbikj" path="res://resources/animations/Blue Thief.tres" id="2_mxrov"]
 
 [node name="BaseUnit" type="Node2D"]
+z_index = 1
 script = ExtResource("1_o1srr")
 metadata/_custom_type_script = "uid://b2kcev8dkaef8"
 

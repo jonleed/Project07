@@ -4,6 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cyk0fjs0h8ns8" path="res://resources/animations/Mini Sword Guy Animationtres.tres" id="2_gh4wy"]
 
 [node name="DebugEntity" type="Node2D"]
+z_index = 1
 script = ExtResource("1_8u8vy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

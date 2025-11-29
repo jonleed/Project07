@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://4vycs4jlb06i"]
+
+[ext_resource type="Script" uid="uid://ct17flgvootu8" path="res://scenes/components/phase2/trapstuff/leverspikes.gd" id="1_5txry"]
+[ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="2_pculr"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_ppox0"]
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="3_jfr5t"]
+[ext_resource type="Texture2D" uid="uid://cu01cyejx1cgl" path="res://assets/sprites/Traps/Fire_Trap.png" id="3_ppox0"]
+
+[sub_resource type="Resource" id="Resource_c0sb5"]
+script = ExtResource("3_jfr5t")
+affected_tiles = PackedVector2Array(0, 0)
+grid_size = Vector2i(1, 1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_wbqg5"]
+script = ExtResource("3_jfr5t")
+affected_tiles = PackedVector2Array(0, 0)
+grid_size = Vector2i(1, 1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_bvbhn"]
+script = ExtResource("2_ppox0")
+base_dmg = 10
+is_vision_based = false
+range_pattern = SubResource("Resource_wbqg5")
+multihit_pattern = SubResource("Resource_c0sb5")
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
+
+[node name="Bigolspikes" type="Node2D"]
+script = ExtResource("1_5txry")
+action_array = Array[ExtResource("2_pculr")]([SubResource("Resource_bvbhn")])
+immortal = true
+metadata/_custom_type_script = "uid://ct17flgvootu8"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_ppox0")
+hframes = 15
