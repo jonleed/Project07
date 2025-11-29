@@ -190,7 +190,8 @@ func select_enemy_unit(unit: Hostile_Unit) -> void:
 	cur_unit_selected = unit
 
 func deselect():
-	if cur_unit_selected is Hostile_Unit:
+# Units get freed on death. Using is_instance_valid() prevents crashes by checking for freed references
+	if is_instance_valid(cur_unit_selected) and cur_unit_selected is Hostile_Unit: 
 		cur_unit_selected.select_ui.hide()
 	_on_toggle_selected_unit_ui(false)
 	# Clear Actions
