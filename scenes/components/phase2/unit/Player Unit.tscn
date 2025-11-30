@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bjr5u0n6rfb0j" path="res://assets/ui/targetting.png" id="3_q6qlo"]
 
 [node name="PlayerUnit" type="Node2D"]
-z_index = 1
 script = ExtResource("1_ywkuo")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]

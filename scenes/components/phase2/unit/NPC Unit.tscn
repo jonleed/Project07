@@ -12,7 +12,6 @@ font_color = Color(0.3198, 0.82, 0.38649338, 1)
 font_color = Color(1, 0.29000002, 0.29000002, 1)
 
 [node name="NpcUnit" type="Node2D"]
-z_index = 1
 script = ExtResource("1_tp0p1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
