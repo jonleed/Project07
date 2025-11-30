@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Attackaction" load_steps=5 format=3 uid="uid://h43dl2oyck5g"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_mmuc3"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_463al"]
+
+[sub_resource type="Resource" id="Resource_jx447"]
+script = ExtResource("1_mmuc3")
+affected_tiles = PackedVector2Array(0, 0)
+grid_size = Vector2i(1, 1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[sub_resource type="Resource" id="Resource_7b5v6"]
+script = ExtResource("1_mmuc3")
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_463al")
+base_dmg = 10
+is_vision_based = false
+range_pattern = SubResource("Resource_7b5v6")
+multihit_pattern = SubResource("Resource_jx447")
+metadata/_custom_type_script = "uid://dhgqt46va2g45"

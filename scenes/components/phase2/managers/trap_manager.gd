@@ -58,8 +58,8 @@ func remove_trap(trap: Trap) -> void:
 	if trap in traps:
 		if map_manager.map_dict.has(trap.cur_pos):
 			map_manager.map_dict.erase(trap.cur_pos)
-			map_manager.trap_dict.erase(trap.coord)
-			map_manager.update_astar_solidity(trap.coord)
+			map_manager.trap_dict.erase(trap.cur_pos)
+			map_manager.update_astar_solidity(trap.cur_pos)
 		traps.erase(trap)
 		if is_instance_valid(trap):
 			trap.queue_free()
@@ -74,10 +74,22 @@ func get_unused_traps() -> Array:
 	return unused_traps
 
 func refresh_all_traps():
+	var new_trap_arr:Array[Trap] = []
+	for trap in traps:
+		if trap != null:
+			new_trap_arr.append(trap)
+	traps = new_trap_arr
+	
 	for trap in traps:
 		trap.action_count = trap.action_max
 		trap.refresh_actions()
 		
 func _on_turn_started(faction_manager: Unit_Manager) -> void:
+	# print("TRAPS: ",traps)
 	if faction_manager.faction_name != "Traps":
 		refresh_all_traps()
+		if faction_manager.faction_name == "Hostile Faction":
+			for trap in traps:
+				# print('On Trap: ', trap)
+				if trap is Oscillation_Trap or trap is Time_Limited_Trap:
+					trap.process_turn()

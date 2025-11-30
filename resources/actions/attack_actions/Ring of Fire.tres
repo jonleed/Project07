@@ -11,6 +11,7 @@ range_pattern = ExtResource("1_k4ejj")
 range_dist = 2
 multihit_pattern = ExtResource("1_k4ejj")
 drop_trap_on_multihit_tiles = true
+trap_for_multihit = 1
 action_name = "Ring of Fire"
 tool_tip = "Columns of fire errupt damaging ALL units within the ring."
 metadata/_custom_type_script = "uid://dhgqt46va2g45"

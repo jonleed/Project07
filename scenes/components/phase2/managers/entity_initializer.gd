@@ -145,9 +145,10 @@ func init_traps():
 			continue
 		
 		# instance and position the trap
-		var trap_instance:Node2D = trap_res.instantiate()
+		var trap_instance:Trap = trap_res.instantiate()
 		trap_manager.add_child(trap_instance)
 		trap_instance.position = map_manager.coords_to_glob(tile)
+		trap_manager.traps.append(trap_instance)
 		# add trap to map dictionary (so tiles know they are occupied)
 		
 		print("Spawned trap at ", tile)

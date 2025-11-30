@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://v7qd2nnobjlb"]
+
+[ext_resource type="Script" uid="uid://mutb5p4t5422" path="res://scenes/components/phase2/trapstuff/fire.gd" id="1_773m6"]
+[ext_resource type="Texture2D" uid="uid://11vfbrwcltew" path="res://assets/sprites/Traps/Fire.png" id="2_nj5h5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nj5h5"]
+atlas = ExtResource("2_nj5h5")
+region = Rect2(0, 0, 11, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nm4hn"]
+atlas = ExtResource("2_nj5h5")
+region = Rect2(11, 0, 11, 23)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mv2qh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nj5h5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nm4hn")
+}],
+"loop": true,
+"name": &"active",
+"speed": 5.0
+}]
+
+[node name="Fire" type="Node2D"]
+script = ExtResource("1_773m6")
+metadata/_custom_type_script = "uid://mutb5p4t5422"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+scale = Vector2(-0.5, -0.5)
+polygon = PackedVector2Array(-8, 0, 0, -4, 8, 0, 0, 4)
+
+[node name="Polygon2D" type="Polygon2D" parent="Area2D/CollisionPolygon2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(0.7, 0.516)
+sprite_frames = SubResource("SpriteFrames_mv2qh")
+animation = &"active"

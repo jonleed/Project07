@@ -2,6 +2,8 @@ extends Node
 class_name ActionDecoder
 
 @export var map_manager:MapManager
+@export var trap_manager:Trap_Manager
+var trap_scenes = [preload("res://scenes/components/phase2/trapstuff/spiketrap.tscn"), preload("res://scenes/components/phase2/trapstuff/fire.tscn")]
 
 #this action decoder takes the action and performs the duty of each action relative to the map
 #call this directly to perform the action, the check for which Entity performs this should be done elsewhere
@@ -213,4 +215,29 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 				# If tile occupied, bonus damage
 				print("Pull blocked; bonus damage")
 				target.health -= act.bonus_dmg
+
+	var dropped_trap_on_singlehit_already:bool = false
+	print(act.drop_trap_on_singlehit_tile)
+	print(act.drop_trap_on_multihit_tiles)
+	if act.drop_trap_on_singlehit_tile:
+		dropped_trap_on_singlehit_already = true
+		var trap_res:PackedScene = trap_scenes[act.trap_for_singlehit]
+		var trap_instance:Node2D = trap_res.instantiate()
+		trap_manager.add_child(trap_instance)
+		trap_manager.add_trap(trap_instance, targets[0].cur_pos)
+		trap_instance.position = map_manager.coords_to_glob(targets[0].cur_pos)
+	if act.drop_trap_on_multihit_tiles:
+		var all_multihit_tiles:Array[Vector2i] = act.multihit_pattern.calculate_affected_tiles_from_center(curUnit.cur_pos)
+		for tile:Vector2i in all_multihit_tiles:
+			print(tile)
+			if dropped_trap_on_singlehit_already and tile == targets[0].cur_pos:
+				continue
+			var trap_res:PackedScene = trap_scenes[act.trap_for_multihit]
+			var trap_instance:Trap = trap_res.instantiate()
+			trap_manager.add_child(trap_instance)
+			trap_manager.add_trap(trap_instance, tile)
+			trap_manager.traps.append(trap_instance)
+			trap_instance.position = map_manager.coords_to_glob(tile)
+	
+
 	##just add on to the elif tree here for more decoded actions
