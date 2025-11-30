@@ -1,6 +1,7 @@
-[gd_scene load_steps=63 format=4 uid="uid://k05d4lfmh0ff"]
+[gd_scene load_steps=65 format=4 uid="uid://k05d4lfmh0ff"]
 
 [ext_resource type="Script" uid="uid://cldoe72l7prq2" path="res://scenes/components/phase2/levels/level_base_script.gd" id="1_jwkos"]
+[ext_resource type="PackedScene" uid="uid://bbe2628jcudn1" path="res://scenes/components/phase2/levels/gauntlet.tscn" id="2_h7lso"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_jwkos"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="3_h7lso"]
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_heau3"]
@@ -28,6 +29,7 @@
 [ext_resource type="Script" uid="uid://dqvosddqnsl8h" path="res://scenes/ui/phase2/game_won.gd" id="26_kj12q"]
 [ext_resource type="PackedScene" uid="uid://dkssyyldfisd1" path="res://scenes/ui/phase2/game_won.tscn" id="27_2inyd"]
 [ext_resource type="PackedScene" uid="uid://c4a1ndwvnrso8" path="res://scenes/ui/phase2/hint_screen.tscn" id="28_yg1t0"]
+[ext_resource type="PackedScene" uid="uid://bljh1l2s1a53" path="res://scenes/ui/phase2/proceed_to_next_level.tscn" id="30_h7lso"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_l4rwm"]
 vertices = PackedVector2Array(8, 0, 0, 4, -8, 0, 0, -4)
@@ -1872,6 +1874,7 @@ metadata/_custom_type_script = "uid://btodx1p0782eh"
 
 [node name="corridor" type="Node2D"]
 script = ExtResource("1_jwkos")
+level_to_proceed_to = ExtResource("2_h7lso")
 
 [node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "remove_layer", "select_layer")]
 script = ExtResource("2_jwkos")
@@ -1916,7 +1919,8 @@ map_manager = NodePath("..")
 trap_manager = NodePath("../../Turn_Manager/Trap_Manager")
 turn_manager = NodePath("../../Turn_Manager")
 enemy_manager = NodePath("../../Turn_Manager/Unit_Manager")
-kills_to_win = 15
+win_condition = 1
+spawn_interval = 3
 rounds = Array[ExtResource("12_yi3xh")]([SubResource("Resource_61tjl"), SubResource("Resource_l2egs"), SubResource("Resource_4w14q"), SubResource("Resource_jwkos"), SubResource("Resource_h7lso"), SubResource("Resource_heau3"), SubResource("Resource_sl4pr"), SubResource("Resource_fw0e0"), SubResource("Resource_epmw4"), SubResource("Resource_flepk")])
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -1980,7 +1984,13 @@ visible = false
 [node name="Hint Screen" parent="CanvasLayer" instance=ExtResource("28_yg1t0")]
 visible = false
 
+[node name="Proceed to Next Level" parent="CanvasLayer" instance=ExtResource("30_h7lso")]
+visible = false
+
+[connection signal="display_the_objective_complete_screen" from="." to="CanvasLayer/Proceed to Next Level" method="set_visibility"]
 [connection signal="game_won" from="MapManager/Round Init" to="CanvasLayer/Game Won" method="set_visibility"]
+[connection signal="level_complete" from="MapManager/Round Init" to="CanvasLayer/Proceed to Next Level" method="set_visibility"]
 [connection signal="timeout" from="Timer" to="." method="_update_timeout"]
 [connection signal="end_game" from="Turn_Manager/Player_Unit_Manager" to="CanvasLayer/Game Over" method="set_visibility"]
 [connection signal="highlight_action_tiles" from="CanvasLayer/UI-Phase-2" to="MapManager" method="highlight_tiles"]
+[connection signal="proceed_signal_sent" from="CanvasLayer/Proceed to Next Level" to="." method="progress_to_next_level"]

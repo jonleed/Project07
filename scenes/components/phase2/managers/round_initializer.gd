@@ -9,6 +9,8 @@ class_name RoundInitializer
 var initialized := false
 
 @export_subgroup("Rounds")
+@export_enum("Survive", "Elimination", "Escape") var win_condition
+@export var turns_to_survive:int = 1
 @export var kills_to_win: int = 1
 @export var spawn_interval: int = 1
 @export var rounds: Array[RoundData] = []
@@ -20,14 +22,21 @@ var kill_count: int = 0
 var spawn_tiles: Array[Vector2i] = []
 
 signal turn_banner_update(text: String)
-signal objective_update(count:int, total:int) 
+signal objective_update(count:int, total:int, win_condition:int) 
 
 func _ready() -> void:
 	turn_manager.round_start.connect(_on_round_start)
 	get_tiles()
 	enemy_manager.update_kill_count.connect(kill_count_update)
 	visible = false
-	objective_update.emit(kill_count, kills_to_win)
+	if win_condition == 1:
+		objective_update.emit(kill_count, kills_to_win, win_condition)
+	elif win_condition == 0:
+		objective_update.emit(round_count, turns_to_survive, win_condition)
+	elif win_condition == 2:
+		objective_update.emit(0, 1, win_condition)
+		
+		
 
 
 func get_tiles():
@@ -43,7 +52,12 @@ func get_tiles():
 				spawn_tiles.append(cell_coords)
 				continue
 
+
 func _on_round_start():
+	if win_condition == 0 and round_count >= turns_to_survive:
+		level_complete.emit(true)
+		return
+	
 	round_count+=1
 	if round_count % spawn_interval == 0 and round_count > 0: # Dont spawn at game start
 		#print("Spawn Round ", round_count)
@@ -54,15 +68,17 @@ func _on_round_start():
 		pass
 
 signal game_won(val:bool)
+signal level_complete(val:bool)
 func kill_count_update(): 
 	kill_count+=1 
-	objective_update.emit(kill_count, kills_to_win) 
+	if win_condition == 1:
+		objective_update.emit(kill_count, kills_to_win, win_condition) 
 	printerr("KILL COUNT: ", kill_count)
-	if kills_to_win <= kill_count: 
+	if win_condition == 1 and kills_to_win <= kill_count: 
 		Globals.play_music("",true)
 		await get_tree().create_timer(0.5).timeout
 		Globals.play_ui_sound("Victory")
-		game_won.emit(true)
+		level_complete.emit(true)
 
 func spawn_round_enemies():
 	if spawn_count >= rounds.size():
@@ -122,3 +138,8 @@ func spawn_round_enemies():
 		
 		if get_tree():
 			await get_tree().process_frame
+
+
+func _on_player_unit_manager_tell_round_initialiser_we_escaped(escaped: bool) -> void:
+	level_complete.emit(true)
+	return

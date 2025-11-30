@@ -8,6 +8,8 @@ var spawn_locations: Array[Vector2] = [
 	Vector2(-5, 6)
 ]
 
+@export var level_to_proceed_to:PackedScene = null
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		$"CanvasLayer/UI-Phase-2".visible = false
@@ -28,3 +30,13 @@ func _ready() -> void:
 		print_rich("[b]This is the party array: ",Globals.party_units,"[/b]")
 		$Turn_Manager/Player_Unit_Manager.start_turn()
 		#$Cursor.deselected.emit()
+
+signal display_the_objective_complete_screen(bool)
+func level_completed() -> void:
+	display_the_objective_complete_screen.emit(true)
+
+func progress_to_next_level() -> void:
+	if level_to_proceed_to == null:
+		$"MapManager/Round Init".game_won.emit(true)
+	else:
+		get_tree().change_scene_to_packed(level_to_proceed_to)

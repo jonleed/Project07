@@ -15,6 +15,10 @@ func setup_trap_specific_variables() -> void:
 	pass
 	
 func process_turn() -> void:
+	if trap_sprite == null:
+		trap_sprite = AnimatedSprite2D.new()
+		trap_sprite.sprite_frames = load("res://resources/animations/Fire Trap.tres")
+	
 	if current_cycle >= number_of_cycles:
 		is_functional = false
 		has_activated = true

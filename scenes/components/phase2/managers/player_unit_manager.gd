@@ -16,6 +16,7 @@ signal action_selection(act:Action) # Calls for Action Highlights
 signal enable_ui_inputs(enabled:bool) # Toogles UI Inputs
 signal unit_moved(unit:Unit) # Sends Unit position to Map Manager
 signal enemy_selected(unit:Unit) # Sends Enemy Unit to UI
+signal tell_round_initialiser_we_escaped(escaped:bool)
 
 var selected_unit: Unit = null
 var selected_action: Action = null
@@ -277,6 +278,8 @@ func player_attempt_to_move_unit(target_coord: Vector2i):
 	
 	# Tell the map_manager to update its dictionary and the unit's position
 	map_manager.entity_move(selected_unit.cur_pos, target_coord)
+	if map_manager.is_tile_an_escape_tile(selected_unit.cur_pos):
+		tell_round_initialiser_we_escaped.emit(true)
 	refresh_gui()
 	Globals.play_ui_sound(["Text","Select"].pick_random())
 	

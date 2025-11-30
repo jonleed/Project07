@@ -10,9 +10,13 @@ extends Node2D
 var map_dict:Dictionary ={}
 var trap_dict: Dictionary = {}
 var map_dict_all_non_wall_tiles:Dictionary
+var tiles_that_fulfill_escape_win_condition:Dictionary = {}
 
 ## A* grid for pathfinding, synced with map_dict
 var astar_grid := AStarGrid2D.new() # <-- NEW
+
+func is_tile_an_escape_tile(tile:Vector2i) -> bool:
+	return tile in tiles_that_fulfill_escape_win_condition
 
 func init_walls():
 	## Go through the wall layer and fill in the spots in map_dict.
