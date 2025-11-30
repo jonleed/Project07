@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Attackaction" load_steps=4 format=3 uid="uid://b7ns6xj48ey01"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_m4y48"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_vudtd"]
+
+[sub_resource type="Resource" id="Resource_ipyps"]
+script = ExtResource("1_m4y48")
+affected_tiles = PackedVector2Array(0, -1, 1, 0, 0, 1, -1, 0)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_vudtd")
+base_dmg = 2
+heal_on_kill = 3.0
+range_pattern = SubResource("Resource_ipyps")
+range_dist = 2
+action_name = "Chomp"
+tool_tip = "Chomp at your foes. If you kill them, you eat them for 2 HP."
+metadata/_custom_type_script = "uid://dhgqt46va2g45"

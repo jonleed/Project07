@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Pullaction" load_steps=4 format=3 uid="uid://31y40ua25y3l"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_7mvi1"]
+[ext_resource type="Script" uid="uid://rt32nydn3ipi" path="res://scenes/components/phase2/actions/actiontypes/pull-action.gd" id="2_eq0k7"]
+
+[sub_resource type="Resource" id="Resource_ctbmu"]
+script = ExtResource("1_7mvi1")
+affected_tiles = PackedVector2Array(1, 0, 2, 0, 0, -1, 0, -2, -1, 0, -2, 0, 0, 1, 0, 2, 3, 0, 4, 0, -3, 0, -4, 0, -5, 0, 0, -3, 0, -4, 0, -5, 0, 3, 0, 4, 5, 0, 6, 0, -6, 0, 0, -6, 0, 5, 0, 6, 7, 0, 8, 0, 0, 7, 0, 8, -7, 0, -8, 0, 0, -8, 0, -7)
+grid_size = Vector2i(17, 17)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_eq0k7")
+base_dmg = 1
+range_pattern = SubResource("Resource_ctbmu")
+range_dist = 2
+action_name = "Hook"
+tool_tip = "Deal 1 damage and pull unit one tile in front of you in the direction you used the hook. "
+metadata/_custom_type_script = "uid://rt32nydn3ipi"

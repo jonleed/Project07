@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Healaction" load_steps=3 format=3 uid="uid://c1vel4g68jujc"]
+
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="1_s0dwo"]
+[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="2_3x888"]
+
+[resource]
+script = ExtResource("2_3x888")
+base_heal = 2
+range_pattern = ExtResource("1_s0dwo")
+range_dist = 2
+action_name = "Mysterious Liquid"
+tool_tip = "The master shares a drink with you. "
+metadata/_custom_type_script = "uid://bdxuonp7f4qd1"

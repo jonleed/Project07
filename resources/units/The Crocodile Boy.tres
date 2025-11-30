@@ -1,46 +1,15 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=12 format=3 uid="uid://c6y025k8tpnhg"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=7 format=3 uid="uid://c6y025k8tpnhg"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_xqnpm"]
-[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_ctbmu"]
-[ext_resource type="Script" uid="uid://rt32nydn3ipi" path="res://scenes/components/phase2/actions/actiontypes/pull-action.gd" id="2_xqnpm"]
-[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="3_ctbmu"]
+[ext_resource type="Resource" uid="uid://31y40ua25y3l" path="res://resources/actions/attack_actions/Hook.tres" id="2_xqnpm"]
+[ext_resource type="Resource" uid="uid://b7ns6xj48ey01" path="res://resources/actions/attack_actions/Chomp.tres" id="3_ctbmu"]
 [ext_resource type="SpriteFrames" uid="uid://bkk4hb1oxbmgn" path="res://resources/animations/CrocodileBoy.tres" id="5_xqnpm"]
 [ext_resource type="Texture2D" uid="uid://1n2t77qlamt3" path="res://assets/portraits/crocodileboy.png" id="6_ctbmu"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="6_ipyps"]
 
-[sub_resource type="Resource" id="Resource_ctbmu"]
-script = ExtResource("2_ctbmu")
-affected_tiles = PackedVector2Array(1, 0, 2, 0, 0, -1, 0, -2, -1, 0, -2, 0, 0, 1, 0, 2, 3, 0, 4, 0, -3, 0, -4, 0, -5, 0, 0, -3, 0, -4, 0, -5, 0, 3, 0, 4, 5, 0, 6, 0, -6, 0, 0, -6, 0, 5, 0, 6, 7, 0, 8, 0, 0, 7, 0, 8, -7, 0, -8, 0, 0, -8, 0, -7)
-grid_size = Vector2i(17, 17)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="Resource" id="Resource_kg5av"]
-script = ExtResource("2_xqnpm")
-base_dmg = 1
-range_pattern = SubResource("Resource_ctbmu")
-range_dist = 2
-action_name = "Hook"
-tool_tip = "Deal 1 damage and pull unit one tile in front of you in the direction you used the hook. "
-metadata/_custom_type_script = "uid://rt32nydn3ipi"
-
-[sub_resource type="Resource" id="Resource_ipyps"]
-script = ExtResource("2_ctbmu")
-affected_tiles = PackedVector2Array(0, -1, 1, 0, 0, 1, -1, 0)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="Resource" id="Resource_3lhvl"]
-script = ExtResource("3_ctbmu")
-base_dmg = 2
-heal_on_kill = 3.0
-range_pattern = SubResource("Resource_ipyps")
-range_dist = 2
-action_name = "Chomp"
-tool_tip = "Chomp at your foes. If you kill them, you eat them for 2 HP."
-metadata/_custom_type_script = "uid://dhgqt46va2g45"
-
 [resource]
 script = ExtResource("6_ipyps")
-action_array = Array[ExtResource("1_xqnpm")]([SubResource("Resource_kg5av"), SubResource("Resource_3lhvl")])
+action_array = Array[ExtResource("1_xqnpm")]([ExtResource("2_xqnpm"), ExtResource("3_ctbmu")])
 move_max = 4
 icon_sprite = ExtResource("6_ctbmu")
 unit_name = "Crocodile Boy"

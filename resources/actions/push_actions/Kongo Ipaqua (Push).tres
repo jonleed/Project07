@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Pushaction" load_steps=3 format=3 uid="uid://xybv7j0yerwa"]
+
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="1_64wlo"]
+[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="2_rgnd4"]
+
+[resource]
+script = ExtResource("2_rgnd4")
+base_dmg = 1
+all_tile_attack = true
+range_pattern = ExtResource("1_64wlo")
+range_dist = 2
+action_name = "Kongo Ipaqua"
+tool_tip = "Okween yacuwanse"
+metadata/_custom_type_script = "uid://c6t7k8tj8427g"

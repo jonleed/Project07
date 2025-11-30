@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Healaction" load_steps=4 format=3 uid="uid://3wdjhnqi1eme"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_qm6hw"]
+[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="2_ut5pw"]
+
+[sub_resource type="Resource" id="Resource_cn04u"]
+script = ExtResource("1_qm6hw")
+affected_tiles = PackedVector2Array(0, -2, 1, -1, -1, -1, 0, 0, -1, 1, 0, 2, 1, 1)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_ut5pw")
+base_heal = 2
+all_tile_heal = true
+range_pattern = SubResource("Resource_cn04u")
+range_dist = 2
+action_name = "Kowconcheti"
+tool_tip = "Okwa chia"
+metadata/_custom_type_script = "uid://bdxuonp7f4qd1"

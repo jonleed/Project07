@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_umeeq"]
 [ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_680y1"]
-[ext_resource type="Resource" uid="uid://df13ytxgxcj3l" path="res://resources/range_patterns/diamond.tres" id="2_dpipn"]
+[ext_resource type="Resource" path="res://resources/range_patterns/diamond.tres" id="2_dpipn"]
 [ext_resource type="Resource" uid="uid://qyqpvvonk167" path="res://resources/actions/move_actions/basic_movement.tres" id="3_dpipn"]
 [ext_resource type="Resource" uid="uid://c0ps5bljlpst7" path="res://resources/actions/restorative_actions/basic_restorative.tres" id="4_yvxik"]
 [ext_resource type="Resource" uid="uid://foymb330k1wh" path="res://resources/AI/Macho.tres" id="5_680y1"]

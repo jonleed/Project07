@@ -1,41 +1,16 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=12 format=3 uid="uid://pwf0s8sl0rli"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://pwf0s8sl0rli"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_vp64j"]
-[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_2as78"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_k7hc5"]
-[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_swm1y"]
-[ext_resource type="Script" uid="uid://c2x51a1xu8lbn" path="res://scenes/components/phase2/actions/actiontypes/swap-action.gd" id="3_2as78"]
+[ext_resource type="Resource" uid="uid://ca04b1mbgluqk" path="res://resources/actions/attack_actions/Ring of Fire.tres" id="2_suwkm"]
+[ext_resource type="Resource" uid="uid://xjl8d5vly308" path="res://resources/actions/swap_actions/Swap.tres" id="3_2as78"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_f2ci8"]
 [ext_resource type="SpriteFrames" uid="uid://dyuiyl8ek12f5" path="res://resources/animations/CandleWitch.tres" id="4_2as78"]
 [ext_resource type="Texture2D" uid="uid://be407pei6q0fh" path="res://assets/portraits/candlewitch.png" id="4_suwkm"]
 
-[sub_resource type="Resource" id="Resource_k5c6v"]
-script = ExtResource("2_2as78")
-affected_tiles = PackedVector2Array(3, 0, 0, 3, -3, -1, -2, -2, -1, -3, 0, -3, 1, -3, 2, -2, 3, -1, 1, 3, -1, 3, -2, 2, -3, 1, 3, 1, 2, 2, -3, 0)
-grid_size = Vector2i(11, 11)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="Resource" id="Resource_2as78"]
-script = ExtResource("2_swm1y")
-base_dmg = 2
-all_tile_attack = true
-range_pattern = SubResource("Resource_k5c6v")
-range_dist = 2
-action_name = "Ring of Fire"
-tool_tip = "Columns of fire errupt damaging ALL units within the ring."
-metadata/_custom_type_script = "uid://dhgqt46va2g45"
-
-[sub_resource type="Resource" id="Resource_6dwcd"]
-script = ExtResource("3_2as78")
-range_type = 1
-range_dist = 32
-action_name = "Swap"
-tool_tip = "Swaps places between any unit and this one. "
-metadata/_custom_type_script = "uid://c2x51a1xu8lbn"
-
 [resource]
 script = ExtResource("2_k7hc5")
-action_array = Array[ExtResource("1_vp64j")]([SubResource("Resource_2as78"), SubResource("Resource_6dwcd")])
+action_array = Array[ExtResource("1_vp64j")]([ExtResource("2_suwkm"), ExtResource("3_2as78")])
 move_max = 8
 icon_sprite = ExtResource("4_suwkm")
 unit_name = "Candle Witch"

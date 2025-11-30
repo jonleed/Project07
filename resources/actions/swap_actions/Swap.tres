@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Swapaction" load_steps=2 format=3 uid="uid://xjl8d5vly308"]
+
+[ext_resource type="Script" uid="uid://c2x51a1xu8lbn" path="res://scenes/components/phase2/actions/actiontypes/swap-action.gd" id="1_3fq5i"]
+
+[resource]
+script = ExtResource("1_3fq5i")
+range_type = 1
+range_dist = 32
+action_name = "Swap"
+tool_tip = "Swaps places between any unit and this one. "
+metadata/_custom_type_script = "uid://c2x51a1xu8lbn"

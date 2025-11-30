@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Pushaction" load_steps=4 format=3 uid="uid://bwg03jrdkrpqs"]
+
+[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="1_x3i7v"]
+[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="2_lss1n"]
+
+[sub_resource type="Resource" id="Resource_hg366"]
+script = ExtResource("1_x3i7v")
+affected_tiles = PackedVector2Array(0, 1, 0, 2, 1, 0, 2, 0, 0, -1, 0, -2, -1, 0, -2, 0)
+metadata/_custom_type_script = "uid://c7yr4smfu07vp"
+
+[resource]
+script = ExtResource("2_lss1n")
+base_dmg = 2
+bonus_dmg = 1
+range_pattern = SubResource("Resource_hg366")
+range_dist = 2
+action_name = "Trip"
+tool_tip = "Deals damage and pushs unit 1 tile back. If your push collides with a wall or 
+another unit, deal bonus damage to both the target and the entity behind them. "
+metadata/_custom_type_script = "uid://c6t7k8tj8427g"

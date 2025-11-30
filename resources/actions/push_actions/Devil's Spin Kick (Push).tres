@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Pushaction" load_steps=3 format=3 uid="uid://y3pue1cm0xnr"]
+
+[ext_resource type="Resource" uid="uid://esebkb0frfo6" path="res://resources/range_patterns/adjacent_tiles.tres" id="1_s4j80"]
+[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="2_dd7j3"]
+
+[resource]
+script = ExtResource("2_dd7j3")
+base_dmg = 1
+all_tile_attack = true
+range_pattern = ExtResource("1_s4j80")
+range_dist = 2
+action_name = "Devil's Spin Kick"
+tool_tip = "Knocks all enemies in attack range back 1 tile."
+metadata/_custom_type_script = "uid://c6t7k8tj8427g"

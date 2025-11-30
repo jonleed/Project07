@@ -21,6 +21,13 @@ class_name Action
 @export var multihit_pattern : Pattern2D
 @export var multihit_dist :int = 1
 
+@export_group("(Optional) Trap affected tiles")
+@export var drop_trap_on_singlehit_tile:bool = false
+@export_enum("SpikeTrap", "Fire") var trap_for_singlehit:int = 0 
+
+@export var drop_trap_on_multihit_tiles:bool = false
+@export_enum("SpikeTrap", "Fire") var trap_for_multihit:int = 0 
+
 @export_group("Cosmetics")
 @export var action_name:String = "Action 1"
 @export var action_icon:Texture2D

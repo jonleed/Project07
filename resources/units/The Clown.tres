@@ -1,44 +1,16 @@
-[gd_resource type="Resource" script_class="UnitResource" load_steps=13 format=3 uid="uid://b7d4ceedmf682"]
+[gd_resource type="Resource" script_class="UnitResource" load_steps=8 format=3 uid="uid://b7d4ceedmf682"]
 
 [ext_resource type="Script" uid="uid://ddid46v71ab8g" path="res://scenes/components/phase2/actions/action.gd" id="1_6jcb4"]
+[ext_resource type="Resource" uid="uid://bwg03jrdkrpqs" path="res://resources/actions/attack_actions/Push.tres" id="2_o4ar2"]
 [ext_resource type="Script" uid="uid://dc3mpm54egbqc" path="res://resources/units/unit_res.gd" id="2_swvdy"]
-[ext_resource type="Script" uid="uid://c7yr4smfu07vp" path="res://addons/pattern_2d_editor/pattern2d.gd" id="2_xs4fo"]
 [ext_resource type="Resource" uid="uid://djee5gjbab7oy" path="res://resources/range_patterns/Single Square.tres" id="3_0jk40"]
-[ext_resource type="Resource" uid="uid://bcxt60sbegx3h" path="res://resources/range_patterns/debug pattern.tres" id="3_mivav"]
-[ext_resource type="Script" uid="uid://c6t7k8tj8427g" path="res://scenes/components/phase2/actions/actiontypes/push-action.gd" id="3_o4ar2"]
+[ext_resource type="Resource" uid="uid://bck1fxeov8wot" path="res://resources/actions/restorative_actions/Funny Face (Multi-Heal).tres" id="3_mivav"]
 [ext_resource type="Texture2D" uid="uid://dtehc3dorpg44" path="res://assets/portraits/jester.png" id="4_c73w4"]
 [ext_resource type="SpriteFrames" uid="uid://6ckpl37o017a" path="res://resources/animations/Jester.tres" id="4_o4ar2"]
-[ext_resource type="Script" uid="uid://bdxuonp7f4qd1" path="res://scenes/components/phase2/actions/actiontypes/rest-action.gd" id="4_xs4fo"]
-
-[sub_resource type="Resource" id="Resource_hg366"]
-script = ExtResource("2_xs4fo")
-affected_tiles = PackedVector2Array(0, 1, 0, 2, 1, 0, 2, 0, 0, -1, 0, -2, -1, 0, -2, 0)
-metadata/_custom_type_script = "uid://c7yr4smfu07vp"
-
-[sub_resource type="Resource" id="Resource_mivav"]
-script = ExtResource("3_o4ar2")
-base_dmg = 2
-bonus_dmg = 1
-range_pattern = SubResource("Resource_hg366")
-range_dist = 2
-action_name = "Trip"
-tool_tip = "Deals damage and pushs unit 1 tile back. If your push collides with a wall or 
-another unit, deal bonus damage to both the target and the entity behind them. "
-metadata/_custom_type_script = "uid://c6t7k8tj8427g"
-
-[sub_resource type="Resource" id="Resource_xx0yu"]
-script = ExtResource("4_xs4fo")
-base_heal = 2
-all_tile_heal = true
-range_pattern = ExtResource("3_mivav")
-range_dist = 2
-action_name = "Funny Face"
-tool_tip = "Healing power of laughter. Heals all units in range."
-metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
 
 [resource]
 script = ExtResource("2_swvdy")
-action_array = Array[ExtResource("1_6jcb4")]([SubResource("Resource_mivav"), SubResource("Resource_xx0yu")])
+action_array = Array[ExtResource("1_6jcb4")]([ExtResource("2_o4ar2"), ExtResource("3_mivav")])
 action_max = 2
 move_max = 7
 icon_sprite = ExtResource("4_c73w4")

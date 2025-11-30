@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Attackaction" load_steps=3 format=3 uid="uid://ca04b1mbgluqk"]
+
+[ext_resource type="Resource" uid="uid://b1hfjrhg236k" path="res://resources/range_patterns/radius_3_circle.tres" id="1_k4ejj"]
+[ext_resource type="Script" uid="uid://dhgqt46va2g45" path="res://scenes/components/phase2/actions/actiontypes/attack-action.gd" id="2_12d63"]
+
+[resource]
+script = ExtResource("2_12d63")
+base_dmg = 2
+all_tile_attack = true
+range_pattern = ExtResource("1_k4ejj")
+range_dist = 2
+multihit_pattern = ExtResource("1_k4ejj")
+drop_trap_on_multihit_tiles = true
+action_name = "Ring of Fire"
+tool_tip = "Columns of fire errupt damaging ALL units within the ring."
+metadata/_custom_type_script = "uid://dhgqt46va2g45"
