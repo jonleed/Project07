@@ -185,6 +185,7 @@ animations = [{
 script = ExtResource("1_d5v4a")
 turns_inactive = 1
 attack_action = ExtResource("3_8buok")
+trap_damage = 3
 metadata/_custom_type_script = "uid://b42832muwtg24"
 
 [node name="Area2D" type="Area2D" parent="."]

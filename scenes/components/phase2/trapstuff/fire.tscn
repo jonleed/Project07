@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://v7qd2nnobjlb"]
+[gd_scene load_steps=7 format=3 uid="uid://v7qd2nnobjlb"]
 
 [ext_resource type="Script" uid="uid://mutb5p4t5422" path="res://scenes/components/phase2/trapstuff/fire.gd" id="1_773m6"]
 [ext_resource type="Texture2D" uid="uid://11vfbrwcltew" path="res://assets/sprites/Traps/Fire.png" id="2_nj5h5"]
+[ext_resource type="Resource" uid="uid://h43dl2oyck5g" path="res://resources/actions/attack_actions/trap_attack.tres" id="2_nm4hn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nj5h5"]
 atlas = ExtResource("2_nj5h5")
@@ -27,6 +28,8 @@ animations = [{
 
 [node name="Fire" type="Node2D"]
 script = ExtResource("1_773m6")
+attack_action = ExtResource("2_nm4hn")
+trap_damage = 5
 metadata/_custom_type_script = "uid://mutb5p4t5422"
 
 [node name="Area2D" type="Area2D" parent="."]

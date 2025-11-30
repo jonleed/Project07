@@ -229,7 +229,13 @@ func decode_action(act:Action,targets:Array[Entity], curUnit: Entity):
 	if act.drop_trap_on_multihit_tiles:
 		var all_multihit_tiles:Array[Vector2i] = act.multihit_pattern.calculate_affected_tiles_from_center(curUnit.cur_pos)
 		for tile:Vector2i in all_multihit_tiles:
-			print(tile)
+			if tile not in map_manager.surface_layer.get_used_cells():
+				continue
+			elif tile in map_manager.trap_dict:
+				continue
+			elif tile in map_manager.wall_layer.get_used_cells():
+				continue
+				
 			if dropped_trap_on_singlehit_already and tile == targets[0].cur_pos:
 				continue
 			var trap_res:PackedScene = trap_scenes[act.trap_for_multihit]
