@@ -1915,7 +1915,7 @@ map_manager = NodePath("../../MapManager")
 action_decoder = NodePath("../../ActionDecoder")
 metadata/_custom_type_script = "uid://bbybo151sp17j"
 
-[node name="ActionDecoder" parent="." node_paths=PackedStringArray("map_manager") instance=ExtResource("7_kb0u0")]
+[node name="ActionDecoder" parent="." node_paths=PackedStringArray("map_manager", "trap_manager") instance=ExtResource("7_kb0u0")]
 map_manager = NodePath("../MapManager")
 trap_manager = NodePath("../Turn_Manager/Trap_Manager")
 
