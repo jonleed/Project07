@@ -1,6 +1,6 @@
 [gd_scene load_steps=57 format=4 uid="uid://87ikob4x4k87"]
 
-[ext_resource type="Script" uid="uid://cldoe72l7prq2" path="res://scenes/components/phase2/levels/level_base_script.gd" id="1_aygso"]
+[ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
 [ext_resource type="TileSet" uid="uid://bf1vksvfrjh5h" path="res://resources/tilesets/simple isometric tiles fantasy.tres" id="3_bs1i3"]
 [ext_resource type="TileSet" uid="uid://d2f8celuvfn7" path="res://resources/tilesets/Selects Tileset.tres" id="4_7lr0t"]
@@ -1837,7 +1837,7 @@ units = Array[ExtResource("7_w5nbb")]([ExtResource("15_44nnb"), ExtResource("15_
 metadata/_custom_type_script = "uid://btodx1p0782eh"
 
 [node name="levelexample" type="Node2D"]
-script = ExtResource("1_aygso")
+script = ExtResource("1_yxd6m")
 
 [node name="MapManager" type="Node2D" parent="." node_paths=PackedStringArray("surface_layer", "wall_layer", "remove_layer", "select_layer")]
 script = ExtResource("2_pulvh")
