@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=4 uid="uid://87ikob4x4k87"]
+[gd_scene load_steps=56 format=4 uid="uid://87ikob4x4k87"]
 
 [ext_resource type="Script" uid="uid://s23akc7bi1ql" path="res://scenes/components/debug/levelexample/levelexample.gd" id="1_yxd6m"]
 [ext_resource type="Script" uid="uid://b3xe5768ajbua" path="res://scenes/components/phase2/simplemap/map_manager.gd" id="2_pulvh"]
@@ -24,7 +24,6 @@
 [ext_resource type="Script" uid="uid://cqxhg00a17hk6" path="res://scenes/components/phase2/managers/npc_unit_manager.gd" id="13_w5nbb"]
 [ext_resource type="Script" uid="uid://bbybo151sp17j" path="res://scenes/components/phase2/managers/trap_manager.gd" id="14_tm18g"]
 [ext_resource type="Resource" uid="uid://cjkrt0ujb8th6" path="res://resources/units/Skeleton.tres" id="15_44nnb"]
-[ext_resource type="Script" uid="uid://daaxbjolja5fp" path="res://scenes/components/phase2/helpers/camera_2d.gd" id="17_aygso"]
 [ext_resource type="PackedScene" uid="uid://6byovpfrflp2" path="res://scenes/ui/phase2/game_over.tscn" id="21_61tjl"]
 [ext_resource type="PackedScene" uid="uid://dkssyyldfisd1" path="res://scenes/ui/phase2/game_won.tscn" id="22_hf82m"]
 [ext_resource type="PackedScene" uid="uid://c4a1ndwvnrso8" path="res://scenes/ui/phase2/hint_screen.tscn" id="23_hf82m"]
@@ -1888,7 +1887,6 @@ rounds = Array[ExtResource("12_8o8fv")]([SubResource("Resource_61tjl"), SubResou
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
-script = ExtResource("17_aygso")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
@@ -1919,6 +1917,7 @@ metadata/_custom_type_script = "uid://bbybo151sp17j"
 
 [node name="ActionDecoder" parent="." node_paths=PackedStringArray("map_manager") instance=ExtResource("7_kb0u0")]
 map_manager = NodePath("../MapManager")
+trap_manager = NodePath("../Turn_Manager/Trap_Manager")
 
 [node name="Cursor" parent="." instance=ExtResource("8_262ej")]
 
