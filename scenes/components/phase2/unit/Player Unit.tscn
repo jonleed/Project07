@@ -7,6 +7,7 @@
 [node name="PlayerUnit" type="Node2D"]
 z_index = 1
 script = ExtResource("1_ywkuo")
+metadata/_custom_type_script = "uid://eyowdp8e6dvu"
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1

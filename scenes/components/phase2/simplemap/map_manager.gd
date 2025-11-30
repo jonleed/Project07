@@ -134,6 +134,7 @@ func spawn_entity(entity:Entity, coord:Vector2i) -> bool:
 		# If the thing we're spawning is a trap, keep the spot walkable.
 		if entity is Trap:
 			trap_dict[coord] = entity   # <-- FIX
+			map_dict.erase(coord)
 			astar_grid.set_point_solid(coord, false)
 		else:
 			# This spot is now occupied by a blocking entity, so it's solid

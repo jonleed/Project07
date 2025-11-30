@@ -22,6 +22,14 @@ func start():
 
 func start_faction_turn() -> void:
 	var current_manager = unit_managers[cur_turn_index]
+	if current_manager is NPC_Manager:
+		for trap in $Trap_Manager.traps:
+			# print('On Trap: ', trap)
+			if trap == null:
+				continue
+			if trap is Oscillation_Trap or trap is Time_Limited_Trap:
+				trap.process_turn()
+	
 	emit_signal("turn_started", current_manager)
 	print("On faction: ", unit_managers[cur_turn_index].faction_name)
 	

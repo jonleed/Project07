@@ -56,13 +56,22 @@ func _on_trap_destroyed(trap: Trap) -> void:
 
 func remove_trap(trap: Trap) -> void:
 	if trap in traps:
-		if map_manager.map_dict.has(trap.cur_pos):
-			map_manager.map_dict.erase(trap.cur_pos)
-			map_manager.trap_dict.erase(trap.cur_pos)
-			map_manager.update_astar_solidity(trap.cur_pos)
 		traps.erase(trap)
-		if is_instance_valid(trap):
-			trap.queue_free()
+	if map_manager.map_dict.has(trap.cur_pos):
+		map_manager.map_dict.erase(trap.cur_pos)
+	if map_manager.trap_dict.has(trap.cur_pos):
+		map_manager.trap_dict.erase(trap.cur_pos)
+	map_manager.astar_grid.set_point_solid(trap.cur_pos, false)
+	print("Monitoring: ", map_manager.astar_grid.is_point_solid(trap.cur_pos))
+	
+	remove_child(trap)
+	if is_instance_valid(trap):
+		trap.queue_free()
+	var new_trap_arr:Array[Trap] = []
+	for trap_obj in traps:
+		if trap_obj != null:
+			new_trap_arr.append(trap_obj)
+	traps = new_trap_arr
 
 			#inprog ngl of course all of this is inspiration from aaron if not imitation but i am building it out still
 
@@ -88,8 +97,3 @@ func _on_turn_started(faction_manager: Unit_Manager) -> void:
 	# print("TRAPS: ",traps)
 	if faction_manager.faction_name != "Traps":
 		refresh_all_traps()
-		if faction_manager.faction_name == "Hostile Faction":
-			for trap in traps:
-				# print('On Trap: ', trap)
-				if trap is Oscillation_Trap or trap is Time_Limited_Trap:
-					trap.process_turn()
