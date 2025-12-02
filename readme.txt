@@ -1,3 +1,10 @@
+## House of Metal and Soul ##
+By Jonathan Leeder, Aaron Nogues, Logan Chandler, Angel Bercian
+
+Steps:
+1. Launch .exe
+2. Have fun :)
+
 Audio Credits:
 	8-bit / 16-bit Sound Effects (x25) Pack
 	https://jdwasabi.itch.io/8-bit-16-bit-sound-effects-pack
@@ -13,5 +20,3 @@ Audio Credits:
 Art Credits:
 	Isometric TRPG Asset Pack Medieval Fantasy Themed!
 	https://gvituri.itch.io/isometric-trpg
-	MiniFolks HUMANS - Unused
-	https://lyaseek.itch.io/minifhumans

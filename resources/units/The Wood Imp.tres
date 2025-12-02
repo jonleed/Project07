@@ -58,6 +58,6 @@ move_max = 6
 icon_sprite = ExtResource("6_mex4d")
 unit_name = "Wood Imp"
 unit_desc = "\"Yumbo yacwan.\" - Wood Imp"
-base_health = 3
+base_health = 4
 anim_frames = ExtResource("5_73m8r")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"

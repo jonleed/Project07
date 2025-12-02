@@ -22,7 +22,7 @@ base_dmg = 2
 range_pattern = SubResource("Resource_dqogc")
 range_dist = 2
 action_name = "Drunken Fist"
-tool_tip = "Legendary Punch put many men, women, and children in emergency."
+tool_tip = "Legendary Punch sent many men, women, and children to emergency."
 metadata/_custom_type_script = "uid://dhgqt46va2g45"
 
 [sub_resource type="Resource" id="Resource_w35qa"]
@@ -47,10 +47,11 @@ metadata/_custom_type_script = "uid://bdxuonp7f4qd1"
 [resource]
 script = ExtResource("2_w5yi2")
 action_array = Array[ExtResource("1_8hqp8")]([SubResource("Resource_apbgy"), SubResource("Resource_w35qa"), SubResource("Resource_85dw3")])
+action_max = 2
 move_max = 6
 icon_sprite = ExtResource("4_3m1c4")
 unit_name = "Drunken Master"
-unit_desc = "Always smiling, probably high on life. "
+unit_desc = "His wife left him, his kids don’t speak to him, and his horse was totaled in an accident, yet he still smiles. How does he do it?"
 entity_shape = ExtResource("3_884dk")
 anim_frames = ExtResource("4_gr4uv")
 metadata/_custom_type_script = "uid://dc3mpm54egbqc"
