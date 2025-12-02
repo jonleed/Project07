@@ -14,8 +14,10 @@ func _on_quit_pressed() -> void:
 
 
 func _on_open_logs_pressed() -> void:
+	Globals.play_ui_sound("Confirm")
 	Logs.open_saved_file()
 
 
 func _on_settings_pressed() -> void:
+	Globals.play_ui_sound("Confirm")
 	$SoundOptions.visible = true
