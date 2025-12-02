@@ -54,4 +54,12 @@ grow_vertical = 0
 text = "Return
 "
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 369.0
+offset_top = 602.0
+offset_right = 498.0
+offset_bottom = 625.0
+text = "Escape to Pause!"
+
 [connection signal="pressed" from="Return" to="." method="_on_return_pressed"]
