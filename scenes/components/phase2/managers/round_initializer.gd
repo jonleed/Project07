@@ -45,7 +45,7 @@ func get_tiles():
 
 func _on_round_start():
 	round_count+=1
-	if round_count % spawn_interval == 0 and round_count > 0: # Dont spawn at game start
+	if round_count % spawn_interval == 0: # and round_count > 0: # Dont spawn at game start
 		#print("Spawn Round ", round_count)
 		spawn_round_enemies()
 	else:
@@ -91,7 +91,7 @@ func spawn_round_enemies():
 
 	var arr: Array[UnitResource] = round_data.units.duplicate()
 	print("Enemy units to spawn: ", arr)
-	emit_signal("turn_banner_update", "Round " + str(round_count) + " Spawning: " + str(arr.size()))
+	emit_signal("turn_banner_update", "Round " + str(round_count))
 
 	var tile: Vector2i
 	var new_unit: Unit
