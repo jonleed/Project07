@@ -6,7 +6,7 @@ func _on_main_menu_pressed() -> void:
 
 func _on_open_options_pressed() -> void:
 	Globals.play_ui_sound("Confirm")
-	$Options.visible = true
+	$Sound.visible = true
 
 func _on_confirmation_dialog_confirmed() -> void:
 	Globals.play_ui_sound("Cancel")

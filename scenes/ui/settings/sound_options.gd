@@ -10,6 +10,7 @@ func _ready() -> void:
 
 ## Closes the options menu by just hiding it.
 func _on_close_options_pressed() -> void:
+	Globals.play_ui_sound("Cancel")
 	visible = false
 
 # Removes all dynamically created sliders from the VBoxContainer.

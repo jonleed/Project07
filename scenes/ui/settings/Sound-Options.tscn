@@ -27,7 +27,6 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="Close Options" type="Button" parent="VBoxContainer"]
-visible = false
 layout_mode = 2
 text = "Close"
 

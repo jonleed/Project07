@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://evc6pglbeeqm"]
 
 [ext_resource type="Script" uid="uid://chu2dthd0eiuk" path="res://scenes/ui/settings/pause_menu.gd" id="1_etvbu"]
-[ext_resource type="PackedScene" uid="uid://cda7pxyq1ugar" path="res://scenes/ui/settings/Options Container.tscn" id="2_etvbu"]
+[ext_resource type="PackedScene" uid="uid://byqk771q36ny4" path="res://scenes/ui/settings/Sound-Options.tscn" id="2_etvbu"]
 
 [node name="PauseMenu" type="PanelContainer"]
 anchors_preset = 15
@@ -27,7 +27,7 @@ text = "Main Menu"
 layout_mode = 2
 text = "Close"
 
-[node name="Options" parent="." instance=ExtResource("2_etvbu")]
+[node name="Sound" parent="." instance=ExtResource("2_etvbu")]
 visible = false
 layout_mode = 2
 
