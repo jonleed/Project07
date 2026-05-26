@@ -1,5 +1,5 @@
 ## House of Metal and Soul ##
-By Jonathan Leeder, Aaron Nogues, Logan Chandler, Angel Bercian
+By Jonathan Leeder, Aaron Nogues, EclipsedStar0 (Name Removed), Angel Bercian
 
 Steps:
 1. Launch .exe
